@@ -3,84 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customer - Ojek Hulu</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Customer - Ojek Hulu V2</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-100">
-<div class="max-w-md mx-auto min-h-screen p-5">
-<div class="bg-white rounded-3xl shadow p-6">
-<h1
-id="welcome"
-class="text-2xl font-bold mb-2"
->
-Loading...
-</h1>
-<p class="text-gray-500 mb-6">
-Selamat datang di Ojek Hulu
-</p>
-
-<button id="btn-order" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mb-3">
-🚕 Pesan Ojek
-</button>
-
-<button id="btn-history" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mb-3">
-📋 Riwayat Order
-</button>
-
-<button id="btn-profile" class="w-full bg-gray-700 text-white py-3 rounded-xl font-bold mb-3">
-👤 Profil Saya
-</button>
-
-<button id="btn-logout" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold">
-🚪 Logout
-</button>
-  
+<body>
+<div class="container">
+<header class="header">
+<div class="header-top">
+<div>
+<div class="location">📍 Putussibau</div>
+<div class="username" id="welcome">Loading...</div>
 </div>
+<div class="badge">NEW</div>
+</div>
+</header>
+
+<div class="search-box">
+<input type="text" placeholder="Mau ke mana hari ini?">
+</div>
+
+<section class="banner">
+<h2>🚕 OJEK HULU</h2>
+<p>Transportasi Lokal Putussibau</p>
+</section>
+
+<section class="menu-grid">
+<div class="menu-item" id="btn-order"><div class="menu-icon">🚕</div><div class="menu-title">Ojek</div></div>
+<div class="menu-item" id="btn-history"><div class="menu-icon">📋</div><div class="menu-title">Riwayat</div></div>
+<div class="menu-item" id="btn-profile"><div class="menu-icon">👤</div><div class="menu-title">Profil</div></div>
+<div class="menu-item" id="btn-logout"><div class="menu-icon">🚪</div><div class="menu-title">Logout</div></div>
+</section>
+
+<div class="card">
+<div class="card-title">Promo Hari Ini</div>
+<div class="promo-card">
+<b>Diskon 30%</b><br>
+Nikmati perjalanan lebih hemat bersama Ojek Hulu.
+</div>
+</div>
+
+<nav class="bottom-nav">
+<div class="bottom-item active"><span class="bottom-icon">🏠</span>Home</div>
+<div class="bottom-item"><span class="bottom-icon">📋</span>Aktivitas</div>
+<div class="bottom-item"><span class="bottom-icon">💬</span>Inbox</div>
+<div class="bottom-item"><span class="bottom-icon">👤</span>Akun</div>
+</nav>
+</div>
+
 <script type="module">
-import {
-getCurrentUser,
-logoutUser
-} from './js/auth.js';
-const user = await getCurrentUser();
-if(!user){
-location.href='login.html';
-}
-document.getElementById('welcome').innerText =
-`Halo ${user.email}`;
-const btnOrder = document.getElementById('btn-order');
-const btnHistory = document.getElementById('btn-history');
-const btnProfile = document.getElementById('btn-profile');
-const btnLogout = document.getElementById('btn-logout');
-
-console.log('btnOrder', btnOrder);
-console.log('btnHistory', btnHistory);
-console.log('btnProfile', btnProfile);
-console.log('btnLogout', btnLogout);
-
-if(btnOrder){
-    btnOrder.addEventListener('click', ()=>{
-        location.href='order.html';
-    });
-}
-
-if(btnHistory){
-    btnHistory.addEventListener('click', ()=>{
-        location.href = 'customer-history.html';
-    });
-}
-
-if(btnProfile){
-    btnProfile.addEventListener('click', ()=>{
-        alert('Modul Profil segera dibuat');
-    });
-}
-
-if(btnLogout){
-    btnLogout.addEventListener('click', async()=>{
-        await logoutUser();
-        location.href='login.html';
-    });
-}
+import { getCurrentUser, logoutUser } from './js/auth.js';
+const user=await getCurrentUser();
+if(!user){location.href='login.html';}
+document.getElementById('welcome').textContent='Halo, '+user.email;
+document.getElementById('btn-order').onclick=()=>location.href='order.html';
+document.getElementById('btn-history').onclick=()=>location.href='customer-history.html';
+document.getElementById('btn-profile').onclick=()=>alert('Profil V2 akan dibuat.');
+document.getElementById('btn-logout').onclick=async()=>{await logoutUser();location.href='login.html';};
 </script>
 </body>
 </html>
