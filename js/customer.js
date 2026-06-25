@@ -24,9 +24,9 @@ document
 .getElementById('btn-history')
 .addEventListener('click', () => {
 
-    console.log('Klik Riwayat');
+    console.log('BTN HISTORY DIKLIK');
 
-    location.assign('customer-history.html');
+    location.href = 'customer-history.html';
 
 });
 
