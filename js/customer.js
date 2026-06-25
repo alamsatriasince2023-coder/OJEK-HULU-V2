@@ -209,7 +209,7 @@ document
 .getElementById('btn-active-order')
 .addEventListener('click',()=>{
 
-    location.href='order-status.html';
+   location.href = 'order-map.html';
 
 });
 
