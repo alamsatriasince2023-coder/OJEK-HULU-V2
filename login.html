@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
 <title>Login - Ojek Hulu</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link
 rel="manifest"
-href="/manifest.webmanifest">
+href="./manifest.webmanifest">
 
 <meta
 name="theme-color"
@@ -31,52 +37,101 @@ content="black-translucent">
 name="apple-mobile-web-app-title"
 content="Ojek Hulu">
 
+<link
+rel="icon"
+href="./assets/icons/icon-192.png">
+
 </head>
-<body class="bg-gray-100">
+
+<body class="bg-gradient-to-b from-green-500 to-green-700 min-h-screen">
 
 <div class="max-w-md mx-auto min-h-screen flex items-center p-5">
 
-<form id="login-form" class="bg-white w-full p-6 rounded-2xl shadow">
+<form
+id="login-form"
+class="bg-white w-full rounded-3xl shadow-xl p-8">
 
-<h1 class="text-2xl font-bold text-center mb-2">
-🚕 Ojek Hulu
+<div class="text-center mb-8">
+
+<img
+
+src="./assets/icons/icon-192.png"
+
+class="w-24 h-24 mx-auto mb-4">
+
+<h1 class="text-3xl font-bold">
+
+Ojek Hulu
+
 </h1>
 
-<p class="text-gray-500 text-center mb-6">
-Silakan login untuk melanjutkan
+<p class="text-gray-500 mt-2">
+
+Transportasi Lokal Putussibau
+
 </p>
 
+</div>
+
 <input
+
 id="email"
+
 type="email"
-class="w-full border p-3 rounded-xl mb-3"
+
 placeholder="Email"
+
+autocomplete="email"
+
 required
->
+
+class="w-full border rounded-xl p-4 mb-4 outline-none focus:border-green-500">
 
 <input
+
 id="password"
+
 type="password"
-class="w-full border p-3 rounded-xl mb-4"
+
 placeholder="Password"
+
+autocomplete="current-password"
+
 required
->
+
+class="w-full border rounded-xl p-4 mb-5 outline-none focus:border-green-500">
 
 <button
+
 id="btn-login"
+
 type="submit"
-class="w-full bg-green-600 text-white py-3 rounded-xl font-bold"
->
-Login
+
+class="w-full bg-green-600 hover:bg-green-700 transition text-white font-bold rounded-xl p-4">
+
+🚕 Login
+
 </button>
 
 <button
+
 type="button"
+
 onclick="location.href='register.html'"
-class="w-full mt-3 border border-green-600 text-green-600 py-3 rounded-xl font-bold"
->
+
+class="w-full mt-4 border-2 border-green-600 text-green-600 rounded-xl p-4 font-bold">
+
 Daftar Akun
+
 </button>
+
+<p
+
+id="login-message"
+
+class="text-center text-red-500 mt-5 hidden">
+
+</p>
 
 </form>
 
@@ -84,53 +139,216 @@ Daftar Akun
 
 <script type="module">
 
-import { loginUser } from './js/auth.js';
-import { redirectByRole } from './js/rbac.js';
+import {
 
-const form = document.getElementById('login-form');
-const btn = document.getElementById('btn-login');
+loginUser
 
-form.addEventListener('submit', async (e)=>{
+}
 
-    e.preventDefault();
+from "./js/auth.js";
 
-    const email =
-    document.getElementById('email').value.trim();
+import {
 
-    const password =
-    document.getElementById('password').value;
+redirectByRole
 
-    if(email==='' || password===''){
+}
 
-        alert('Email dan Password wajib diisi.');
+from "./js/rbac.js";
 
-        return;
+import {
 
-    }
+supabase
 
-    btn.disabled = true;
-    btn.innerHTML = 'Sedang Login...';
+}
 
-    const { error } =
-    await loginUser(email,password);
+from "./js/api.js";
 
-    if(error){
+/* ===========================
+AUTO LOGIN
+=========================== */
 
-        btn.disabled = false;
+const {
 
-        btn.innerHTML = 'Login';
+data
 
-        alert(error.message);
+}
 
-        return;
+=
 
-    }
+await supabase.auth.getSession();
 
-    await redirectByRole();
+if(
 
-});
+data.session
+
+){
+
+await redirectByRole();
+
+}
+
+/* ===========================
+LOGIN
+=========================== */
+
+const form =
+
+document.getElementById(
+
+"login-form"
+
+);
+
+const btn =
+
+document.getElementById(
+
+"btn-login"
+
+);
+
+const message =
+
+document.getElementById(
+
+"login-message"
+
+);
+
+form.addEventListener(
+
+"submit",
+
+async(e)=>{
+
+e.preventDefault();
+
+message.classList.add(
+
+"hidden"
+
+);
+
+const email =
+
+document
+
+.getElementById(
+
+"email"
+
+)
+
+.value
+
+.trim();
+
+const password =
+
+document
+
+.getElementById(
+
+"password"
+
+)
+
+.value;
+
+if(
+
+!email ||
+
+!password
+
+){
+
+message.innerHTML=
+
+"Email dan password wajib diisi.";
+
+message.classList.remove(
+
+"hidden"
+
+);
+
+return;
+
+}
+
+btn.disabled=true;
+
+btn.innerHTML=
+
+"⏳ Sedang Login...";
+
+try{
+
+const {
+
+error
+
+}
+
+=
+
+await loginUser(
+
+email,
+
+password
+
+);
+
+if(
+
+error
+
+){
+
+throw error;
+
+}
+
+await redirectByRole();
+
+}
+
+catch(err){
+
+console.error(
+
+err
+
+);
+
+message.innerHTML=
+
+err.message ||
+
+"Gagal login.";
+
+message.classList.remove(
+
+"hidden"
+
+);
+
+btn.disabled=false;
+
+btn.innerHTML=
+
+"🚕 Login";
+
+}
+
+}
+
+);
 
 </script>
 
 </body>
+
 </html>
