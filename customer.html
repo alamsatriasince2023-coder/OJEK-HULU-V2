@@ -50,15 +50,7 @@ Nikmati perjalanan lebih hemat bersama Ojek Hulu.
 </nav>
 </div>
 
-<script type="module">
-import { getCurrentUser, logoutUser } from './js/auth.js';
-const user=await getCurrentUser();
-if(!user){location.href='login.html';}
-document.getElementById('welcome').textContent='Halo, '+user.email;
-document.getElementById('btn-order').onclick=()=>location.href='order.html';
-document.getElementById('btn-history').onclick=()=>location.href='customer-history.html';
-document.getElementById('btn-profile').onclick=()=>alert('Profil V2 akan dibuat.');
-document.getElementById('btn-logout').onclick=async()=>{await logoutUser();location.href='login.html';};
-</script>
+<script type="module" src="js/customer.js"></script>
+
 </body>
 </html>
