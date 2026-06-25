@@ -21,15 +21,12 @@ document
 
 });
 
-document
-.getElementById('btn-history')
-.addEventListener('click', () => {
+alert("customer.js jalan");
 
-    console.log('BTN HISTORY DIKLIK');
-
-    location.href = 'customer-history.html';
-
-});
+document.getElementById("btn-history").onclick = function () {
+    alert("Riwayat diklik");
+    location.href = "customer-history.html";
+};
 
 document
 .getElementById('btn-profile')
