@@ -146,7 +146,10 @@ export async function assignNearestDriver(
 
         driver: nearest,
 
-        distance: shortestDistance
+        distance: shortestDistance,
+
+        assignedAt:
+        new Date().toISOString()
 
     };
 
