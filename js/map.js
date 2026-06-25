@@ -1,3 +1,5 @@
+let routingControl = null;
+
 let map = null;
 
 let customerMarker = null;
@@ -214,5 +216,53 @@ export function clearDriverMarker(){
         driverMarker = null;
 
     }
+
+}
+
+export function drawRoute(
+
+    driverLat,
+    driverLng,
+
+    customerLat,
+    customerLng
+
+){
+
+    if(!map){
+
+        return;
+
+    }
+
+    if(routingControl){
+
+        map.removeControl(routingControl);
+
+    }
+
+    routingControl = L.Routing.control({
+
+        waypoints:[
+
+            L.latLng(driverLat,driverLng),
+
+            L.latLng(customerLat,customerLng)
+
+        ],
+
+        routeWhileDragging:false,
+
+        addWaypoints:false,
+
+        draggableWaypoints:false,
+
+        fitSelectedRoutes:true,
+
+        show:false,
+
+        createMarker:()=>null
+
+    }).addTo(map);
 
 }
