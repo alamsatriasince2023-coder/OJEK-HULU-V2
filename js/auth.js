@@ -137,22 +137,24 @@ export async function registerDriver({
     }
 
     // Simpan ke tabel drivers
-    const { error: driverError } =
-    await supabase
-    .from('drivers')
-    .insert({
-
-        id:user.id,
-
-        vehicle_type,
-
-        vehicle_number,
-
-        status:'offline',
-
-        is_online:false
-
-    });
+   const { error: driverError } =
+   await supabase
+   .from('drivers')
+   .insert({
+   
+       id: user.id,
+   
+       user_id: user.id,
+   
+       vehicle_type,
+   
+       vehicle_number,
+   
+       status: 'offline',
+   
+       is_online: false
+   
+   });
 
     if(driverError){
 
