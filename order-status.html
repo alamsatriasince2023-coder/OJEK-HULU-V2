@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Status Order - Ojek Hulu</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div style="padding:20px 20px 0 20px;">
+
+<button
+class="btn btn-gray"
+onclick="location.href='customer.html'">
+
+← Dashboard
+
+</button>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h1 style="font-size:28px;font-weight:bold;">
+
+🚕
+
+Status Order
+
+</h1>
+
+<p style="color:#666;margin-top:10px;">
+
+Pantau status perjalanan Anda secara realtime.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+Status
+
+</div>
+
+<h2
+id="order-status"
+style="color:#16a34a;">
+
+🟡 Menunggu Driver
+
+</h2>
+
+<p id="status-desc">
+
+Sedang mencari driver terdekat...
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+Driver
+
+</div>
+
+<p>
+
+<b id="driver-name">
+
+-
+
+</b>
+
+</p>
+
+<p>
+
+🚕 Kendaraan :
+
+<span id="vehicle">
+
+-</span>
+
+</p>
+
+<p>
+
+🪪 Plat :
+
+<span id="plate">
+
+-</span>
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+Perjalanan
+
+</div>
+
+<p>
+
+📍 Jemput
+
+</p>
+
+<p>
+
+<b id="pickup">
+
+-</b>
+
+</p>
+
+<br>
+
+<p>
+
+🎯 Tujuan
+
+</p>
+
+<p>
+
+<b id="destination">
+
+-</b>
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+Estimasi Tarif
+
+</div>
+
+<h2
+id="price"
+style="color:#16a34a;">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<button
+id="btn-refresh"
+class="btn btn-green">
+
+🔄 Refresh Status
+
+</button>
+
+</div>
+
+</div>
+
+<script type="module" src="./js/order-status.js"></script>
+
+</body>
+</html>
