@@ -133,33 +133,45 @@ async function acceptOrder(e){
     e.target.disabled=true;
     e.target.innerHTML='Memproses...';
 
-    const { error } =
+    const { data, error } =
     await supabase
     .from('orders')
     .update({
-
-        status:'accepted',
-
-        driver_id:user.id,
-
-        driver_name:profile.full_name,
-
-        accepted_at:new Date().toISOString()
-
+      
+          status:'accepted',
+      
+          driver_id:user.id,
+      
+          driver_name:profile.full_name,
+      
+          accepted_at:new Date().toISOString()
+      
     })
-    .eq('id',orderId);
+    .eq('id',orderId)
+    .eq('status','pending')
+    .select();
 
     if(error){
 
-        alert(error.message);
-
-        e.target.disabled=false;
-
-        e.target.innerHTML='✅ Terima Order';
-
-        return;
-
-    }
+       alert(error.message);
+   
+       e.target.disabled=false;
+   
+       e.target.innerHTML='✅ Terima Order';
+   
+       return;
+   
+   }
+   
+   if(!data || data.length===0){
+   
+       alert('Order sudah diambil driver lain.');
+   
+       loadOrders();
+   
+       return;
+   
+   }
 
     alert('✅ Order berhasil diterima');
 
