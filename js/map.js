@@ -1,82 +1,215 @@
 let map = null;
 
+let customerMarker = null;
+
 let driverMarker = null;
 
 /* ===========================
    INIT MAP
 =========================== */
 
-export function initMap() {
+export function initMap(){
 
-    if (map) return;
+    if(map) return;
 
     map = L.map('map').setView(
-        [0.8347, 112.9368], // Putussibau
+        [0.8347,112.9368],
         13
     );
 
     L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap'
+            maxZoom:19,
+            attribution:'&copy; OpenStreetMap'
         }
     ).addTo(map);
 
 }
 
 /* ===========================
-   UPDATE DRIVER MARKER
+   CUSTOMER MARKER
 =========================== */
 
-export function updateDriverLocation(latitude, longitude) {
+export function updateCustomerLocation(
+    latitude,
+    longitude
+){
 
-    if (!map) {
+    if(!map){
 
         initMap();
 
     }
 
-    if (
+    if(
         latitude == null ||
         longitude == null
-    ) {
+    ){
 
         return;
 
     }
 
     const position = [
+
         Number(latitude),
+
         Number(longitude)
+
     ];
 
-    if (!driverMarker) {
+    if(!customerMarker){
+
+        customerMarker =
+        L.marker(position)
+        .addTo(map)
+        .bindPopup('📍 Lokasi Jemput');
+
+    }else{
+
+        customerMarker.setLatLng(position);
+
+    }
+
+    fitMap();
+
+}
+
+/* ===========================
+   DRIVER MARKER
+=========================== */
+
+export function updateDriverLocation(
+    latitude,
+    longitude
+){
+
+    if(!map){
+
+        initMap();
+
+    }
+
+    if(
+        latitude == null ||
+        longitude == null
+    ){
+
+        return;
+
+    }
+
+    const position = [
+
+        Number(latitude),
+
+        Number(longitude)
+
+    ];
+
+    if(!driverMarker){
 
         driverMarker =
         L.marker(position)
         .addTo(map)
         .bindPopup('🚕 Driver');
 
-    } else {
+    }else{
 
         driverMarker.setLatLng(position);
 
     }
 
-    map.setView(position, 16);
+    fitMap();
 
 }
 
 /* ===========================
-   REMOVE DRIVER
+   AUTO FIT MAP
 =========================== */
 
-export function clearDriverMarker() {
+function fitMap(){
 
-    if (driverMarker) {
+    if(
+        !customerMarker &&
+        !driverMarker
+    ){
 
-        map.removeLayer(driverMarker);
+        return;
+
+    }
+
+    const group = [];
+
+    if(customerMarker){
+
+        group.push(
+            customerMarker.getLatLng()
+        );
+
+    }
+
+    if(driverMarker){
+
+        group.push(
+            driverMarker.getLatLng()
+        );
+
+    }
+
+    if(group.length===1){
+
+        map.setView(
+            group[0],
+            16
+        );
+
+        return;
+
+    }
+
+    const bounds =
+    L.latLngBounds(group);
+
+    map.fitBounds(
+        bounds,
+        {
+            padding:[60,60]
+        }
+    );
+
+}
+
+/* ===========================
+   CLEAR CUSTOMER
+=========================== */
+
+export function clearCustomerMarker(){
+
+    if(customerMarker){
+
+        map.removeLayer(
+            customerMarker
+        );
+
+        customerMarker = null;
+
+    }
+
+}
+
+/* ===========================
+   CLEAR DRIVER
+=========================== */
+
+export function clearDriverMarker(){
+
+    if(driverMarker){
+
+        map.removeLayer(
+            driverMarker
+        );
 
         driverMarker = null;
 
