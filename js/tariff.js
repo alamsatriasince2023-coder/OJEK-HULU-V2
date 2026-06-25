@@ -62,18 +62,10 @@ function parseCoordinate(value){
 export async function geocodeAddress(address){
 
     const url =
-    `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+    `https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/?q=${encodeURIComponent(address)}`;
 
     const response =
-    await fetch(url,{
-
-        headers:{
-
-            Accept:'application/json'
-
-        }
-
-    });
+    await fetch(url);
 
     if(!response.ok){
 
