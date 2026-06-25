@@ -1,3 +1,7 @@
+import {
+    startGps,
+    stopGps
+} from './gps.js';
 import { supabase } from './api.js';
 import { logoutUser } from './auth.js';
 import { requireRole } from './rbac.js';
@@ -480,6 +484,15 @@ async function toggleOnline(){
     }
 
     updateStatusUI();
+   if(isOnline){
+
+    startGps(user.id);
+
+   }else{
+   
+       stopGps();
+   
+   }
 
    await loadOrders();
    
