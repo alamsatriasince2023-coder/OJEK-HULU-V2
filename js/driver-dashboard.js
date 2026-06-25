@@ -31,6 +31,54 @@ profile.full_name || user.email;
 const orderList =
 document.getElementById('order-list');
 
+function getActionButton(order){
+
+    switch(order.status){
+
+        case 'pending':
+            return `
+            <button
+                class="btn btn-green accept-btn"
+                data-id="${order.id}">
+                ✅ Terima Order
+            </button>
+            `;
+
+        case 'accepted':
+            return `
+            <button
+                class="btn btn-blue pickup-btn"
+                data-id="${order.id}">
+                📍 Menuju Jemput
+            </button>
+            `;
+
+        case 'pickup':
+            return `
+            <button
+                class="btn btn-orange ontheway-btn"
+                data-id="${order.id}">
+                🚕 Mulai Perjalanan
+            </button>
+            `;
+
+        case 'ontheway':
+            return `
+            <button
+                class="btn btn-dark complete-btn"
+                data-id="${order.id}">
+                ✅ Selesaikan Order
+            </button>
+            `;
+
+        default:
+            return '';
+
+    }
+
+}
+
+
 async function loadOrders(){
 
     orderList.innerHTML = `
@@ -43,7 +91,7 @@ async function loadOrders(){
     await supabase
     .from('orders')
     .select('*')
-    .eq('status','pending')
+    .in('status',['pending','accepted','pickup','ontheway'])
     .order('id',{ascending:false});
 
     if(error){
@@ -99,11 +147,7 @@ async function loadOrders(){
             </b>
             </p>
 
-            <button
-                class="btn btn-green accept-btn"
-                data-id="${order.id}">
-                ✅ Terima Order
-            </button>
+            ${getActionButton(order)}
 
         </div>
 
@@ -118,6 +162,30 @@ async function loadOrders(){
         btn.addEventListener('click',acceptOrder);
 
     });
+
+   document
+   .querySelectorAll('.pickup-btn')
+   .forEach(btn=>{
+   
+       btn.addEventListener('click',pickupOrder);
+   
+   });
+   
+   document
+   .querySelectorAll('.ontheway-btn')
+   .forEach(btn=>{
+   
+       btn.addEventListener('click',startTrip);
+   
+   });
+   
+   document
+   .querySelectorAll('.complete-btn')
+   .forEach(btn=>{
+   
+       btn.addEventListener('click',completeOrder);
+   
+   });
 
 }
 
@@ -174,6 +242,59 @@ async function acceptOrder(e){
    }
 
     alert('✅ Order berhasil diterima');
+
+    loadOrders();
+
+}
+
+async function pickupOrder(e){
+
+    const id = e.target.dataset.id;
+
+    await supabase
+    .from('orders')
+    .update({
+
+        status:'pickup'
+
+    })
+    .eq('id',id);
+
+    loadOrders();
+
+}
+
+async function startTrip(e){
+
+    const id = e.target.dataset.id;
+
+    await supabase
+    .from('orders')
+    .update({
+
+        status:'ontheway'
+
+    })
+    .eq('id',id);
+
+    loadOrders();
+
+}
+
+async function completeOrder(e){
+
+    const id = e.target.dataset.id;
+
+    await supabase
+    .from('orders')
+    .update({
+
+        status:'completed',
+
+        completed_at:new Date().toISOString()
+
+    })
+    .eq('id',id);
 
     loadOrders();
 
