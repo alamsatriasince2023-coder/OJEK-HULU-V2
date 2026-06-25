@@ -16,26 +16,118 @@ if (!auth) {
 const user = auth.user;
 
 /* ===========================
-   FORM
+   GPS
+=========================== */
+
+let pickupLatitude = null;
+let pickupLongitude = null;
+
+let destinationLatitude = null;
+let destinationLongitude = null;
+
+/* ===========================
+   ELEMENT
 =========================== */
 
 const form =
 document.getElementById('order-form');
 
-form.addEventListener('submit', submitOrder);
+const btnLocation =
+document.getElementById('btn-my-location');
+
+const pickupInput =
+document.getElementById('pickup');
+
+/* ===========================
+   GPS CUSTOMER
+=========================== */
+
+btnLocation.addEventListener(
+'click',
+getCurrentLocation
+);
+
+function getCurrentLocation(){
+
+    if(!navigator.geolocation){
+
+        alert('Browser tidak mendukung GPS.');
+
+        return;
+
+    }
+
+    btnLocation.disabled = true;
+    btnLocation.innerHTML = 'Mengambil Lokasi...';
+
+    navigator.geolocation.getCurrentPosition(
+
+        (position)=>{
+
+            pickupLatitude =
+            position.coords.latitude;
+
+            pickupLongitude =
+            position.coords.longitude;
+
+            pickupInput.value =
+            `${pickupLatitude.toFixed(6)}, ${pickupLongitude.toFixed(6)}`;
+
+            btnLocation.disabled = false;
+            btnLocation.innerHTML =
+            '📍 Gunakan Lokasi Saya';
+
+        },
+
+        ()=>{
+
+            alert('Gagal mengambil lokasi.');
+
+            btnLocation.disabled = false;
+
+            btnLocation.innerHTML =
+            '📍 Gunakan Lokasi Saya';
+
+        },
+
+        {
+
+            enableHighAccuracy:true,
+            timeout:10000
+
+        }
+
+    );
+
+}
+
+/* ===========================
+   FORM
+=========================== */
+
+form.addEventListener(
+'submit',
+submitOrder
+);
 
 async function submitOrder(e){
 
     e.preventDefault();
 
     const pickup =
-    document.getElementById('pickup').value.trim();
+    pickupInput.value.trim();
 
     const destination =
-    document.getElementById('destination').value.trim();
+    document
+    .getElementById('destination')
+    .value
+    .trim();
 
     const notes =
-    document.getElementById('notes').value.trim();
+    document
+    .getElementById('notes')
+    .value
+    .trim();
 
     if(!pickup || !destination){
 
@@ -46,28 +138,48 @@ async function submitOrder(e){
     }
 
     const btn =
-    form.querySelector('button[type="submit"]');
+    form.querySelector(
+    'button[type="submit"]'
+    );
 
     btn.disabled = true;
 
     btn.innerHTML = 'Mengirim...';
+
+    const estimatePrice = 15000;
 
     const { data, error } =
     await supabase
     .from('orders')
     .insert({
 
-        customer_id: user.id,
+        customer_id:user.id,
 
-        nama: auth.profile.full_name || user.email,
+        nama:
+        auth.profile.full_name ||
+        user.email,
 
-        jemput: pickup,
+        jemput:pickup,
 
-        tujuan: destination,
+        tujuan:destination,
 
-        catatan: notes,
+        catatan:notes,
 
-        status: 'pending'
+        price:estimatePrice,
+
+        status:'pending',
+
+        pickup_latitude:
+        pickupLatitude,
+
+        pickup_longitude:
+        pickupLongitude,
+
+        destination_latitude:
+        destinationLatitude,
+
+        destination_longitude:
+        destinationLongitude
 
     })
     .select()
@@ -75,7 +187,8 @@ async function submitOrder(e){
 
     btn.disabled = false;
 
-    btn.innerHTML = '🚕 Pesan Sekarang';
+    btn.innerHTML =
+    '🚕 Pesan Sekarang';
 
     if(error){
 
