@@ -89,6 +89,8 @@ export async function redirectByRole() {
 
     const profile = await getProfile();
 
+    console.log("PROFILE LOGIN:", profile);
+
     if (!profile) {
 
         location.href = 'login.html';
@@ -112,6 +114,7 @@ export async function redirectByRole() {
             break;
 
         default:
+            alert("Role tidak dikenali: " + profile.role);
             location.href = 'login.html';
 
     }
