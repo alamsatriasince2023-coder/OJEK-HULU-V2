@@ -3,8 +3,9 @@ import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 import { calculateFare } from './tariff.js';
 
+let driverAnimations = new Map();
 let nearbyDrivers = [];
-let driverMarkers = [];
+let driverMarkers = new Map();
 
 const auth = await requireRole('customer');
 
