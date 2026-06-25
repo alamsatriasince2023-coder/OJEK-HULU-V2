@@ -1,5 +1,14 @@
-import { logoutUser } from './auth.js';
+import { supabase } from './api.js';
+import {
+    getCurrentUser,
+    logoutUser
+} from './auth.js';
+
 import { requireRole } from './rbac.js';
+
+/* ===========================
+   AUTH
+=========================== */
 
 const auth = await requireRole('customer');
 
@@ -25,34 +34,128 @@ document.getElementById('welcome').textContent =
 
 document
 .getElementById('btn-order')
-.addEventListener('click', () => {
+.addEventListener('click',()=>{
 
-    location.href = 'order.html';
+    location.href='order.html';
 
 });
 
 document
 .getElementById('btn-history')
-.addEventListener('click', () => {
+.addEventListener('click',()=>{
 
-    location.href = 'customer-history.html';
+    location.href='customer-history.html';
 
 });
 
 document
 .getElementById('btn-profile')
-.addEventListener('click', () => {
+.addEventListener('click',()=>{
 
-    location.href = 'profile.html';
+    location.href='profile.html';
 
 });
 
 document
 .getElementById('btn-logout')
-.addEventListener('click', async () => {
+.addEventListener('click',async()=>{
 
     await logoutUser();
 
-    location.href = 'login.html';
+    location.href='login.html';
 
 });
+
+/* ===========================
+   ORDER AKTIF
+=========================== */
+
+async function loadActiveOrder(){
+
+    const { data, error } =
+    await supabase
+    .from('orders')
+    .select('*')
+    .eq('customer_id',user.id)
+    .in('status',[
+        'pending',
+        'accepted',
+        'pickup',
+        'ontheway'
+    ])
+    .order('id',{ascending:false})
+    .limit(1)
+    .maybeSingle();
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    if(!data){
+
+        document
+        .getElementById('active-order-card')
+        .style.display='none';
+
+        return;
+
+    }
+
+    document
+    .getElementById('active-order-card')
+    .style.display='block';
+
+    let status='';
+
+    switch(data.status){
+
+        case 'pending':
+            status='🟡 Menunggu Driver';
+            break;
+
+        case 'accepted':
+            status='🟢 Driver Ditemukan';
+            break;
+
+        case 'pickup':
+            status='📍 Driver Menuju Jemput';
+            break;
+
+        case 'ontheway':
+            status='🚕 Dalam Perjalanan';
+            break;
+
+    }
+
+    document
+    .getElementById('active-status')
+    .textContent=status;
+
+    document
+    .getElementById('active-driver')
+    .textContent=
+    data.driver_name || '-';
+
+}
+
+/* ===========================
+   BUTTON STATUS
+=========================== */
+
+document
+.getElementById('btn-active-order')
+.addEventListener('click',()=>{
+
+    location.href='order-status.html';
+
+});
+
+/* ===========================
+   INIT
+=========================== */
+
+loadActiveOrder();
