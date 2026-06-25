@@ -1,3 +1,6 @@
+let nearbyDrivers = [];
+let driverMarkers = [];
+
 import { assignNearestDriver } from './assign-driver.js';
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
@@ -139,12 +142,10 @@ async function loadCurrentLocation(){
             pickupLng.toFixed(6);
 
             pickupMarker.on(
-
                 'dragend',
-
                 updatePickup
-
             );
+            loadNearbyDrivers();
 
         },
 
@@ -498,3 +499,118 @@ document
 "click",
 submitOrder
 );
+
+async function loadNearbyDrivers(){
+
+    if(
+        pickupLat == null ||
+        pickupLng == null
+    ){
+        return;
+    }
+
+    const { data, error } =
+    await supabase
+    .from('drivers')
+    .select(`
+        id,
+        full_name,
+        latitude,
+        longitude,
+        is_online
+    `)
+    .eq('is_online', true);
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    nearbyDrivers = data || [];
+
+    renderNearbyDrivers();
+
+}
+
+function renderNearbyDrivers(){
+
+    driverMarkers.forEach(marker=>{
+
+        map.removeLayer(marker);
+
+    });
+
+    driverMarkers = [];
+
+    nearbyDrivers.forEach(driver=>{
+
+        if(
+
+            driver.latitude == null ||
+
+            driver.longitude == null
+
+        ){
+
+            return;
+
+        }
+
+        const marker =
+
+        L.marker([
+
+            driver.latitude,
+
+            driver.longitude
+
+        ])
+
+        .addTo(map)
+
+        .bindPopup(
+
+            `🚕 ${driver.full_name}`
+
+        );
+
+        driverMarkers.push(marker);
+
+    });
+
+}
+
+supabase
+
+.channel(
+
+    'drivers-live'
+
+)
+
+.on(
+
+    'postgres_changes',
+
+    {
+
+        event:'UPDATE',
+
+        schema:'public',
+
+        table:'drivers'
+
+    },
+
+    ()=>{
+
+        loadNearbyDrivers();
+
+    }
+
+)
+
+.subscribe();
