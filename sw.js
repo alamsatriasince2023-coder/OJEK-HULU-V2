@@ -1,10 +1,61 @@
-const CACHE_NAME = 'ojek-hulu-v1';
-const ASSETS = ['/', '/index.html', '/js/main.js', '/js/api.js', '/js/map.js', '/js/auth.js', '/js/history.js'];
+const CACHE_NAME = "ojek-hulu-v1";
 
-self.addEventListener('install', (e) => {
-    e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
-});
+const FILES = [
 
-self.addEventListener('fetch', (e) => {
-    e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
-});
+    "/",
+
+    "/index.html",
+
+    "/login.html",
+
+    "/customer.html",
+
+    "/driver.html",
+
+    "/order-map.html",
+
+    "/css/style.css"
+
+];
+
+self.addEventListener(
+
+    "install",
+
+    event=>{
+
+        event.waitUntil(
+
+            caches.open(CACHE_NAME)
+
+            .then(cache=>cache.addAll(FILES))
+
+        );
+
+    }
+
+);
+
+self.addEventListener(
+
+    "fetch",
+
+    event=>{
+
+        event.respondWith(
+
+            caches.match(event.request)
+
+            .then(response=>{
+
+                return response ||
+
+                fetch(event.request);
+
+            })
+
+        );
+
+    }
+
+);
