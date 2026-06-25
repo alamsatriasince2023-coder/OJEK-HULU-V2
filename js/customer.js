@@ -36,7 +36,7 @@ document
 .getElementById('btn-order')
 .addEventListener('click',()=>{
 
-    location.href='order.html';
+    location.href = 'order-map.html';
 
 });
 
