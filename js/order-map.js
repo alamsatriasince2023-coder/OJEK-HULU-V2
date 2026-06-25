@@ -1,3 +1,4 @@
+import { assignNearestDriver } from './assign-driver.js';
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 import { calculateFare } from './tariff.js';
@@ -36,6 +37,10 @@ document.getElementById('duration');
 
 const priceEl =
 document.getElementById('price');
+
+let currentFare = 0;
+let currentDistance = 0;
+let currentDuration = 0;
 
 init();
 
@@ -247,8 +252,9 @@ function drawRoute(){
     if(
 
         pickupLat == null ||
-
-        destinationLat == null
+        pickupLng == null ||
+        destinationLat == null ||
+        destinationLng == null
 
     ){
 
@@ -258,43 +264,39 @@ function drawRoute(){
 
     if(routingControl){
 
-        map.removeControl(
+        map.removeControl(routingControl);
 
-            routingControl
-
-        );
+        routingControl = null;
 
     }
 
-    routingControl =
-
-    L.Routing.control({
+    routingControl = L.Routing.control({
 
         waypoints:[
 
             L.latLng(
-
                 pickupLat,
                 pickupLng
-
             ),
 
             L.latLng(
-
                 destinationLat,
                 destinationLng
-
             )
 
         ],
+
+        routeWhileDragging:false,
 
         draggableWaypoints:false,
 
         addWaypoints:false,
 
-        createMarker:()=>null,
+        fitSelectedRoutes:true,
 
-        routeWhileDragging:false
+        show:false,
+
+        createMarker:()=>null
 
     }).addTo(map);
 
@@ -304,64 +306,195 @@ function drawRoute(){
 
         function(e){
 
-            const route =
+            if(
 
+                !e.routes ||
+
+                e.routes.length===0
+
+            ){
+
+                return;
+
+            }
+
+            const route =
             e.routes[0];
 
-            distanceEl.innerHTML =
+            currentDistance =
+            route.summary.totalDistance;
 
-            (
+            currentDuration =
+            route.summary.totalTime;
 
-                route.summary.totalDistance
-
-                /
-
-                1000
-
-            ).toFixed(2)
-
-            +
-
-            " km";
-
-            durationEl.innerHTML =
-
-            Math.ceil(
-
-                route.summary.totalTime
-
-                /
-
-                60
-
-            )
-
-            +
-
-            " menit";
-
-            const fare =
-
+            currentFare =
             calculateFare(
-
-                route.summary.totalDistance
-
+                currentDistance
             );
 
-            priceEl.innerHTML =
+            distanceEl.textContent =
+            (currentDistance / 1000).toFixed(2)
+            + " km";
 
-            "Rp "
+            durationEl.textContent =
+            Math.ceil(currentDuration / 60)
+            + " menit";
 
-            +
-
-            fare.toLocaleString(
-
-                'id-ID'
-
-            );
+            priceEl.textContent =
+            "Rp " +
+            currentFare.toLocaleString("id-ID");
 
         }
 
     );
 
 }
+
+async function submitOrder(){
+
+    if(
+
+        pickupLat == null ||
+        pickupLng == null ||
+        destinationLat == null ||
+        destinationLng == null
+
+    ){
+
+        alert(
+            'Silakan pilih lokasi tujuan.'
+        );
+
+        return;
+
+    }
+
+    if(currentFare <= 0){
+
+        alert(
+
+            'Tarif belum dihitung.'
+
+        );
+
+        return;
+
+    }
+
+    const btn =
+    document.getElementById(
+        'btn-order'
+    );
+
+    btn.disabled = true;
+
+    btn.innerHTML =
+    'Memesan...';
+
+    try{
+
+        const nearest =
+        await assignNearestDriver(
+
+            pickupLat,
+            pickupLng
+
+        );
+
+        const driver =
+        nearest?.driver;
+
+        const { data, error } =
+        await supabase
+        .from('orders')
+        .insert({
+
+            customer_id:
+            auth.user.id,
+
+            nama:
+            auth.profile.full_name ||
+            auth.user.email,
+
+            jemput:
+            `${pickupLat},${pickupLng}`,
+
+            tujuan:
+            `${destinationLat},${destinationLng}`,
+
+            pickup_latitude:
+            pickupLat,
+
+            pickup_longitude:
+            pickupLng,
+
+            destination_latitude:
+            destinationLat,
+
+            destination_longitude:
+            destinationLng,
+
+            price:
+            currentFare,
+
+            driver_id:
+            driver?.id || null,
+
+            driver_name:
+            driver?.full_name || null,
+
+            status:
+            driver
+            ? 'accepted'
+            : 'pending',
+
+            accepted_at:
+            driver
+            ? new Date().toISOString()
+            : null
+
+            assigned_at:
+            driver
+            ? new Date().toISOString()
+            : null,
+
+        })
+        .select()
+        .single();
+
+        if(error){
+
+            throw error;
+
+        }
+
+        location.href =
+        `order-status.html?id=${data.id}`;
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
+    finally{
+
+        btn.disabled = false;
+
+        btn.innerHTML =
+        '🚕 Pesan Sekarang';
+
+    }
+
+}
+
+document
+.getElementById("btn-order")
+.addEventListener(
+"click",
+submitOrder
+);
