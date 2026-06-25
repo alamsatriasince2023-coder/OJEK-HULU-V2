@@ -1,20 +1,37 @@
 import { supabase } from './api.js';
-import {
-    getCurrentUser,
-    logoutUser
-} from './auth.js';
+import { logoutUser } from './auth.js';
+import { requireRole } from './rbac.js';
 
-const user = await getCurrentUser();
+/* ===========================
+   AUTH
+=========================== */
 
-if (!user) {
-    location.href = 'login.html';
+const auth = await requireRole('driver');
+
+if (!auth) {
+
+    throw new Error('Akses ditolak');
+
 }
 
-document.getElementById('driver-name').textContent = user.email;
+const user = auth.user;
+const profile = auth.profile;
 
-const orderList = document.getElementById('order-list');
+/* ===========================
+   HEADER
+=========================== */
 
-async function loadOrders() {
+document.getElementById('driver-name').textContent =
+profile.full_name || user.email;
+
+/* ===========================
+   LOAD ORDER
+=========================== */
+
+const orderList =
+document.getElementById('order-list');
+
+async function loadOrders(){
 
     orderList.innerHTML = `
         <div style="padding:30px;text-align:center;">
@@ -22,39 +39,40 @@ async function loadOrders() {
         </div>
     `;
 
-    const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('status', 'pending')
-        .order('created_at', { ascending: false });
+    const { data, error } =
+    await supabase
+    .from('orders')
+    .select('*')
+    .eq('status','pending')
+    .order('id',{ascending:false});
 
-    if (error) {
+    if(error){
 
         console.error(error);
 
         orderList.innerHTML = `
-            <div style="padding:30px;text-align:center;color:red;">
-                Gagal mengambil order.
-            </div>
-        `;
+        <div style="padding:30px;text-align:center;color:red;">
+            Gagal mengambil data.
+        </div>`;
 
         return;
+
     }
 
-    if (!data || data.length === 0) {
+    if(!data || data.length===0){
 
         orderList.innerHTML = `
-            <div style="padding:30px;text-align:center;">
-                Tidak ada order masuk.
-            </div>
-        `;
+        <div style="padding:30px;text-align:center;">
+            Tidak ada order masuk.
+        </div>`;
 
         return;
+
     }
 
-    orderList.innerHTML = '';
+    orderList.innerHTML='';
 
-    data.forEach(order => {
+    data.forEach(order=>{
 
         orderList.innerHTML += `
 
@@ -62,12 +80,24 @@ async function loadOrders() {
 
             <h3>${order.nama}</h3>
 
-            <p><b>📍 Jemput</b><br>${order.jemput}</p>
+            <hr style="margin:10px 0;">
 
-            <p><b>🏁 Tujuan</b><br>${order.tujuan}</p>
+            <p>
+            📍 Jemput<br>
+            <b>${order.jemput}</b>
+            </p>
 
-            <p><b>💰 Tarif</b><br>
-            Rp ${Number(order.price || 0).toLocaleString('id-ID')}</p>
+            <p>
+            🎯 Tujuan<br>
+            <b>${order.tujuan}</b>
+            </p>
+
+            <p>
+            💰 Tarif<br>
+            <b>
+            Rp ${Number(order.price || 0).toLocaleString('id-ID')}
+            </b>
+            </p>
 
             <button
                 class="btn btn-green accept-btn"
@@ -82,61 +112,93 @@ async function loadOrders() {
     });
 
     document
-        .querySelectorAll('.accept-btn')
-        .forEach(btn => {
+    .querySelectorAll('.accept-btn')
+    .forEach(btn=>{
 
-            btn.addEventListener('click', acceptOrder);
+        btn.addEventListener('click',acceptOrder);
 
-        });
+    });
 
 }
 
-async function acceptOrder(e) {
+/* ===========================
+   ACCEPT ORDER
+=========================== */
 
-    const orderId = e.target.dataset.id;
+async function acceptOrder(e){
 
-    e.target.disabled = true;
-    e.target.innerHTML = 'Memproses...';
+    const orderId =
+    e.target.dataset.id;
 
-    const { error } = await supabase
-        .from('orders')
-        .update({
+    e.target.disabled=true;
+    e.target.innerHTML='Memproses...';
 
-            status: 'accepted',
+    const { error } =
+    await supabase
+    .from('orders')
+    .update({
 
-            driver_id: user.id,
+        status:'accepted',
 
-            driver_name: user.email,
+        driver_id:user.id,
 
-            accepted_at: new Date().toISOString()
+        driver_name:profile.full_name,
 
-        })
-        .eq('id', orderId);
+        accepted_at:new Date().toISOString()
 
-    if (error) {
+    })
+    .eq('id',orderId);
+
+    if(error){
 
         alert(error.message);
 
-        e.target.disabled = false;
-        e.target.innerHTML = '✅ Terima Order';
+        e.target.disabled=false;
+
+        e.target.innerHTML='✅ Terima Order';
 
         return;
+
     }
 
-    alert('Order berhasil diterima.');
+    alert('✅ Order berhasil diterima');
 
     loadOrders();
 
 }
 
+/* ===========================
+   MENU
+=========================== */
+
+document
+.getElementById('btn-history')
+.addEventListener('click',()=>{
+
+    alert('Driver History segera dibuat');
+
+});
+
+document
+.getElementById('btn-profile')
+.addEventListener('click',()=>{
+
+    alert('Driver Profile segera dibuat');
+
+});
+
 document
 .getElementById('btn-logout')
-.addEventListener('click', async()=>{
+.addEventListener('click',async()=>{
 
     await logoutUser();
 
     location.href='login.html';
 
 });
+
+/* ===========================
+   INIT
+=========================== */
 
 loadOrders();
