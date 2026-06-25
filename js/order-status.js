@@ -102,7 +102,7 @@ async function loadOrder(){
     .toLocaleString('id-ID');
 
     driverEl.textContent =
-    data.driver_name || '-';
+    driver?.profiles?.full_name || '-';
 
     currentDriverId =
     data.driver_id;
@@ -118,9 +118,9 @@ async function loadOrder(){
         const {
 
             data: driver,
-
+        
             error: driverError
-
+        
         } =
         await supabase
         .from('drivers')
@@ -128,7 +128,10 @@ async function loadOrder(){
             latitude,
             longitude,
             vehicle_type,
-            vehicle_number
+            vehicle_number,
+            profiles(
+                full_name
+            )
         `)
         .eq('id',data.driver_id)
         .single();
