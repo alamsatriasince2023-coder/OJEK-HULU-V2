@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Driver - Ojek Hulu V2</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-100">
+
+<div class="max-w-md mx-auto min-h-screen flex items-center p-5">
+
+<form id="driver-register-form"
+class="bg-white w-full p-6 rounded-2xl shadow">
+
+<h1 class="text-2xl font-bold text-center mb-2">
+🚕 Ojek Hulu Driver
+</h1>
+
+<p class="text-center text-gray-500 mb-6">
+Pendaftaran Mitra Driver
+</p>
+
+<input
+id="full-name"
+type="text"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Nama Lengkap"
+required>
+
+<input
+id="phone"
+type="tel"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Nomor HP"
+required>
+
+<input
+id="email"
+type="email"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Email"
+required>
+
+<input
+id="password"
+type="password"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Password"
+required>
+
+<select
+id="vehicle-type"
+class="w-full border p-3 rounded-xl mb-3"
+required>
+
+<option value="">Pilih Kendaraan</option>
+<option value="Motor">Motor</option>
+<option value="Mobil">Mobil</option>
+
+</select>
+
+<input
+id="vehicle-number"
+type="text"
+class="w-full border p-3 rounded-xl mb-4"
+placeholder="Nomor Polisi (KB xxxx xx)"
+required>
+
+<button
+id="btn-register"
+type="submit"
+class="w-full bg-green-600 text-white py-3 rounded-xl font-bold">
+
+Daftar Menjadi Driver
+
+</button>
+
+<button
+type="button"
+onclick="location.href='login.html'"
+class="w-full mt-3 border border-green-600 text-green-600 py-3 rounded-xl font-bold">
+
+Kembali ke Login
+
+</button>
+
+</form>
+
+</div>
+
+<script type="module">
+
+import { registerDriver } from './js/auth.js';
+
+const form =
+document.getElementById('driver-register-form');
+
+const btn =
+document.getElementById('btn-register');
+
+form.addEventListener('submit',async(e)=>{
+
+    e.preventDefault();
+
+    btn.disabled=true;
+    btn.innerHTML='Mendaftarkan...';
+
+    const result =
+    await registerDriver({
+
+        full_name:
+        document.getElementById('full-name').value.trim(),
+
+        phone:
+        document.getElementById('phone').value.trim(),
+
+        email:
+        document.getElementById('email').value.trim(),
+
+        password:
+        document.getElementById('password').value,
+
+        vehicle_type:
+        document.getElementById('vehicle-type').value,
+
+        vehicle_number:
+        document.getElementById('vehicle-number').value.trim()
+
+    });
+
+    btn.disabled=false;
+    btn.innerHTML='Daftar Menjadi Driver';
+
+    if(result.error){
+
+        alert(result.error.message);
+
+        return;
+
+    }
+
+    alert('✅ Driver berhasil didaftarkan.');
+
+    location.href='login.html';
+
+});
+
+</script>
+
+</body>
+</html>
