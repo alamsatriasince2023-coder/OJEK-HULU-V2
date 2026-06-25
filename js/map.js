@@ -7,6 +7,7 @@ let map = null;
 let customerMarker = null;
 
 let driverMarker = null;
+let animationFrame = null;
 
 /* ===========================
    INIT MAP
@@ -121,7 +122,7 @@ export function updateDriverLocation(
 
     }else{
 
-        driverMarker.setLatLng(position);
+        animateDriverMarker(position);
 
     }
 
@@ -211,9 +212,11 @@ export function clearDriverMarker(){
 
     if(driverMarker){
 
-        map.removeLayer(
-            driverMarker
-        );
+        map.removeLayer(driverMarker);
+        if(animationFrame){
+            cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+         }
 
         driverMarker = null;
 
@@ -401,6 +404,81 @@ export function drawRoute(
 
         }
 
+    );
+
+}
+
+function animateDriverMarker(target){
+
+    if(!driverMarker){
+
+        driverMarker =
+        L.marker(target)
+        .addTo(map)
+        .bindPopup('🚕 Driver');
+
+        return;
+
+    }
+
+    if(animationFrame){
+
+        cancelAnimationFrame(animationFrame);
+
+    }
+
+    const start =
+    driverMarker.getLatLng();
+
+    const startLat = start.lat;
+    const startLng = start.lng;
+
+    const endLat = target[0];
+    const endLng = target[1];
+
+    const duration = 1000;
+
+    const startTime = performance.now();
+
+    function animate(now){
+
+        const progress =
+        Math.min(
+            (now - startTime) / duration,
+            1
+        );
+
+        const lat =
+        startLat +
+        (endLat - startLat) * progress;
+
+        const lng =
+        startLng +
+        (endLng - startLng) * progress;
+
+        driverMarker.setLatLng([
+            lat,
+            lng
+        ]);
+
+        if(progress < 1){
+
+            animationFrame =
+            requestAnimationFrame(
+                animate
+            );
+
+        }else{
+
+            animationFrame = null;
+
+        }
+
+    }
+
+    animationFrame =
+    requestAnimationFrame(
+        animate
     );
 
 }
