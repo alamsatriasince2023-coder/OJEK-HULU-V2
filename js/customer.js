@@ -32,7 +32,7 @@ document
 .getElementById('btn-profile')
 .addEventListener('click', () => {
 
-    alert('Profil V2 segera dibuat');
+    location.href = 'profile.html';
 
 });
 
