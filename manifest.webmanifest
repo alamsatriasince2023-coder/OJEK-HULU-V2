@@ -34,10 +34,3 @@
     ]
 
 }
-
-{
-  "display": "standalone",
-  "orientation": "portrait",
-  "theme_color": "#00AA13",
-  "background_color": "#00AA13"
-}
