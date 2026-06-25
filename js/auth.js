@@ -63,6 +63,120 @@ export async function registerUser(
 }
 
 /* ===========================
+   REGISTER DRIVER
+=========================== */
+
+export async function registerDriver({
+
+    full_name,
+    phone,
+    email,
+    password,
+    vehicle_type,
+    vehicle_number
+
+}){
+
+    // Buat akun Auth
+    const { data, error } =
+    await supabase.auth.signUp({
+
+        email,
+        password
+
+    });
+
+    if(error){
+
+        return {
+            data:null,
+            error
+        };
+
+    }
+
+    const user = data.user;
+
+    if(!user){
+
+        return {
+            data:null,
+            error:{
+                message:'User tidak berhasil dibuat.'
+            }
+        };
+
+    }
+
+    // Simpan ke profiles
+    const { error: profileError } =
+    await supabase
+    .from('profiles')
+    .insert({
+
+        id:user.id,
+
+        full_name,
+
+        phone,
+
+        role:'driver'
+
+    });
+
+    if(profileError){
+
+        return {
+
+            data:null,
+
+            error:profileError
+
+        };
+
+    }
+
+    // Simpan ke tabel drivers
+    const { error: driverError } =
+    await supabase
+    .from('drivers')
+    .insert({
+
+        id:user.id,
+
+        vehicle_type,
+
+        vehicle_number,
+
+        status:'offline',
+
+        is_online:false
+
+    });
+
+    if(driverError){
+
+        return {
+
+            data:null,
+
+            error:driverError
+
+        };
+
+    }
+
+    return {
+
+        data,
+
+        error:null
+
+    };
+
+}
+
+/* ===========================
    LOGIN
 =========================== */
 
