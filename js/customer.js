@@ -1,3 +1,4 @@
+alert("customer.js berhasil dimuat");
 import {
     getCurrentUser,
     logoutUser
