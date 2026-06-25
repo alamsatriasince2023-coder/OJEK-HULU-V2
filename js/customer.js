@@ -24,7 +24,9 @@ document
 .getElementById('btn-history')
 .addEventListener('click', () => {
 
-    location.href = 'customer-history.html';
+    console.log('Klik Riwayat');
+
+    location.assign('customer-history.html');
 
 });
 
