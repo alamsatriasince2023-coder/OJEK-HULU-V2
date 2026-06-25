@@ -519,7 +519,7 @@ async function submitOrder(){
         }
 
         location.href =
-        `order-status.html?id=${data.id}`;
+        `order-status-map.html?id=${data.id}`;
 
     }
 
