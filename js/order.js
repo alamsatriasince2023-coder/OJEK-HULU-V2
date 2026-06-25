@@ -242,6 +242,11 @@ async function submitOrder(e){
             ? new Date().toISOString()
             : null
 
+            assigned_at:
+            driver
+            ? new Date().toISOString()
+            : null,
+
         })
         .select()
         .single();
