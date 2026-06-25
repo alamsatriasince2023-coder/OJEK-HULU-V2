@@ -17,6 +17,23 @@ if (!auth) {
 const user = auth.user;
 const profile = auth.profile;
 
+const driverStatus =
+document.getElementById('driver-status');
+
+const driverBadge =
+document.getElementById('driver-badge');
+
+const btnOnline =
+document.getElementById('btn-online');
+
+const todayOrder =
+document.getElementById('today-order');
+
+const todayIncome =
+document.getElementById('today-income');
+
+let isOnline = false;
+
 /* ===========================
    HEADER
 =========================== */
@@ -81,18 +98,71 @@ function getActionButton(order){
 
 async function loadOrders(){
 
+   if(!isOnline){
+
+       orderList.innerHTML = `
+       <div style="padding:40px;text-align:center;">
+   
+           🔴 Driver sedang OFFLINE
+   
+           <br><br>
+   
+           Aktifkan GO ONLINE
+           untuk menerima order.
+   
+       </div>
+       `;
+   
+       return;
+   
+   }
+
     orderList.innerHTML = `
         <div style="padding:30px;text-align:center;">
             Memuat order...
         </div>
     `;
 
-    const { data, error } =
-    await supabase
-    .from('orders')
-    .select('*')
-    .in('status',['pending','accepted','pickup','ontheway'])
-    .order('id',{ascending:false});
+   const pending =
+   await supabase
+   .from('orders')
+   .select('*')
+   .eq('status','pending');
+   
+   const active =
+   await supabase
+   .from('orders')
+   .select('*')
+   .eq('driver_id',user.id)
+   .in('status',[
+       'accepted',
+       'pickup',
+       'ontheway'
+   ]);
+   
+   const error =
+   pending.error || active.error;
+   
+   const merged = [
+
+       ...(pending.data || []),
+   
+       ...(active.data || [])
+   
+   ];
+   
+   const data = Array.from(
+   
+       new Map(
+   
+           merged.map(item => [item.id,item])
+   
+       ).values()
+   
+   );
+   
+   data.sort((a,b)=>b.id-a.id);
+   
 
     if(error){
 
@@ -235,7 +305,8 @@ async function acceptOrder(e){
    
        alert('Order sudah diambil driver lain.');
    
-       loadOrders();
+       await loadOrders();
+      await loadStatistic();
    
        return;
    
@@ -243,7 +314,8 @@ async function acceptOrder(e){
 
     alert('✅ Order berhasil diterima');
 
-    loadOrders();
+    await loadOrders();
+   await loadStatistic();
 
 }
 
@@ -251,16 +323,26 @@ async function pickupOrder(e){
 
     const id = e.target.dataset.id;
 
-    await supabase
-    .from('orders')
-    .update({
-
-        status:'pickup'
-
-    })
-    .eq('id',id);
-
-    loadOrders();
+    const { error } =
+   await supabase
+   .from('orders')
+   .update({
+   
+       status:'pickup'
+   
+   })
+   .eq('id',id);
+   
+   if(error){
+   
+       alert(error.message);
+   
+       return;
+   
+   }
+   
+   await loadOrders();
+   await loadStatistic();
 
 }
 
@@ -268,16 +350,26 @@ async function startTrip(e){
 
     const id = e.target.dataset.id;
 
-    await supabase
-    .from('orders')
-    .update({
-
-        status:'ontheway'
-
-    })
-    .eq('id',id);
-
-    loadOrders();
+    const { error } =
+   await supabase
+   .from('orders')
+   .update({
+   
+       status:'ontheway'
+   
+   })
+   .eq('id',id);
+   
+   if(error){
+   
+       alert(error.message);
+   
+       return;
+   
+   }
+   
+   await loadOrders();
+   await loadStatistic();
 
 }
 
@@ -285,20 +377,153 @@ async function completeOrder(e){
 
     const id = e.target.dataset.id;
 
-    await supabase
-    .from('orders')
-    .update({
+    const { error } =
+   await supabase
+   .from('orders')
+   .update({
+   
+       status:'completed',
+   
+       completed_at:new Date().toISOString()
+   
+   })
+   .eq('id',id);
+   
+   if(error){
+   
+       alert(error.message);
+   
+       return;
+   
+   }
+   
+   await loadOrders();
+   await loadStatistic();
 
-        status:'completed',
-
-        completed_at:new Date().toISOString()
-
-    })
-    .eq('id',id);
-
-    loadOrders();
+    
 
 }
+
+/* ===========================
+   DRIVER STATUS
+=========================== */
+
+async function loadDriverStatus(){
+
+    const { data, error } =
+    await supabase
+    .from('drivers')
+    .select('is_online')
+    .eq('id',user.id)
+    .single();
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    isOnline = data.is_online;
+
+    updateStatusUI();
+
+}
+
+function updateStatusUI(){
+
+    if(isOnline){
+
+        driverStatus.innerHTML='🟢 ONLINE';
+
+        driverBadge.innerHTML='ONLINE';
+
+        btnOnline.innerHTML='GO OFFLINE';
+
+        btnOnline.className='btn btn-red';
+
+    }else{
+
+        driverStatus.innerHTML='🔴 OFFLINE';
+
+        driverBadge.innerHTML='OFFLINE';
+
+        btnOnline.innerHTML='GO ONLINE';
+
+        btnOnline.className='btn btn-green';
+
+    }
+
+}
+
+async function toggleOnline(){
+
+    isOnline=!isOnline;
+
+    const { error } =
+    await supabase
+    .from('drivers')
+    .update({
+
+        is_online:isOnline
+
+    })
+    .eq('id',user.id);
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    updateStatusUI();
+
+   await loadOrders();
+   
+   await loadStatistic();
+
+}
+
+/* ===========================
+   STATISTIK
+=========================== */
+
+async function loadStatistic(){
+
+    const { data } =
+    await supabase
+    .from('orders')
+    .select('price')
+    .eq('driver_id',user.id)
+    .eq('status','completed');
+
+    todayOrder.textContent =
+    data?.length || 0;
+
+    let total = 0;
+
+    data?.forEach(item=>{
+
+        total += Number(item.price || 0);
+
+    });
+
+    todayIncome.textContent =
+    'Rp ' + total.toLocaleString('id-ID');
+
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+btnOnline.addEventListener(
+'click',
+toggleOnline
+);
 
 /* ===========================
    MENU
@@ -334,26 +559,29 @@ document
    INIT
 =========================== */
 
-loadOrders();
+await loadDriverStatus();
+
+await loadOrders();
+
+await loadStatistic();
 
 supabase
 .channel('driver-orders')
-
 .on(
-'postgres_changes',
-{
+    'postgres_changes',
+    {
+        event:'*',
+        schema:'public',
+        table:'orders'
+    },
+    async ()=>{
 
-event:'*',
+        await loadDriverStatus();
 
-schema:'public',
+        await loadOrders();
 
-table:'orders'
+        await loadStatistic();
 
-},
-()=>{
-
-    loadOrders();
-
-})
-
+    }
+)
 .subscribe();
