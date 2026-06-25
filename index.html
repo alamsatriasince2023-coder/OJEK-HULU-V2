@@ -1,17 +1,147 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=login.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ojek Hulu V2</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body>
 
-<p>Mengalihkan ke Login...</p>
+<body class="bg-gray-100">
 
-<script>
-location.replace("login.html");
-</script>
+<div class="max-w-md mx-auto min-h-screen bg-white shadow-lg">
+
+<!-- HEADER -->
+
+<div class="bg-green-600 text-white p-8 text-center">
+
+<h1 class="text-4xl font-bold">
+
+🚕
+
+</h1>
+
+<h2 class="text-2xl font-bold mt-2">
+
+OJEK HULU
+
+</h2>
+
+<p class="mt-2 text-green-100">
+
+Transportasi Lokal Kapuas Hulu
+
+</p>
+
+</div>
+
+<!-- CUSTOMER -->
+
+<div class="p-6">
+
+<h2 class="text-lg font-bold mb-4">
+
+👤 CUSTOMER
+
+</h2>
+
+<button
+
+onclick="location.href='login.html'"
+
+class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mb-3">
+
+Login Customer
+
+</button>
+
+<button
+
+onclick="location.href='register.html'"
+
+class="w-full border border-green-600 text-green-600 py-3 rounded-xl font-bold">
+
+Daftar Customer
+
+</button>
+
+</div>
+
+<hr>
+
+<!-- DRIVER -->
+
+<div class="p-6">
+
+<h2 class="text-lg font-bold mb-4">
+
+🚕 DRIVER
+
+</h2>
+
+<button
+
+onclick="location.href='login.html'"
+
+class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mb-3">
+
+Login Driver
+
+</button>
+
+<button
+
+onclick="location.href='driver-register.html'"
+
+class="w-full border border-blue-600 text-blue-600 py-3 rounded-xl font-bold">
+
+Daftar Driver
+
+</button>
+
+</div>
+
+<hr>
+
+<!-- ADMIN -->
+
+<div class="p-6">
+
+<h2 class="text-lg font-bold mb-4">
+
+🛠 ADMIN
+
+</h2>
+
+<button
+
+onclick="location.href='login.html'"
+
+class="w-full bg-gray-800 text-white py-3 rounded-xl font-bold">
+
+Login Admin
+
+</button>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="text-center text-gray-500 text-sm p-6">
+
+Ojek Hulu V2
+
+<br>
+
+Powered by Supabase + Cloudflare
+
+</div>
+
+</div>
 
 </body>
 </html>
