@@ -1,10 +1,10 @@
-let nearbyDrivers = [];
-let driverMarkers = [];
-
 import { assignNearestDriver } from './assign-driver.js';
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 import { calculateFare } from './tariff.js';
+
+let nearbyDrivers = [];
+let driverMarkers = [];
 
 const auth = await requireRole('customer');
 
@@ -191,6 +191,7 @@ function updatePickup(e){
     pickupLng.toFixed(6);
 
     drawRoute();
+    loadNearbyDrivers();
 
 }
 
@@ -441,8 +442,8 @@ async function submitOrder(){
             driver_id:
             driver?.id || null,
 
-            driver_name:
-            driver?.full_name || null,
+            driver_name:null,
+            
 
             status:
             driver
@@ -452,7 +453,7 @@ async function submitOrder(){
             accepted_at:
             driver
             ? new Date().toISOString()
-            : null
+            : null,
 
             assigned_at:
             driver
@@ -514,7 +515,6 @@ async function loadNearbyDrivers(){
     .from('drivers')
     .select(`
         id,
-        full_name,
         latitude,
         longitude,
         is_online
@@ -539,7 +539,11 @@ function renderNearbyDrivers(){
 
     driverMarkers.forEach(marker=>{
 
-        map.removeLayer(marker);
+        if(map.hasLayer(marker)){
+
+            map.removeLayer(marker);
+
+        }
 
     });
 
@@ -550,7 +554,6 @@ function renderNearbyDrivers(){
         if(
 
             driver.latitude == null ||
-
             driver.longitude == null
 
         ){
@@ -559,21 +562,51 @@ function renderNearbyDrivers(){
 
         }
 
+        /* ===========================
+           FILTER DRIVER (±5 KM)
+        =========================== */
+
+        const distance = Math.sqrt(
+
+            Math.pow(
+                driver.latitude - pickupLat,
+                2
+            ) +
+
+            Math.pow(
+                driver.longitude - pickupLng,
+                2
+            )
+
+        );
+
+        if(distance > 0.05){
+
+            return;
+
+        }
+
+        /* ===========================
+           MARKER DRIVER
+        =========================== */
+
         const marker =
+        L.marker(
 
-        L.marker([
+            [
 
-            driver.latitude,
+                Number(driver.latitude),
+                Number(driver.longitude)
 
-            driver.longitude
+            ]
 
-        ])
+        )
 
         .addTo(map)
 
         .bindPopup(
 
-            `🚕 ${driver.full_name}`
+            '🚕 Driver Online'
 
         );
 
