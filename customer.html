@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Customer - Ojek Hulu V2</title>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0,viewport-fit=cover">
 
-<link rel="stylesheet" href="css/style.css">
+<title>Customer - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<!-- ===========================
+PWA
+=========================== -->
 
 <link
 rel="manifest"
@@ -33,7 +43,20 @@ content="black-translucent">
 name="apple-mobile-web-app-title"
 content="Ojek Hulu">
 
+<link
+rel="apple-touch-icon"
+href="/icons/icon-192.png">
+
+<meta
+name="apple-mobile-web-app-capable"
+content="yes">
+
+<meta
+name="format-detection"
+content="telephone=no">
+
 </head>
+
 <body>
 
 <div class="container">
@@ -51,8 +74,8 @@ content="Ojek Hulu">
 </div>
 
 <div
-class="username"
-id="welcome">
+id="welcome"
+class="username">
 
 Loading...
 
@@ -70,13 +93,27 @@ NEW
 
 </header>
 
+<!-- ===========================
+SEARCH
+=========================== -->
+
 <div class="search-box">
 
 <input
+
+id="search-trip"
+
 type="text"
-placeholder="Mau ke mana hari ini?">
+
+placeholder="Mau ke mana hari ini?"
+
+autocomplete="off">
 
 </div>
+
+<!-- ===========================
+BANNER
+=========================== -->
 
 <section class="banner">
 
@@ -97,12 +134,31 @@ Transportasi Lokal Putussibau
 </section>
 
 <!-- ===========================
+INSTALL APP
+=========================== -->
+
+<button
+
+id="btn-install"
+
+class="btn btn-green"
+
+style="display:none;margin-bottom:20px;">
+
+📲 Install Aplikasi
+
+</button>
+
+<!-- ===========================
 ORDER AKTIF
 =========================== -->
 
 <div
+
 id="active-order-card"
+
 class="card"
+
 style="display:none;">
 
 <div class="card-title">
@@ -138,8 +194,11 @@ Driver :
 </p>
 
 <button
+
 id="btn-active-order"
+
 class="btn btn-green"
+
 style="margin-top:15px;">
 
 Lihat Status
@@ -155,7 +214,9 @@ MENU
 <section class="menu-grid">
 
 <div
+
 class="menu-item"
+
 id="btn-order">
 
 <div class="menu-icon">
@@ -173,7 +234,9 @@ Ojek
 </div>
 
 <div
+
 class="menu-item"
+
 id="btn-history">
 
 <div class="menu-icon">
@@ -191,7 +254,9 @@ Riwayat
 </div>
 
 <div
+
 class="menu-item"
+
 id="btn-profile">
 
 <div class="menu-icon">
@@ -209,7 +274,9 @@ Profil
 </div>
 
 <div
+
 class="menu-item"
+
 id="btn-logout">
 
 <div class="menu-icon">
@@ -236,7 +303,7 @@ PROMO
 
 <div class="card-title">
 
-Promo Hari Ini
+🔥 Promo Hari Ini
 
 </div>
 
@@ -248,7 +315,7 @@ Diskon 30%
 
 </b>
 
-<br>
+<br><br>
 
 Nikmati perjalanan lebih hemat bersama Ojek Hulu.
 
@@ -262,7 +329,9 @@ BOTTOM NAV
 
 <nav class="bottom-nav">
 
-<div class="bottom-item active">
+<div
+
+class="bottom-item active">
 
 <span class="bottom-icon">
 
@@ -274,7 +343,11 @@ Home
 
 </div>
 
-<div class="bottom-item">
+<div
+
+class="bottom-item"
+
+id="btn-bottom-history">
 
 <span class="bottom-icon">
 
@@ -286,7 +359,11 @@ Aktivitas
 
 </div>
 
-<div class="bottom-item">
+<div
+
+class="bottom-item"
+
+id="btn-bottom-chat">
 
 <span class="bottom-icon">
 
@@ -298,7 +375,11 @@ Inbox
 
 </div>
 
-<div class="bottom-item">
+<div
+
+class="bottom-item"
+
+id="btn-bottom-profile">
 
 <span class="bottom-icon">
 
@@ -314,9 +395,30 @@ Akun
 
 </div>
 
+<!-- ===========================
+SCRIPT
+=========================== -->
+
 <script
+
 type="module"
-src="./js/customer-dashboard.js"></script>
+
+src="./js/customer-dashboard.js">
+
+</script>
+
+<script
+
+src="./js/pwa.js">
+
+</script>
+
+<script
+
+src="./js/install.js">
+
+</script>
 
 </body>
+
 </html>
