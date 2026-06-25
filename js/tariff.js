@@ -3,7 +3,6 @@
 =========================== */
 
 const BASE_FARE = 10000;
-
 const PRICE_PER_KM = 3000;
 
 /* ===========================
@@ -18,8 +17,7 @@ function parseCoordinate(value){
 
     }
 
-    const parts =
-    value.split(',');
+    const parts = value.split(',');
 
     if(parts.length !== 2){
 
@@ -27,16 +25,12 @@ function parseCoordinate(value){
 
     }
 
-    const latitude =
-    Number(parts[0].trim());
-
-    const longitude =
-    Number(parts[1].trim());
+    const latitude = Number(parts[0].trim());
+    const longitude = Number(parts[1].trim());
 
     if(
 
         Number.isNaN(latitude) ||
-
         Number.isNaN(longitude)
 
     ){
@@ -48,7 +42,6 @@ function parseCoordinate(value){
     return{
 
         latitude,
-
         longitude
 
     };
@@ -63,6 +56,8 @@ export async function geocodeAddress(address){
 
     const url =
     `https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/?q=${encodeURIComponent(address)}`;
+
+    console.log("Geocode :", address);
 
     const response =
     await fetch(url);
@@ -86,15 +81,16 @@ export async function geocodeAddress(address){
 
     }
 
-    return{
+    const result = {
 
-        latitude:
-        Number(data[0].lat),
-
-        longitude:
-        Number(data[0].lon)
+        latitude:Number(data[0].lat),
+        longitude:Number(data[0].lon)
 
     };
+
+    console.log("Hasil Geocode :", result);
+
+    return result;
 
 }
 
@@ -113,12 +109,19 @@ export async function calculateRoute(
 ){
 
     const url =
-    `https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=false`;
+`https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=false`;
+
+    console.log("OSRM URL :", url);
 
     const response =
     await fetch(url);
 
     if(!response.ok){
+
+        console.error(
+            "OSRM Status :",
+            response.status
+        );
 
         throw new Error(
             'Gagal mengambil rute.'
@@ -128,6 +131,8 @@ export async function calculateRoute(
 
     const json =
     await response.json();
+
+    console.log("OSRM Response :", json);
 
     if(
 
@@ -213,6 +218,11 @@ export async function estimateTrip(
             destinationAddress
         );
 
+    console.log("==========================");
+    console.log("Pickup :", pickup);
+    console.log("Destination :", destination);
+    console.log("==========================");
+
     const route =
     await calculateRoute(
 
@@ -228,6 +238,10 @@ export async function estimateTrip(
     calculateFare(
         route.distance
     );
+
+    console.log("Distance :", route.distance);
+    console.log("Duration :", route.duration);
+    console.log("Price :", price);
 
     return{
 
