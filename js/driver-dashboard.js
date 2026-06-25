@@ -139,10 +139,11 @@ async function loadOrders(){
     `;
 
    const pending =
-   await supabase
-   .from('orders')
-   .select('*')
-   .eq('status','pending');
+    await supabase
+    .from('orders')
+    .select('*')
+    .eq('driver_id', user.id)
+    .eq('status', 'accepted');
    
    const active =
    await supabase
@@ -150,7 +151,6 @@ async function loadOrders(){
    .select('*')
    .eq('driver_id',user.id)
    .in('status',[
-       'accepted',
        'pickup',
        'ontheway'
    ]);
