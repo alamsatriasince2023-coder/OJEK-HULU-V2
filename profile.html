@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Saya - Ojek Hulu V2</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<div class="container">
+
+<div style="padding:20px 20px 0 20px;">
+
+<button
+class="btn btn-gray"
+onclick="history.back()">
+
+← Kembali
+
+</button>
+
+</div>
+
+<div class="card">
+
+<div style="text-align:center;">
+
+<div style="
+width:90px;
+height:90px;
+border-radius:50%;
+background:#22c55e;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+color:white;
+">
+
+👤
+
+</div>
+
+<h2
+id="profile-name"
+style="margin-top:15px;">
+
+Loading...
+
+</h2>
+
+<p
+id="profile-email"
+style="color:#777;">
+
+Loading...
+
+</p>
+
+</div>
+
+<hr style="margin:25px 0;">
+
+<label>Nama Lengkap</label>
+
+<input
+id="full-name"
+class="input"
+placeholder="Nama Lengkap">
+
+<label>Email</label>
+
+<input
+id="email"
+class="input"
+disabled>
+
+<label>Nomor HP</label>
+
+<input
+id="phone"
+class="input"
+placeholder="08xxxxxxxxxx">
+
+<button
+id="btn-save"
+class="btn btn-green">
+
+💾 Simpan Profil
+
+</button>
+
+<button
+id="btn-password"
+class="btn btn-gray">
+
+🔑 Ubah Password
+
+</button>
+
+<button
+id="btn-logout"
+class="btn btn-red">
+
+🚪 Logout
+
+</button>
+
+</div>
+
+</div>
+
+<script type="module" src="js/profile.js"></script>
+
+</body>
+</html>
