@@ -463,6 +463,12 @@ async function acceptOrder(e){
    
    }
 
+    clearInterval(
+        timers[orderId]
+    );
+    
+    delete timers[orderId];
+
     alert('✅ Order berhasil diterima');
 
     await loadOrders();
@@ -549,6 +555,16 @@ async function completeOrder(e){
     }
 
     currentOrder = null;
+
+    Object.values(timers)
+    .forEach(clearInterval);
+    
+    for(const key in timers){
+    
+        delete timers[key];
+    
+    }
+    
     clearCustomerMarker();
     clearDriverMarker();
 
@@ -643,6 +659,15 @@ async function toggleOnline(){
        stopGps();
        clearCustomerMarker();
        clearDriverMarker();
+
+       Object.values(timers)
+        .forEach(clearInterval);
+        
+        for(const key in timers){
+        
+            delete timers[key];
+        
+        }
    
    }
 
