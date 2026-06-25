@@ -1,4 +1,12 @@
 import {
+    initMap,
+    updateCustomerLocation,
+    updateDriverLocation,
+    drawRoute,
+    clearCustomerMarker,
+    clearDriverMarker
+} from './map.js';
+import {
     startGps,
     stopGps
 } from './gps.js';
@@ -37,6 +45,9 @@ const todayIncome =
 document.getElementById('today-income');
 
 let isOnline = false;
+let currentOrder = null;
+
+let currentDriver = null;
 
 /* ===========================
    HEADER
@@ -194,6 +205,13 @@ async function loadOrders(){
 
     orderList.innerHTML='';
 
+    const activeOrder = data.find(item =>
+        item.driver_id === user.id &&
+        ['accepted','pickup','ontheway']
+        .includes(item.status)
+    );
+    currentOrder = activeOrder || null;
+
     data.forEach(order=>{
 
         orderList.innerHTML += `
@@ -228,6 +246,31 @@ async function loadOrders(){
         `;
 
     });
+
+    if(currentOrder){
+
+        updateCustomerLocation(
+            currentOrder.pickup_latitude,
+            currentOrder.pickup_longitude
+        );
+        if(
+
+            currentDriver?.latitude != null &&
+            currentDriver?.longitude != null
+        ){
+            drawRoute(
+        
+                currentDriver.latitude,
+                currentDriver.longitude,
+        
+                currentOrder.pickup_latitude,
+                currentOrder.pickup_longitude
+        
+            );
+        
+        }
+    
+    }
 
     document
     .querySelectorAll('.accept-btn')
@@ -382,29 +425,31 @@ async function completeOrder(e){
     const id = e.target.dataset.id;
 
     const { error } =
-   await supabase
-   .from('orders')
-   .update({
-   
-       status:'completed',
-   
-       completed_at:new Date().toISOString()
-   
-   })
-   .eq('id',id);
-   
-   if(error){
-   
-       alert(error.message);
-   
-       return;
-   
-   }
-   
-   await loadOrders();
-   await loadStatistic();
+    await supabase
+    .from('orders')
+    .update({
 
-    
+        status:'completed',
+
+        completed_at:new Date().toISOString()
+
+    })
+    .eq('id',id);
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    currentOrder = null;
+    clearCustomerMarker();
+    clearDriverMarker();
+
+    await loadOrders();
+    await loadStatistic();
 
 }
 
@@ -417,7 +462,7 @@ async function loadDriverStatus(){
     const { data, error } =
     await supabase
     .from('drivers')
-    .select('is_online')
+    .select('is_online,latitude,longitude')
     .eq('id',user.id)
     .single();
 
@@ -430,6 +475,7 @@ async function loadDriverStatus(){
     }
 
     isOnline = data.is_online;
+    currentDriver = data;
 
     updateStatusUI();
 
@@ -491,6 +537,8 @@ async function toggleOnline(){
    }else{
    
        stopGps();
+       clearCustomerMarker();
+       clearDriverMarker();
    
    }
 
@@ -573,6 +621,12 @@ document
 =========================== */
 
 await loadDriverStatus();
+initMap();
+if(isOnline){
+
+    startGps(user.id);
+
+}
 
 await loadOrders();
 
