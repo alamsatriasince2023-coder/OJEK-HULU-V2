@@ -107,7 +107,14 @@ form.addEventListener('submit', async (e)=>{
     btn.disabled = true;
     btn.innerHTML = 'Mendaftarkan...';
 
-    const { error } = await registerUser(email,password);
+    const { error } = await registerUser(
+
+        email,
+        password,
+        fullName,
+        phone
+    
+    );
 
     if(error){
 
