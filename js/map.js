@@ -1,5 +1,7 @@
 let routingControl = null;
 
+let lastRoute = null;
+
 let map = null;
 
 let customerMarker = null;
@@ -217,7 +219,73 @@ export function clearDriverMarker(){
 
     }
 
+    if(routingControl){
+
+        map.removeControl(
+            routingControl
+        );
+
+        routingControl = null;
+
+    }
+
+    lastRoute = null;
+
 }
+
+/* ===========================
+   ROUTE INFO
+=========================== */
+
+export function setRouteInfo(
+
+    distance,
+
+    time
+
+){
+
+    if(
+
+        distance == null ||
+
+        time == null
+
+    ){
+
+        return;
+
+    }
+
+    const distanceEl =
+    document.getElementById(
+        'route-distance'
+    );
+
+    const timeEl =
+    document.getElementById(
+        'route-time'
+    );
+
+    if(distanceEl){
+
+        distanceEl.textContent =
+        (distance/1000).toFixed(1) + ' km';
+
+    }
+
+    if(timeEl){
+
+        timeEl.textContent =
+        Math.ceil(time/60) + ' menit';
+
+    }
+
+}
+
+/* ===========================
+   DRAW ROUTE
+=========================== */
 
 export function drawRoute(
 
@@ -235,9 +303,40 @@ export function drawRoute(
 
     }
 
+    if(
+
+        driverLat == null ||
+
+        driverLng == null ||
+
+        customerLat == null ||
+
+        customerLng == null
+
+    ){
+
+        return;
+
+    }
+
+    const routeKey =
+    `${driverLat},${driverLng},${customerLat},${customerLng}`;
+
+    if(lastRoute === routeKey){
+
+        return;
+
+    }
+
+    lastRoute = routeKey;
+
     if(routingControl){
 
-        map.removeControl(routingControl);
+        map.removeControl(
+            routingControl
+        );
+
+        routingControl = null;
 
     }
 
@@ -245,9 +344,15 @@ export function drawRoute(
 
         waypoints:[
 
-            L.latLng(driverLat,driverLng),
+            L.latLng(
+                driverLat,
+                driverLng
+            ),
 
-            L.latLng(customerLat,customerLng)
+            L.latLng(
+                customerLat,
+                customerLng
+            )
 
         ],
 
@@ -264,5 +369,38 @@ export function drawRoute(
         createMarker:()=>null
 
     }).addTo(map);
+
+    routingControl.on(
+
+        'routesfound',
+
+        function(e){
+
+            if(
+
+                !e.routes ||
+
+                e.routes.length===0
+
+            ){
+
+                return;
+
+            }
+
+            const route =
+            e.routes[0];
+
+            setRouteInfo(
+
+                route.summary.totalDistance,
+
+                route.summary.totalTime
+
+            );
+
+        }
+
+    );
 
 }
