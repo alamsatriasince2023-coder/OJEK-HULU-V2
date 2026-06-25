@@ -1,3 +1,6 @@
+import {
+    estimateTrip
+} from './tariff.js';
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 
@@ -19,11 +22,8 @@ const user = auth.user;
    GPS
 =========================== */
 
-let pickupLatitude = null;
-let pickupLongitude = null;
 
-let destinationLatitude = null;
-let destinationLongitude = null;
+let tripEstimate = null;
 
 /* ===========================
    ELEMENT
@@ -37,6 +37,20 @@ document.getElementById('btn-my-location');
 
 const pickupInput =
 document.getElementById('pickup');
+
+document
+.getElementById('pickup')
+.addEventListener(
+'input',
+calculateEstimate
+);
+
+document
+.getElementById('destination')
+.addEventListener(
+'input',
+calculateEstimate
+);
 
 /* ===========================
    GPS CUSTOMER
@@ -64,14 +78,19 @@ function getCurrentLocation(){
 
         (position)=>{
 
-            pickupLatitude =
+            const latitude =
             position.coords.latitude;
-
-            pickupLongitude =
+            
+            const longitude =
             position.coords.longitude;
 
             pickupInput.value =
-            `${pickupLatitude.toFixed(6)}, ${pickupLongitude.toFixed(6)}`;
+            `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+            calculateEstimate();
+
+            document
+            .getElementById('destination')
+            .focus();
 
             btnLocation.disabled = false;
             btnLocation.innerHTML =
@@ -110,6 +129,9 @@ form.addEventListener(
 submitOrder
 );
 
+const estimateEl =
+document.getElementById('estimate');
+
 async function submitOrder(e){
 
     e.preventDefault();
@@ -137,6 +159,16 @@ async function submitOrder(e){
 
     }
 
+   if(!tripEstimate){
+
+       alert(
+           'Silakan tunggu estimasi tarif selesai dihitung.'
+       );
+   
+       return;
+   
+   }
+
     const btn =
     form.querySelector(
     'button[type="submit"]'
@@ -146,42 +178,43 @@ async function submitOrder(e){
 
     btn.innerHTML = 'Mengirim...';
 
-    const estimatePrice = 15000;
 
     const { data, error } =
     await supabase
     .from('orders')
     .insert({
 
-        customer_id:user.id,
+       customer_id:user.id,
+   
+       nama:
+       auth.profile.full_name ||
+       user.email,
+   
+       jemput:pickup,
+   
+       tujuan:destination,
+   
+       catatan:notes,
+   
+       price:
+       tripEstimate?.price || 0,
+   
+       pickup_latitude:
+       tripEstimate?.pickupLat,
+   
+       pickup_longitude:
+       tripEstimate?.pickupLng,
+   
+       destination_latitude:
+       tripEstimate?.destinationLat,
+   
+       destination_longitude:
+       tripEstimate?.destinationLng,
+   
+       status:'pending'
+   
+   })
 
-        nama:
-        auth.profile.full_name ||
-        user.email,
-
-        jemput:pickup,
-
-        tujuan:destination,
-
-        catatan:notes,
-
-        price:estimatePrice,
-
-        status:'pending',
-
-        pickup_latitude:
-        pickupLatitude,
-
-        pickup_longitude:
-        pickupLongitude,
-
-        destination_latitude:
-        destinationLatitude,
-
-        destination_longitude:
-        destinationLongitude
-
-    })
     .select()
     .single();
 
@@ -200,5 +233,61 @@ async function submitOrder(e){
 
     location.href =
     `order-status.html?id=${data.id}`;
+
+}
+
+async function calculateEstimate(){
+
+    const pickup =
+    document
+    .getElementById('pickup')
+    .value
+    .trim();
+
+    const destination =
+    document
+    .getElementById('destination')
+    .value
+    .trim();
+
+    if(
+        !pickup ||
+        !destination
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        estimateEl.innerHTML =
+        'Menghitung...';
+
+        tripEstimate =
+        await estimateTrip(
+
+            pickup,
+
+            destination
+
+        );
+
+        estimateEl.innerHTML =
+
+        'Rp ' +
+
+        tripEstimate.price
+        .toLocaleString('id-ID');
+
+    }catch(err){
+
+        console.error(err);
+        tripEstimate = null;
+
+        estimateEl.innerHTML =
+        'Estimasi gagal';
+
+    }
 
 }
