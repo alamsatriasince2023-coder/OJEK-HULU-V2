@@ -58,9 +58,13 @@ document
         .from('profiles')
         .upsert({
             id: user.id,
-            email: user.email,
+
             full_name,
-            phone
+        
+            phone,
+        
+            role: 'customer'
+        
         });
 
     if (error) {
