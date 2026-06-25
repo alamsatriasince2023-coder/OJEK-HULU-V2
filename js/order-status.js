@@ -1,7 +1,9 @@
 import {
     initMap,
+    updateCustomerLocation,
     updateDriverLocation
 } from './map.js';
+
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 
@@ -23,22 +25,36 @@ const user = auth.user;
    ELEMENT
 =========================== */
 
-const statusEl = document.getElementById('order-status');
-const descEl = document.getElementById('status-desc');
+const statusEl =
+document.getElementById('order-status');
 
-const driverEl = document.getElementById('driver-name');
-const vehicleEl = document.getElementById('vehicle');
-const plateEl = document.getElementById('plate');
+const descEl =
+document.getElementById('status-desc');
 
-const pickupEl = document.getElementById('pickup');
-const destinationEl = document.getElementById('destination');
-const priceEl = document.getElementById('price');
+const driverEl =
+document.getElementById('driver-name');
 
+const vehicleEl =
+document.getElementById('vehicle');
+
+const plateEl =
+document.getElementById('plate');
+
+const pickupEl =
+document.getElementById('pickup');
+
+const destinationEl =
+document.getElementById('destination');
+
+const priceEl =
+document.getElementById('price');
 
 let currentDriverId = null;
+
 /* ===========================
    LOAD ORDER
 =========================== */
+
 async function loadOrder(){
 
     const { data, error } =
@@ -68,6 +84,14 @@ async function loadOrder(){
     destinationEl.textContent =
     data.tujuan;
 
+    updateCustomerLocation(
+
+        data.pickup_latitude,
+
+        data.pickup_longitude
+
+    );
+
     priceEl.textContent =
     'Rp ' +
     Number(data.price || 0)
@@ -76,44 +100,66 @@ async function loadOrder(){
     driverEl.textContent =
     data.driver_name || '-';
 
-    currentDriverId = data.driver_id;
+    currentDriverId =
+    data.driver_id;
 
-    vehicleEl.textContent =
-    data.vehicle_type || '-';
+    /* ===========================
+       DRIVER
+    =========================== */
 
-    plateEl.textContent =
-    data.vehicle_number || '-';
+    if(data.driver_id){
 
-   /* ===========================
-   LOAD DRIVER LOCATION
-   =========================== */
-   
-   if(data.driver_id){
-   
-       const {
-          data: driver,
-          error: driverError
-      } =
-      await supabase
-      .from('drivers')
-      .select('latitude,longitude')
-      .eq('id',data.driver_id)
-      .single();
-      
-      if(driverError){
-      
-          console.error(driverError);
-      
-      }else if(driver){
-      
-          updateDriverLocation(
-              driver.latitude,
-              driver.longitude
-          );
-      
-      }
-   
-   }
+        const {
+
+            data: driver,
+
+            error: driverError
+
+        } =
+        await supabase
+        .from('drivers')
+        .select(`
+            latitude,
+            longitude,
+            vehicle_type,
+            vehicle_number
+        `)
+        .eq('id',data.driver_id)
+        .single();
+
+        if(driverError){
+
+            console.error(driverError);
+
+        }else if(driver){
+
+            vehicleEl.textContent =
+            driver.vehicle_type || '-';
+
+            plateEl.textContent =
+            driver.vehicle_number || '-';
+
+            updateDriverLocation(
+
+                driver.latitude,
+
+                driver.longitude
+
+            );
+
+        }
+
+    }else{
+
+        vehicleEl.textContent='-';
+
+        plateEl.textContent='-';
+
+    }
+
+    /* ===========================
+       STATUS
+    =========================== */
 
     switch(data.status){
 
@@ -187,18 +233,21 @@ async function loadOrder(){
 
 document
 .getElementById('btn-refresh')
-.addEventListener('click',loadOrder);
+.addEventListener(
+'click',
+loadOrder
+);
 
 /* ===========================
    INIT
 =========================== */
 
 initMap();
+
 await loadOrder();
 
-
 /* ===========================
-   REALTIME
+   REALTIME ORDER
 =========================== */
 
 supabase
@@ -208,22 +257,20 @@ supabase
 'postgres_changes',
 {
 
-event:'UPDATE',
+    event:'UPDATE',
 
-schema:'public',
+    schema:'public',
 
-table:'orders'
+    table:'orders'
 
 },
-async (payload)=>{
+async(payload)=>{
 
     if(payload.new.customer_id !== user.id){
 
         return;
 
     }
-
-    console.log('Realtime Update', payload);
 
     await loadOrder();
 
@@ -232,7 +279,7 @@ async (payload)=>{
 .subscribe();
 
 /* ===========================
-   REALTIME GPS
+   REALTIME DRIVER GPS
 =========================== */
 
 supabase
@@ -242,40 +289,41 @@ supabase
 'postgres_changes',
 {
 
-event:'UPDATE',
+    event:'UPDATE',
 
-schema:'public',
+    schema:'public',
 
-table:'drivers'
+    table:'drivers'
 
 },
-async(payload)=>{
+(payload)=>{
 
     const driver = payload.new;
 
-   if(driver.id !== currentDriverId){
-   
-       return;
-   
-   }
-   
-   if(
-   
-       driver.latitude != null &&
-   
-       driver.longitude != null
-   
-   ){
-   
-       updateDriverLocation(
-   
-           driver.latitude,
-   
-           driver.longitude
-   
-       );
-   
-   }
+    if(driver.id !== currentDriverId){
+
+        return;
+
+    }
+
+    if(
+
+        driver.latitude != null &&
+
+        driver.longitude != null
+
+    ){
+
+        updateDriverLocation(
+
+            driver.latitude,
+
+            driver.longitude
+
+        );
+
+    }
 
 })
+
 .subscribe();
