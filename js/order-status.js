@@ -50,13 +50,10 @@ document.getElementById('destination');
 const priceEl =
 document.getElementById('price');
 
-const distanceEl =
-document.getElementById('route-distance');
-
-const timeEl =
-document.getElementById('route-time');
 
 let currentDriverId = null;
+let pickupLatitude = null;
+let pickupLongitude = null;
 
 /* ===========================
    LOAD ORDER
@@ -109,6 +106,8 @@ async function loadOrder(){
 
     currentDriverId =
     data.driver_id;
+    pickupLatitude = data.pickup_latitude;
+    pickupLongitude = data.pickup_longitude;
 
     /* ===========================
        DRIVER
@@ -157,12 +156,10 @@ async function loadOrder(){
             drawRoute(
 
                 driver.latitude,
-            
                 driver.longitude,
             
-                data.pickup_latitude,
-            
-                data.pickup_longitude
+                pickupLatitude,
+                pickupLongitude
             
             );
 
@@ -334,12 +331,19 @@ supabase
     ){
 
         updateDriverLocation(
+            driver.latitude,
+            driver.longitude
+        );
+        drawRoute(
 
             driver.latitude,
-
-            driver.longitude
-
+            driver.longitude,
+        
+            pickupLatitude,
+            pickupLongitude
+        
         );
+        
 
     }
 
