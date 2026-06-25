@@ -26,6 +26,8 @@ if (!auth) {
 
 }
 
+const timers = {};
+
 const user = auth.user;
 const profile = auth.profile;
 
@@ -110,6 +112,107 @@ function getActionButton(order){
 
 }
 
+function startOfferCountdown(order){
+
+    if(order.status !== 'offered'){
+
+        return;
+
+    }
+
+    const el =
+    document.getElementById(
+        `timer-${order.id}`
+    );
+
+    if(!el){
+
+        return;
+
+    }
+
+    clearInterval(
+        timers[order.id]
+    );
+
+    async function tick(){
+
+        const expire =
+
+            new Date(
+                order.assigned_at
+            ).getTime()
+
+            + 15000;
+
+        const remain = Math.max(
+
+            0,
+
+            Math.floor(
+                (expire - Date.now())
+                /1000
+            )
+
+        );
+
+        el.innerHTML =
+        `⏳ ${remain} detik`;
+
+        if(remain <= 0){
+
+            clearInterval(
+                timers[order.id]
+            );
+
+            el.innerHTML =
+            '⌛ Mengalihkan Driver...';
+
+            await reassignOrder(
+                order.id
+            );
+
+        }
+
+    }
+
+    tick();
+
+    timers[order.id] =
+    setInterval(
+        tick,
+        1000
+    );
+
+}
+
+async function reassignOrder(orderId){
+
+    try{
+
+        await supabase.functions.invoke(
+
+            'reassign-driver',
+
+            {
+
+                body:{
+
+                    order_id:orderId
+
+                }
+
+            }
+
+        );
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
 
 async function loadOrders(){
 
@@ -127,6 +230,8 @@ async function loadOrders(){
    
        </div>
        `;
+
+       startOfferCountdown(order);
    
        return;
    
