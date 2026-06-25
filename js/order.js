@@ -1,6 +1,11 @@
 import {
     estimateTrip
 } from './tariff.js';
+
+import {
+    assignNearestDriver
+} from './assign-driver.js';
+
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 
@@ -159,80 +164,111 @@ async function submitOrder(e){
 
     }
 
-   if(!tripEstimate){
+    if(!tripEstimate){
 
-       alert(
-           'Silakan tunggu estimasi tarif selesai dihitung.'
-       );
-   
-       return;
-   
-   }
+        alert(
+            'Silakan tunggu estimasi tarif selesai dihitung.'
+        );
+
+        return;
+
+    }
 
     const btn =
     form.querySelector(
-    'button[type="submit"]'
+        'button[type="submit"]'
     );
 
     btn.disabled = true;
 
     btn.innerHTML = 'Mengirim...';
 
+    try{
 
-    const { data, error } =
-    await supabase
-    .from('orders')
-    .insert({
+        const nearest =
+        await assignNearestDriver(
 
-       customer_id:user.id,
-   
-       nama:
-       auth.profile.full_name ||
-       user.email,
-   
-       jemput:pickup,
-   
-       tujuan:destination,
-   
-       catatan:notes,
-   
-       price:
-       tripEstimate?.price || 0,
-   
-       pickup_latitude:
-       tripEstimate?.pickupLat,
-   
-       pickup_longitude:
-       tripEstimate?.pickupLng,
-   
-       destination_latitude:
-       tripEstimate?.destinationLat,
-   
-       destination_longitude:
-       tripEstimate?.destinationLng,
-   
-       status:'pending'
-   
-   })
+            tripEstimate.pickupLat,
 
-    .select()
-    .single();
+            tripEstimate.pickupLng
 
-    btn.disabled = false;
+        );
 
-    btn.innerHTML =
-    '🚕 Pesan Sekarang';
+        const driver =
+        nearest?.driver;
 
-    if(error){
+        const { data, error } =
+        await supabase
+        .from('orders')
+        .insert({
 
-        alert(error.message);
+            customer_id:user.id,
 
-        return;
+            nama:
+            auth.profile.full_name ||
+            user.email,
+
+            jemput:pickup,
+
+            tujuan:destination,
+
+            catatan:notes,
+
+            price:
+            tripEstimate.price,
+
+            pickup_latitude:
+            tripEstimate.pickupLat,
+
+            pickup_longitude:
+            tripEstimate.pickupLng,
+
+            destination_latitude:
+            tripEstimate.destinationLat,
+
+            destination_longitude:
+            tripEstimate.destinationLng,
+
+            driver_id:
+            driver?.id || null,
+
+            status:
+            driver
+            ? 'accepted'
+            : 'pending',
+
+            accepted_at:
+            driver
+            ? new Date().toISOString()
+            : null
+
+        })
+        .select()
+        .single();
+
+        if(error){
+
+            throw error;
+
+        }
+
+        location.href =
+        `order-status.html?id=${data.id}`;
+
+    }catch(err){
+
+        console.error(err);
+
+        alert(err.message);
+
+    }finally{
+
+        btn.disabled = false;
+
+        btn.innerHTML =
+        '🚕 Pesan Sekarang';
 
     }
-
-    location.href =
-    `order-status.html?id=${data.id}`;
 
 }
 
