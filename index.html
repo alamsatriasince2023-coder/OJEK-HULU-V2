@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ojek Hulu Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .app-container { max-width: 450px; margin: 0 auto; min-height: 100vh; background: #f9fafb; }
+        .nav-active { color: #16a34a; }
+    </style>
+</head>
+<body>
+    <div class="app-container pb-24">
+        <!-- Header -->
+        <header class="bg-green-600 p-4 text-white shadow-lg">
+            <h1 class="text-xl font-bold">Ojek Hulu</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 space-y-6">
+            <!-- Grid Layanan -->
+            <div class="grid grid-cols-4 gap-2 bg-white p-4 rounded-2xl shadow-sm">
+                <button class="flex flex-col items-center gap-1"><span class="text-2xl">🛵</span><span class="text-[10px]">Ojek</span></button>
+                <button class="flex flex-col items-center gap-1"><span class="text-2xl">📦</span><span class="text-[10px]">Kurir</span></button>
+                <button class="flex flex-col items-center gap-1"><span class="text-2xl">🛒</span><span class="text-[10px]">Belanja</span></button>
+                <button class="flex flex-col items-center gap-1"><span class="text-2xl">🍔</span><span class="text-[10px]">Makanan</span></button>
+            </div>
+
+            <!-- Tambahkan di dalam main (sebelum grid layanan) -->
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 rounded-2xl text-white shadow-lg mb-4">
+                <h2 class="font-bold">Promo Pengguna Baru!</h2>
+                <p class="text-xs opacity-90">Diskon 50% untuk perjalanan pertama Anda.</p>
+            </div>
+
+           
+            <!-- Form Pesan -->
+            <form id="form-pesan" class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
+                <input id="in-nama" placeholder="Nama Anda" class="w-full p-3 bg-gray-50 rounded-xl border" required>
+                <div id="map" class="h-48 w-full rounded-xl border overflow-hidden"></div>
+                <input id="in-jemput" placeholder="Lokasi Jemput" class="w-full p-3 bg-gray-50 rounded-xl border">
+                <input id="in-tujuan" placeholder="Lokasi Tujuan" class="w-full p-3 bg-gray-50 rounded-xl border">
+                <div class="p-3 bg-green-50 rounded-xl border border-green-200">
+                    <p class="text-xs text-green-700">Estimasi Tarif</p>
+                    <p class="text-lg font-bold" id="est-harga">Rp 0</p>
+                </div>
+                <button class="w-full py-4 bg-green-600 text-white rounded-2xl font-bold">Cari Driver</button>
+            </form>
+        </main>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="fixed bottom-0 w-full max-w-[450px] left-1/2 -translate-x-1/2 bg-white border-t flex justify-around p-4 z-50">
+        <button id="nav-beranda" class="nav-active flex flex-col items-center"><span class="text-xl">🏠</span><span class="text-[10px]">Beranda</span></button>
+        <button id="nav-riwayat" class="flex flex-col items-center text-gray-400"><span class="text-xl">🕒</span><span class="text-[10px]">Riwayat</span></button>
+        <button id="nav-profil" class="flex flex-col items-center text-gray-400"><span class="text-xl">👤</span><span class="text-[10px]">Profil</span></button>
+    </nav>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

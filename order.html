@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pesan Ojek - Ojek Hulu</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="max-w-md mx-auto min-h-screen p-5">
+<div class="bg-white rounded-2xl shadow p-5">
+<h1 class="text-2xl font-bold mb-6">
+Pesan Ojek
+</h1>
+<form id="order-form">
+
+<input
+id="pickup"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Lokasi Jemput"
+required
+/>
+
+<input
+id="destination"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Lokasi Tujuan"
+required
+/>
+
+<textarea
+id="notes"
+class="w-full border p-3 rounded-xl mb-4"
+placeholder="Catatan (opsional)"
+></textarea>
+
+<button
+type="submit"
+class="w-full bg-green-600 text-white py-3 rounded-xl font-bold"
+>
+Pesan Ojek
+</button>
+</form>
+</div>
+</div>
+<script type="module">
+import { supabase } from './js/api.js';
+import { getCurrentUser } from './js/auth.js';
+const user = await getCurrentUser();
+if(!user){
+    location.href='login.html';
+}
+document
+.getElementById('order-form')
+.addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    const pickup =
+    document.getElementById('pickup').value;
+    const destination =
+    document.getElementById('destination').value;
+    const notes =
+    document.getElementById('notes').value;
+    const { error } = await supabase
+    .from('orders')
+    .insert({
+        customer_id: user.id,
+        nama: user.email,
+        jemput: pickup,
+        tujuan: destination,
+        catatan: notes,
+        status: 'pending'
+    });
+    if(error){
+
+        console.error(error);
+    
+        alert(error.message);
+    
+        return;
+    
+    }
+    alert('Order berhasil dibuat');
+    location.href='customer.html';
+});
+</script>
+</body>
+</html>

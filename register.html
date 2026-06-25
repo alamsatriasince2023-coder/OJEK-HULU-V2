@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar - Ojek Hulu</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="max-w-md mx-auto min-h-screen flex items-center p-5">
+
+<form id="register-form" class="bg-white w-full p-6 rounded-2xl shadow">
+
+<h1 class="text-2xl font-bold mb-6">
+Daftar Ojek Hulu
+</h1>
+
+<input
+id="full-name"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Nama Lengkap"
+required
+>
+
+<input
+id="phone"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Nomor HP"
+required
+>
+
+<input
+id="email"
+type="email"
+class="w-full border p-3 rounded-xl mb-3"
+placeholder="Email"
+required
+>
+
+<input
+id="password"
+type="password"
+class="w-full border p-3 rounded-xl mb-4"
+placeholder="Password"
+required
+>
+
+<button
+class="w-full bg-green-600 text-white py-3 rounded-xl font-bold"
+>
+Daftar
+</button>
+
+<a
+href="login.html"
+class="block text-center mt-4 text-green-600"
+>
+Sudah punya akun?
+</a>
+
+</form>
+
+</div>
+
+<script type="module">
+
+import {
+registerUser
+} from './js/auth.js';
+
+document
+.getElementById('register-form')
+.addEventListener('submit', async(e)=>{
+
+e.preventDefault();
+
+const result = await registerUser(
+document.getElementById('email').value,
+document.getElementById('password').value
+);
+
+console.log(result);
+
+alert(JSON.stringify(result,null,2));
+
+if(result.error){
+alert(result.error.message);
+return;
+}
+
+alert('Registrasi berhasil');
+location.href='login.html';
+
+});
+
+</script>
+
+</body>
+</html>
