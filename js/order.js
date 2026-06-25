@@ -234,13 +234,8 @@ async function submitOrder(e){
 
             status:
             driver
-            ? 'accepted'
+            ? 'offered'
             : 'pending',
-
-            accepted_at:
-            driver
-            ? new Date().toISOString()
-            : null
 
             assigned_at:
             driver
