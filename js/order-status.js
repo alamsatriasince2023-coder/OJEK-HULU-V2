@@ -1,3 +1,7 @@
+import {
+    initMap,
+    updateDriverLocation
+} from './map.js';
 import { supabase } from './api.js';
 import { requireRole } from './rbac.js';
 
@@ -30,10 +34,11 @@ const pickupEl = document.getElementById('pickup');
 const destinationEl = document.getElementById('destination');
 const priceEl = document.getElementById('price');
 
+
+let currentDriverId = null;
 /* ===========================
    LOAD ORDER
 =========================== */
-
 async function loadOrder(){
 
     const { data, error } =
@@ -71,11 +76,44 @@ async function loadOrder(){
     driverEl.textContent =
     data.driver_name || '-';
 
+    currentDriverId = data.driver_id;
+
     vehicleEl.textContent =
     data.vehicle_type || '-';
 
     plateEl.textContent =
     data.vehicle_number || '-';
+
+   /* ===========================
+   LOAD DRIVER LOCATION
+   =========================== */
+   
+   if(data.driver_id){
+   
+       const {
+          data: driver,
+          error: driverError
+      } =
+      await supabase
+      .from('drivers')
+      .select('latitude,longitude')
+      .eq('id',data.driver_id)
+      .single();
+      
+      if(driverError){
+      
+          console.error(driverError);
+      
+      }else if(driver){
+      
+          updateDriverLocation(
+              driver.latitude,
+              driver.longitude
+          );
+      
+      }
+   
+   }
 
     switch(data.status){
 
@@ -155,7 +193,9 @@ document
    INIT
 =========================== */
 
-loadOrder();
+initMap();
+await loadOrder();
+
 
 /* ===========================
    REALTIME
@@ -175,18 +215,67 @@ schema:'public',
 table:'orders'
 
 },
-(payload)=>{
+async (payload)=>{
 
-    if(payload.new.customer_id!==user.id){
+    if(payload.new.customer_id !== user.id){
 
         return;
 
     }
 
-    console.log('Realtime Update',payload);
+    console.log('Realtime Update', payload);
 
-    loadOrder();
+    await loadOrder();
 
 })
 
+.subscribe();
+
+/* ===========================
+   REALTIME GPS
+=========================== */
+
+supabase
+.channel('driver-location')
+
+.on(
+'postgres_changes',
+{
+
+event:'UPDATE',
+
+schema:'public',
+
+table:'drivers'
+
+},
+async(payload)=>{
+
+    const driver = payload.new;
+
+   if(driver.id !== currentDriverId){
+   
+       return;
+   
+   }
+   
+   if(
+   
+       driver.latitude != null &&
+   
+       driver.longitude != null
+   
+   ){
+   
+       updateDriverLocation(
+   
+           driver.latitude,
+   
+           driver.longitude
+   
+       );
+   
+   }
+
+})
 .subscribe();
