@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Driver Dashboard - Ojek Hulu</title>
 
 <link rel="stylesheet" href="css/style.css">
@@ -19,7 +21,9 @@
 <div>
 
 <div class="location">
-🚕 Driver Online
+
+🚕 Driver Ojek Hulu
+
 </div>
 
 <div
@@ -32,13 +36,115 @@ Loading...
 
 </div>
 
-<div class="badge">
-ONLINE
+<div
+class="badge"
+id="driver-badge">
+
+OFFLINE
+
 </div>
 
 </div>
 
 </header>
+
+<!-- ===========================
+STATUS DRIVER
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+🟢 Status Driver
+
+</div>
+
+<h2
+id="driver-status"
+style="margin:15px 0;">
+
+🔴 OFFLINE
+
+</h2>
+
+<button
+id="btn-online"
+class="btn btn-green">
+
+GO ONLINE
+
+</button>
+
+</div>
+
+<!-- ===========================
+STATISTIK
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📊 Statistik Hari Ini
+
+</div>
+
+<div
+style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-top:15px;
+">
+
+<div>
+
+<div
+style="
+font-size:12px;
+color:#888;
+">
+
+Order
+
+</div>
+
+<h2 id="today-order">
+
+0
+
+</h2>
+
+</div>
+
+<div>
+
+<div
+style="
+font-size:12px;
+color:#888;
+">
+
+Pendapatan
+
+</div>
+
+<h2 id="today-income">
+
+Rp 0
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+ORDER MASUK
+=========================== -->
 
 <div class="card">
 
@@ -51,7 +157,10 @@ ONLINE
 <div id="order-list">
 
 <div
-style="padding:30px;text-align:center;">
+style="
+padding:30px;
+text-align:center;
+">
 
 Memuat order...
 
@@ -60,6 +169,10 @@ Memuat order...
 </div>
 
 </div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
 
 <nav class="bottom-nav">
 
@@ -113,7 +226,9 @@ Logout
 
 </div>
 
-<script type="module" src="js/driver-dashboard.js"></script>
+<script
+type="module"
+src="./js/driver-dashboard.js"></script>
 
 </body>
 </html>
