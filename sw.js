@@ -1,22 +1,29 @@
-const CACHE_NAME = "ojek-hulu-v1";
+const CACHE_NAME = "ojek-hulu-v2";
 
 const FILES = [
 
     "/",
-
     "/index.html",
-
     "/login.html",
-
+    "/register.html",
     "/customer.html",
-
-    "/driver.html",
-
+    "/driver-dashboard.html",
     "/order-map.html",
+    "/order-status-map.html",
+    "/offline.html",
 
-    "/css/style.css"
+    "/css/style.css",
+
+    "/manifest.webmanifest",
+
+    "/assets/icons/icon-192.png",
+    "/assets/images/icon-512.png"
 
 ];
+
+/* ===========================
+   INSTALL
+=========================== */
 
 self.addEventListener(
 
@@ -24,10 +31,12 @@ self.addEventListener(
 
     event=>{
 
+        self.skipWaiting();
+
         event.waitUntil(
 
-            caches.open(CACHE_NAME)
-
+            caches
+            .open(CACHE_NAME)
             .then(cache=>cache.addAll(FILES))
 
         );
@@ -36,21 +45,117 @@ self.addEventListener(
 
 );
 
+/* ===========================
+   ACTIVATE
+=========================== */
+
+self.addEventListener(
+
+    "activate",
+
+    event=>{
+
+        event.waitUntil(
+
+            caches.keys()
+
+            .then(keys=>{
+
+                return Promise.all(
+
+                    keys.map(key=>{
+
+                        if(key!==CACHE_NAME){
+
+                            return caches.delete(key);
+
+                        }
+
+                    })
+
+                );
+
+            })
+
+        );
+
+        self.clients.claim();
+
+    }
+
+);
+
+/* ===========================
+   FETCH
+=========================== */
+
 self.addEventListener(
 
     "fetch",
 
     event=>{
 
+        if(event.request.method!=="GET"){
+
+            return;
+
+        }
+
         event.respondWith(
 
-            caches.match(event.request)
+            fetch(event.request)
 
             .then(response=>{
 
-                return response ||
+                const copy=response.clone();
 
-                fetch(event.request);
+                caches.open(CACHE_NAME)
+
+                .then(cache=>{
+
+                    cache.put(
+
+                        event.request,
+
+                        copy
+
+                    );
+
+                });
+
+                return response;
+
+            })
+
+            .catch(async()=>{
+
+                const cached=
+
+                await caches.match(
+
+                    event.request
+
+                );
+
+                if(cached){
+
+                    return cached;
+
+                }
+
+                if(
+
+                    event.request.mode==="navigate"
+
+                ){
+
+                    return caches.match(
+
+                        "/offline.html"
+
+                    );
+
+                }
 
             })
 
@@ -59,43 +164,3 @@ self.addEventListener(
     }
 
 );
-
-self.addEventListener(
-
-'fetch',
-
-event=>{
-
-event.respondWith(
-
-fetch(event.request)
-
-.catch(
-
-()=>{
-
-return caches.match(
-
-event.request
-
-)
-
-.then(response=>{
-
-return response ||
-
-caches.match(
-
-'/offline.html'
-
-);
-
-});
-
-}
-
-)
-
-);
-
-});
