@@ -335,3 +335,25 @@ document
 =========================== */
 
 loadOrders();
+
+supabase
+.channel('driver-orders')
+
+.on(
+'postgres_changes',
+{
+
+event:'*',
+
+schema:'public',
+
+table:'orders'
+
+},
+()=>{
+
+    loadOrders();
+
+})
+
+.subscribe();
