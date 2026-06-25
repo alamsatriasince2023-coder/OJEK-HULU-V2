@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Pesan Ojek</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
+
+<style>
+
+html,
+body{
+
+height:100%;
+margin:0;
+
+}
+
+#map{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+z-index:1;
+
+}
+
+.bottom-sheet{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+background:#fff;
+
+border-radius:20px 20px 0 0;
+
+padding:20px;
+
+z-index:999;
+
+box-shadow:0 -5px 30px rgba(0,0,0,.2);
+
+}
+
+.info{
+
+margin:8px 0;
+
+}
+
+.btn{
+
+width:100%;
+
+padding:16px;
+
+font-size:18px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<div class="bottom-sheet">
+
+<h3>🚕 Pesan Ojek</h3>
+
+<div class="info">
+
+📍 Jemput
+
+<div id="pickup-address">
+
+Menunggu GPS...
+
+</div>
+
+</div>
+
+<div class="info">
+
+🎯 Tujuan
+
+<div id="destination-address">
+
+Tap pada peta
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="info">
+
+📏
+
+<b id="distance">
+
+-
+
+</b>
+
+</div>
+
+<div class="info">
+
+⏱
+
+<b id="duration">
+
+-
+
+</b>
+
+</div>
+
+<div class="info">
+
+💰
+
+<b id="price">
+
+Rp 0
+
+</b>
+
+</div>
+
+<button
+id="btn-order"
+class="btn btn-green">
+
+🚕 Pesan Sekarang
+
+</button>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+<script
+type="module"
+src="./js/order-map.js"></script>
+
+</body>
+
+</html>
