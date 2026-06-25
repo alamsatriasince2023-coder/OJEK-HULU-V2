@@ -4,43 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pesan Ojek - Ojek Hulu</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-100">
-<div class="max-w-md mx-auto min-h-screen p-5">
-<div class="bg-white rounded-2xl shadow p-5">
-<h1 class="text-2xl font-bold mb-6">
+<body>
+
+<div style="padding:20px 20px 0 20px;">
+    <button
+        onclick="history.back()"
+        class="btn btn-gray">
+        ← Kembali
+    </button>
+</div>
+    
+<div class="container">
+<div class="card">
+<h1 style="font-size:28px;font-weight:bold;margin-bottom:20px;">
 Pesan Ojek
 </h1>
+<p style="margin-bottom:20px;color:#666;">
+Masukkan lokasi penjemputan dan tujuan perjalanan.
+</p>
 <form id="order-form">
 
 <input
 id="pickup"
-class="w-full border p-3 rounded-xl mb-3"
+class="input"
 placeholder="Lokasi Jemput"
 required
 />
 
 <input
 id="destination"
-class="w-full border p-3 rounded-xl mb-3"
+class="input"
 placeholder="Lokasi Tujuan"
 required
 />
 
 <textarea
 id="notes"
-class="w-full border p-3 rounded-xl mb-4"
+class="textarea"
 placeholder="Catatan (opsional)"
 ></textarea>
 
+<div class="card" style="margin:20px 0;">
+
+    <div class="card-title">
+        Estimasi Tarif
+    </div>
+
+    <h2
+        id="estimate"
+        style="color:#16a34a;">
+        Rp 15.000
+    </h2>
+
+    <p style="color:#888;">
+        Estimasi sementara.
+    </p>
+
+</div>
+
 <button
-type="submit"
-class="w-full bg-green-600 text-white py-3 rounded-xl font-bold"
->
-Pesan Ojek
+    type="submit"
+    class="btn btn-green">
+    🚕 Pesan Sekarang
 </button>
 </form>
+
 </div>
 </div>
 <script type="module">
@@ -60,6 +90,22 @@ document
     document.getElementById('destination').value;
     const notes =
     document.getElementById('notes').value;
+
+    if(!pickup || !destination){
+
+        alert('Lokasi jemput dan tujuan wajib diisi.');
+    
+        return;
+    
+    }
+
+    const btn =
+    document.querySelector('button[type="submit"]');
+    
+    btn.disabled = true;
+    
+    btn.innerHTML = 'Mengirim...';
+    
     const { error } = await supabase
     .from('orders')
     .insert({
@@ -72,6 +118,10 @@ document
     });
     if(error){
 
+        btn.disabled = false;
+    
+        btn.innerHTML = '🚕 Pesan Sekarang';
+    
         console.error(error);
     
         alert(error.message);
@@ -79,8 +129,10 @@ document
         return;
     
     }
-    alert('Order berhasil dibuat');
-    location.href='customer.html';
+    
+    alert('✅ Order berhasil dibuat');
+
+    location.href = 'customer.html';
 });
 </script>
 </body>
