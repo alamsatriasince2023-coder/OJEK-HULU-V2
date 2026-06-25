@@ -1,0 +1,57 @@
+#splash{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+background:#00AA13;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+transition:opacity .4s ease;
+
+}
+
+#splash img{
+
+width:120px;
+
+height:120px;
+
+margin-bottom:20px;
+
+}
+
+#splash h1{
+
+color:#fff;
+
+font-size:28px;
+
+margin:0;
+
+}
+
+#splash p{
+
+color:#fff;
+
+opacity:.85;
+
+margin-top:10px;
+
+}
