@@ -61,6 +61,7 @@ Daftar Akun
 <script type="module">
 
 import { loginUser } from './js/auth.js';
+import { redirectByRole } from './js/rbac.js';
 
 const form = document.getElementById('login-form');
 const btn = document.getElementById('btn-login');
@@ -69,10 +70,13 @@ form.addEventListener('submit', async (e)=>{
 
     e.preventDefault();
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
+    const email =
+    document.getElementById('email').value.trim();
 
-    if(email === '' || password === ''){
+    const password =
+    document.getElementById('password').value;
+
+    if(email==='' || password===''){
 
         alert('Email dan Password wajib diisi.');
 
@@ -83,11 +87,13 @@ form.addEventListener('submit', async (e)=>{
     btn.disabled = true;
     btn.innerHTML = 'Sedang Login...';
 
-    const { error } = await loginUser(email,password);
+    const { error } =
+    await loginUser(email,password);
 
     if(error){
 
         btn.disabled = false;
+
         btn.innerHTML = 'Login';
 
         alert(error.message);
@@ -96,7 +102,7 @@ form.addEventListener('submit', async (e)=>{
 
     }
 
-    location.href='customer.html';
+    await redirectByRole();
 
 });
 
