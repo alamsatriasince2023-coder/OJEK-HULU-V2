@@ -76,6 +76,16 @@ document.getElementById('duration');
 const priceEl =
 document.getElementById('price');
 
+const searchInput =
+document.getElementById(
+'destination-search'
+);
+
+const searchResult =
+document.getElementById(
+'search-result'
+);
+
 let currentFare = 0;
 let currentDistance = 0;
 let currentDuration = 0;
@@ -158,7 +168,8 @@ async function loadCurrentLocation(){
 
                 {
 
-                    draggable:true
+                    draggable:true,
+                    icon:pickupIcon
 
                 }
 
@@ -248,7 +259,7 @@ function onMapClick(e){
                 destinationLat,
                 destinationLng
 
-            ]
+            ],
             {
                 icon:destinationIcon
             }
@@ -574,6 +585,10 @@ async function loadNearbyDrivers(){
 
 function renderNearbyDrivers(){
 
+    /* ===========================
+       HAPUS MARKER LAMA
+    =========================== */
+
     driverMarkers.forEach(marker=>{
 
         if(map.hasLayer(marker)){
@@ -584,7 +599,11 @@ function renderNearbyDrivers(){
 
     });
 
-    driverMarkers = [];
+    driverMarkers.clear();
+
+    /* ===========================
+       TAMPILKAN DRIVER
+    =========================== */
 
     nearbyDrivers.forEach(driver=>{
 
@@ -606,13 +625,19 @@ function renderNearbyDrivers(){
         const distance = Math.sqrt(
 
             Math.pow(
-                driver.latitude - pickupLat,
+
+                Number(driver.latitude) - pickupLat,
+
                 2
+
             ) +
 
             Math.pow(
-                driver.longitude - pickupLng,
+
+                Number(driver.longitude) - pickupLng,
+
                 2
+
             )
 
         );
@@ -635,9 +660,12 @@ function renderNearbyDrivers(){
                 Number(driver.latitude),
                 Number(driver.longitude)
 
-            ]
+            ],
+
             {
-                icon:driverIcon    
+
+                icon:driverIcon
+
             }
 
         )
@@ -650,9 +678,125 @@ function renderNearbyDrivers(){
 
         );
 
-        driverMarkers.push(marker);
+        driverMarkers.set(
+
+            driver.id,
+
+            marker
+
+        );
 
     });
+
+}
+
+searchInput.addEventListener(
+
+'input',
+
+searchLocation
+
+);
+
+async function searchLocation(){
+
+    const keyword =
+
+    searchInput.value.trim();
+
+    if(keyword.length < 3){
+
+        searchResult.style.display='none';
+
+        return;
+
+    }
+
+    const response =
+
+    await fetch(
+
+`https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/?q=${encodeURIComponent(keyword)}`
+
+    );
+
+    const data =
+    await response.json();
+
+    searchResult.innerHTML='';
+
+    data.forEach(item=>{
+
+        const div =
+        document.createElement('div');
+
+        div.className='search-item';
+
+        div.innerHTML=
+        item.display_name;
+
+        div.onclick=()=>{
+
+            selectDestination(item);
+
+        };
+
+        searchResult.appendChild(div);
+
+    });
+
+    searchResult.style.display='block';
+
+}
+
+function selectDestination(item){
+
+    destinationLat =
+    Number(item.lat);
+
+    destinationLng =
+    Number(item.lon);
+
+    searchInput.value =
+    item.display_name;
+
+    destinationAddress.textContent =
+    item.display_name;
+
+    searchResult.style.display='none';
+
+    if(!destinationMarker){
+
+        destinationMarker =
+        L.marker([
+
+            destinationLat,
+
+            destinationLng
+
+        ]).addTo(map);
+
+    }else{
+
+        destinationMarker.setLatLng([
+
+            destinationLat,
+
+            destinationLng
+
+        ]);
+
+    }
+
+    map.panTo([
+
+        destinationLat,
+
+        destinationLng
+
+    ]);
+
+    drawRoute();
 
 }
 
