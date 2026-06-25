@@ -143,7 +143,7 @@ async function loadOrders(){
     .from('orders')
     .select('*')
     .eq('driver_id', user.id)
-    .eq('status', 'accepted');
+    .eq('status', 'offered');
    
    const active =
    await supabase
@@ -327,13 +327,12 @@ async function acceptOrder(e){
       
           driver_id:user.id,
       
-          driver_name:profile.full_name,
-      
           accepted_at:new Date().toISOString()
       
     })
     .eq('id',orderId)
-    .eq('status','pending')
+    .eq('driver_id',user.id)
+    .eq('status','offered')
     .select();
 
     if(error){
