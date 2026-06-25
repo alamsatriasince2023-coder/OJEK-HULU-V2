@@ -14,6 +14,40 @@ if(!auth){
 
 }
 
+/* ===========================
+   CUSTOM ICON
+=========================== */
+
+const pickupIcon = L.icon({
+
+    iconUrl:'assets/icons/pickup.png',
+
+    iconSize:[42,42],
+
+    iconAnchor:[21,42]
+
+});
+
+const destinationIcon = L.icon({
+
+    iconUrl:'assets/icons/destination.png',
+
+    iconSize:[42,42],
+
+    iconAnchor:[21,42]
+
+});
+
+const driverIcon = L.icon({
+
+    iconUrl:'assets/icons/motor.png',
+
+    iconSize:[36,36],
+
+    iconAnchor:[18,18]
+
+});
+
 let map;
 
 let pickupMarker = null;
@@ -206,7 +240,6 @@ function onMapClick(e){
     if(!destinationMarker){
 
         destinationMarker =
-
         L.marker(
 
             [
@@ -215,6 +248,9 @@ function onMapClick(e){
                 destinationLng
 
             ]
+            {
+                icon:destinationIcon
+            }
 
         ).addTo(map);
 
@@ -599,6 +635,9 @@ function renderNearbyDrivers(){
                 Number(driver.longitude)
 
             ]
+            {
+                icon:driverIcon    
+            }
 
         )
 
