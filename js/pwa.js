@@ -21,3 +21,13 @@ if(
     );
 
 }
+
+navigator.serviceWorker.addEventListener(
+
+'controllerchange',
+
+()=>{
+
+window.location.reload();
+
+});
