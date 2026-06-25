@@ -3,140 +3,113 @@ import { getCurrentUser } from './auth.js';
 
 const user = await getCurrentUser();
 
-if(!user){
+if (!user) {
+    location.href = 'login.html';
+}
 
-location.href='login.html';
+const historyList = document.getElementById('history-list');
+
+function getStatus(status) {
+
+    switch (status) {
+
+        case 'pending':
+            return '<span class="status status-pending">Pending</span>';
+
+        case 'accepted':
+            return '<span class="status status-accepted">Driver Ditemukan</span>';
+
+        case 'pickup':
+            return '<span class="status status-pickup">Menuju Jemput</span>';
+
+        case 'ontheway':
+            return '<span class="status status-ontheway">Dalam Perjalanan</span>';
+
+        case 'completed':
+            return '<span class="status status-completed">Selesai</span>';
+
+        case 'cancel':
+            return '<span class="status status-cancel">Dibatalkan</span>';
+
+        default:
+            return `<span>${status}</span>`;
+    }
 
 }
 
-const historyList =
-document.getElementById('history-list');
+async function loadHistory() {
 
-const { data, error } = await supabase
+    historyList.innerHTML = `
+        <div style="text-align:center;padding:40px;">
+            Memuat data...
+        </div>
+    `;
 
-.from('orders')
+    const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('customer_id', user.id)
+        .order('id', { ascending: false });
 
-.select('*')
+    if (error) {
 
-.eq('customer_id', user.id)
+        console.error(error);
 
-.order('id',{ascending:false});
+        historyList.innerHTML = `
+            <div style="text-align:center;padding:40px;color:red;">
+                Gagal mengambil data.
+            </div>
+        `;
 
-if(error){
+        return;
+    }
 
-historyList.innerHTML=
+    if (!data || data.length === 0) {
 
-'<p>Gagal mengambil data.</p>';
+        historyList.innerHTML = `
+            <div style="text-align:center;padding:50px;">
+                🚕<br><br>
+                Belum ada riwayat perjalanan.
+            </div>
+        `;
 
-console.error(error);
+        return;
+    }
 
-throw error;
+    historyList.innerHTML = '';
 
-}
+    data.forEach(order => {
 
-if(!data.length){
+        historyList.innerHTML += `
+            <div class="card" style="margin-bottom:20px;">
 
-historyList.innerHTML='
+                <h3>${order.nama}</h3>
 
-<div
-style="
-text-align:center;
-padding:50px;
-">
+                <hr style="margin:12px 0;">
 
-🚕<br><br>
+                <p>
+                    🟢 Jemput<br>
+                    <b>${order.jemput}</b>
+                </p>
 
-Belum ada riwayat perjalanan.
+                <p style="margin-top:10px;">
+                    🔴 Tujuan<br>
+                    <b>${order.tujuan}</b>
+                </p>
 
-</div>
+                <p style="margin-top:10px;">
+                    📝 ${order.catatan || '-'}
+                </p>
 
-}
+                <div style="margin-top:15px;">
+                    ${getStatus(order.status)}
+                </div>
 
-function getStatus(status){
+            </div>
+        `;
 
-switch(status){
-
-case 'pending':
-return '<span class="status status-pending">Pending</span>';
-
-case 'accepted':
-return '<span class="status status-accepted">Driver Ditemukan</span>';
-
-case 'pickup':
-return '<span class="status status-pickup">Menuju Jemput</span>';
-
-case 'ontheway':
-return '<span class="status status-ontheway">Dalam Perjalanan</span>';
-
-case 'completed':
-return '<span class="status status-completed">Selesai</span>';
-
-case 'cancel':
-return '<span class="status status-cancel">Dibatalkan</span>';
-
-default:
-return status;
-
-}
-
-}
-
-else{
-
-historyList.innerHTML='';
-
-data.forEach(order=>{
-
-historyList.innerHTML+=`
-
-<div class="card" style="margin-bottom:15px;">
-
-<h3>${order.nama}</h3>
-
-<hr style="margin:10px 0;">
-
-<p>
-
-🟢 Jemput
-
-<br>
-
-<b>${order.jemput}</b>
-
-</p>
-
-<p>
-
-🔴 Tujuan
-
-<br>
-
-<b>${order.tujuan}</b>
-
-</p>
-
-<p>
-
-📝 ${order.catatan || '-'}
-
-</p>
-
-<p>
-
-Status :
-
-<div style="margin-top:15px;">
-
-${getStatus(order.status)}
-
-</div>
-
-</p>
-
-</div>
-
-`;
-
-});
+    });
 
 }
+
+loadHistory();
