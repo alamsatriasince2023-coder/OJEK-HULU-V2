@@ -156,3 +156,37 @@ document
 =========================== */
 
 loadOrder();
+
+/* ===========================
+   REALTIME
+=========================== */
+
+supabase
+.channel('customer-order-status')
+
+.on(
+'postgres_changes',
+{
+
+event:'UPDATE',
+
+schema:'public',
+
+table:'orders'
+
+},
+(payload)=>{
+
+    if(payload.new.customer_id!==user.id){
+
+        return;
+
+    }
+
+    console.log('Realtime Update',payload);
+
+    loadOrder();
+
+})
+
+.subscribe();
