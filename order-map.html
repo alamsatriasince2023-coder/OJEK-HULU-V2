@@ -5,10 +5,11 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Pesan Ojek</title>
+<title>Pesan Ojek - Ojek Hulu</title>
 
 <link
 rel="stylesheet"
@@ -24,65 +25,258 @@ href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-mach
 
 <style>
 
+*{
+
+    box-sizing:border-box;
+
+}
+
 html,
 body{
 
-height:100%;
-margin:0;
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
 
 }
 
 #map{
 
-position:fixed;
+    position:fixed;
 
-top:0;
+    inset:0;
 
-left:0;
-
-right:0;
-
-bottom:0;
-
-z-index:1;
+    z-index:1;
 
 }
 
 .bottom-sheet{
 
-position:fixed;
+    position:fixed;
 
-left:0;
+    left:0;
+    right:0;
+    bottom:0;
 
-right:0;
+    height:320px;
 
-bottom:0;
+    background:#fff;
 
-background:#fff;
+    border-radius:24px 24px 0 0;
 
-border-radius:20px 20px 0 0;
+    box-shadow:0 -8px 30px rgba(0,0,0,.18);
 
-padding:20px;
+    z-index:999;
 
-z-index:999;
+    transition:height .3s ease;
 
-box-shadow:0 -5px 30px rgba(0,0,0,.2);
+    overflow:hidden;
+
+}
+
+.bottom-sheet.expanded{
+
+    height:80vh;
+
+}
+
+.sheet-handle{
+
+    width:60px;
+
+    height:6px;
+
+    background:#d0d0d0;
+
+    border-radius:50px;
+
+    margin:12px auto;
+
+}
+
+.sheet-content{
+
+    height:calc(100% - 30px);
+
+    overflow:auto;
+
+    padding:20px;
+
+}
+
+.sheet-title{
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
 
 }
 
 .info{
 
-margin:8px 0;
+    margin-bottom:18px;
+
+}
+
+.label{
+
+    color:#666;
+
+    font-size:13px;
+
+    margin-bottom:6px;
+
+}
+
+.value{
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    word-break:break-word;
+
+}
+
+.summary{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+    margin:20px 0;
+
+}
+
+.summary-card{
+
+    background:#f7f7f7;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    text-align:center;
+
+}
+
+.summary-card small{
+
+    display:block;
+
+    color:#666;
+
+    margin-bottom:6px;
+
+}
+
+.summary-card b{
+
+    font-size:16px;
 
 }
 
 .btn{
 
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#18A558;
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.btn:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+}
+
+#search-box{
+
+position:fixed;
+
+top:15px;
+
+left:15px;
+
+right:15px;
+
+z-index:2000;
+
+}
+
+#destination-search{
+
 width:100%;
 
-padding:16px;
+padding:15px;
 
-font-size:18px;
+border:none;
+
+border-radius:14px;
+
+font-size:16px;
+
+box-shadow:0 4px 15px rgba(0,0,0,.15);
+
+}
+
+#search-result{
+
+margin-top:10px;
+
+background:#fff;
+
+border-radius:12px;
+
+overflow:hidden;
+
+display:none;
+
+max-height:250px;
+
+overflow-y:auto;
+
+box-shadow:0 4px 20px rgba(0,0,0,.15);
+
+}
+
+.search-item{
+
+padding:15px;
+
+cursor:pointer;
+
+border-bottom:1px solid #eee;
+
+}
+
+.search-item:hover{
+
+background:#f5f5f5;
 
 }
 
@@ -94,15 +288,47 @@ font-size:18px;
 
 <div id="map"></div>
 
-<div class="bottom-sheet">
+<div id="search-box">
 
-<h3>🚕 Pesan Ojek</h3>
+<input
+
+id="destination-search"
+
+type="text"
+
+placeholder="🔍 Mau ke mana?"
+
+autocomplete="off">
+
+<div id="search-result"></div>
+
+</div>
+
+<div
+id="bottom-sheet"
+class="bottom-sheet">
+
+<div class="sheet-handle"></div>
+
+<div class="sheet-content">
+
+<div class="sheet-title">
+
+🚕 Pesan Ojek
+
+</div>
 
 <div class="info">
 
-📍 Jemput
+<div class="label">
 
-<div id="pickup-address">
+📍 Lokasi Jemput
+
+</div>
+
+<div
+id="pickup-address"
+class="value">
 
 Menunggu GPS...
 
@@ -112,21 +338,27 @@ Menunggu GPS...
 
 <div class="info">
 
-🎯 Tujuan
+<div class="label">
 
-<div id="destination-address">
+🎯 Lokasi Tujuan
 
-Tap pada peta
+</div>
+
+<div
+id="destination-address"
+class="value">
+
+Tap pada peta untuk memilih tujuan
 
 </div>
 
 </div>
 
-<hr>
+<div class="summary">
 
-<div class="info">
+<div class="summary-card">
 
-📏
+<small>📏 Jarak</small>
 
 <b id="distance">
 
@@ -136,9 +368,9 @@ Tap pada peta
 
 </div>
 
-<div class="info">
+<div class="summary-card">
 
-⏱
+<small>⏱ ETA</small>
 
 <b id="duration">
 
@@ -148,9 +380,9 @@ Tap pada peta
 
 </div>
 
-<div class="info">
+<div class="summary-card">
 
-💰
+<small>💰 Tarif</small>
 
 <b id="price">
 
@@ -160,13 +392,17 @@ Rp 0
 
 </div>
 
+</div>
+
 <button
 id="btn-order"
-class="btn btn-green">
+class="btn">
 
 🚕 Pesan Sekarang
 
 </button>
+
+</div>
 
 </div>
 
