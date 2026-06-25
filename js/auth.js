@@ -135,22 +135,15 @@ export async function registerDriver({
         };
 
     }
-   console.log({
-       id: user.id,
-       user_id: user.id,
-       vehicle_type,
-       vehicle_number
-   });
+  
 
-    // Simpan ke tabel drivers
+   // Simpan ke tabel drivers
    const { error: driverError } =
    await supabase
    .from('drivers')
    .insert({
    
        id: user.id,
-   
-       user_id: user.id,
    
        vehicle_type,
    
