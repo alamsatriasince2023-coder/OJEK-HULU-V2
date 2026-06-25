@@ -54,8 +54,11 @@ function parseCoordinate(value){
 
 export async function geocodeAddress(address){
 
-    const url =
-    `https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/?q=${encodeURIComponent(address)}`;
+    const query =
+`${address}, Kapuas Hulu, Kalimantan Barat, Indonesia`;
+
+const url =
+`https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/?q=${encodeURIComponent(query)}`;
 
     console.log("Geocode :", address);
 
