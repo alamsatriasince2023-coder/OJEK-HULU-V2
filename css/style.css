@@ -405,3 +405,25 @@ background:#10b981;
 background:#dc2626;
 
 }
+
+body{
+
+animation:fadeIn .25s ease;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+}
+
+to{
+
+opacity:1;
+
+}
+
+}
