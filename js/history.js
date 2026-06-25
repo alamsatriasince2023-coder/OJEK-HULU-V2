@@ -36,9 +36,48 @@ throw error;
 
 if(!data.length){
 
-historyList.innerHTML=
+historyList.innerHTML='
 
-'<p>Belum ada order.</p>';
+<div
+style="
+text-align:center;
+padding:50px;
+">
+
+🚕<br><br>
+
+Belum ada riwayat perjalanan.
+
+</div>
+
+}
+
+function getStatus(status){
+
+switch(status){
+
+case 'pending':
+return '<span class="status status-pending">Pending</span>';
+
+case 'accepted':
+return '<span class="status status-accepted">Driver Ditemukan</span>';
+
+case 'pickup':
+return '<span class="status status-pickup">Menuju Jemput</span>';
+
+case 'ontheway':
+return '<span class="status status-ontheway">Dalam Perjalanan</span>';
+
+case 'completed':
+return '<span class="status status-completed">Selesai</span>';
+
+case 'cancel':
+return '<span class="status status-cancel">Dibatalkan</span>';
+
+default:
+return status;
+
+}
 
 }
 
@@ -54,15 +93,25 @@ historyList.innerHTML+=`
 
 <h3>${order.nama}</h3>
 
+<hr style="margin:10px 0;">
+
 <p>
 
-📍 ${order.jemput}
+🟢 Jemput
+
+<br>
+
+<b>${order.jemput}</b>
 
 </p>
 
 <p>
 
-🏁 ${order.tujuan}
+🔴 Tujuan
+
+<br>
+
+<b>${order.tujuan}</b>
 
 </p>
 
@@ -76,11 +125,11 @@ historyList.innerHTML+=`
 
 Status :
 
-<b style="color:green;">
+<div style="margin-top:15px;">
 
-${order.status}
+${getStatus(order.status)}
 
-</b>
+</div>
 
 </p>
 
