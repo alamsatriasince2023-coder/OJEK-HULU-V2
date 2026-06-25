@@ -1,7 +1,8 @@
 import {
     initMap,
     updateCustomerLocation,
-    updateDriverLocation
+    updateDriverLocation,
+    drawRoute
 } from './map.js';
 
 import { supabase } from './api.js';
@@ -145,6 +146,18 @@ async function loadOrder(){
 
                 driver.longitude
 
+            );
+
+            drawRoute(
+
+                driver.latitude,
+            
+                driver.longitude,
+            
+                data.pickup_latitude,
+            
+                data.pickup_longitude
+            
             );
 
         }
