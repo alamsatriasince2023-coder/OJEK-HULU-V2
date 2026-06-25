@@ -53,7 +53,7 @@ calculateEstimate
 document
 .getElementById('destination')
 .addEventListener(
-'input',
+'change',
 calculateEstimate
 );
 
