@@ -50,6 +50,12 @@ document.getElementById('destination');
 const priceEl =
 document.getElementById('price');
 
+const distanceEl =
+document.getElementById('route-distance');
+
+const timeEl =
+document.getElementById('route-time');
+
 let currentDriverId = null;
 
 /* ===========================
