@@ -73,67 +73,6 @@ placeholder="Catatan (opsional)"
 
 </div>
 </div>
-<script type="module">
-import { supabase } from './js/api.js';
-import { getCurrentUser } from './js/auth.js';
-const user = await getCurrentUser();
-if(!user){
-    location.href='login.html';
-}
-document
-.getElementById('order-form')
-.addEventListener('submit', async(e)=>{
-    e.preventDefault();
-    const pickup =
-    document.getElementById('pickup').value;
-    const destination =
-    document.getElementById('destination').value;
-    const notes =
-    document.getElementById('notes').value;
-
-    if(!pickup || !destination){
-
-        alert('Lokasi jemput dan tujuan wajib diisi.');
-    
-        return;
-    
-    }
-
-    const btn =
-    document.querySelector('button[type="submit"]');
-    
-    btn.disabled = true;
-    
-    btn.innerHTML = 'Mengirim...';
-    
-    const { error } = await supabase
-    .from('orders')
-    .insert({
-        customer_id: user.id,
-        nama: user.email,
-        jemput: pickup,
-        tujuan: destination,
-        catatan: notes,
-        status: 'pending'
-    });
-    if(error){
-
-        btn.disabled = false;
-    
-        btn.innerHTML = '🚕 Pesan Sekarang';
-    
-        console.error(error);
-    
-        alert(error.message);
-    
-        return;
-    
-    }
-    
-    alert('✅ Order berhasil dibuat');
-
-    location.href = 'customer.html';
-});
-</script>
+<script type="module" src="./js/order.js"></script>
 </body>
 </html>
