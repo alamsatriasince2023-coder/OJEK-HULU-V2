@@ -1,6 +1,14 @@
 import { supabase } from './api.js';
 
+/* ===========================
+   STATE
+=========================== */
+
 let watchId = null;
+
+let lastLatitude = null;
+
+let lastLongitude = null;
 
 /* ===========================
    START GPS
@@ -10,7 +18,7 @@ export function startGps(userId){
 
     if(!navigator.geolocation){
 
-        alert('Browser tidak mendukung GPS.');
+        console.warn('Browser tidak mendukung GPS.');
 
         return;
 
@@ -32,6 +40,37 @@ export function startGps(userId){
             const longitude =
             position.coords.longitude;
 
+            const accuracy =
+            position.coords.accuracy;
+
+            /* ===========================
+               CEGAH UPDATE DUPLIKAT
+            =========================== */
+
+            if(
+
+                lastLatitude === latitude &&
+
+                lastLongitude === longitude
+
+            ){
+
+                return;
+
+            }
+
+            lastLatitude = latitude;
+
+            lastLongitude = longitude;
+
+            console.log(
+                'GPS',
+                latitude,
+                longitude,
+                'Accuracy:',
+                accuracy
+            );
+
             const { error } =
             await supabase
             .from('drivers')
@@ -41,7 +80,7 @@ export function startGps(userId){
 
                 longitude,
 
-                last_location_at:
+                last_location:
                 new Date().toISOString()
 
             })
@@ -49,7 +88,10 @@ export function startGps(userId){
 
             if(error){
 
-                console.error(error);
+                console.error(
+                    'GPS Update Error',
+                    error
+                );
 
             }
 
@@ -57,9 +99,10 @@ export function startGps(userId){
 
         (err)=>{
 
-            console.error(err);
-
-            alert('GPS tidak dapat diakses.');
+            console.warn(
+                'GPS Error',
+                err
+            );
 
         },
 
@@ -85,10 +128,16 @@ export function stopGps(){
 
     if(watchId !== null){
 
-        navigator.geolocation.clearWatch(watchId);
+        navigator.geolocation.clearWatch(
+            watchId
+        );
 
         watchId = null;
 
     }
+
+    lastLatitude = null;
+
+    lastLongitude = null;
 
 }
