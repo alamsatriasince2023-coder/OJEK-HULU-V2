@@ -37,21 +37,31 @@ content="#16a34a">
 
 <div class="location">
 
-🛠 Administrator
+🛠 Ojek Hulu Admin
 
 </div>
 
 <div
-
 id="admin-name"
-
 class="username">
 
 Loading...
 
 </div>
 
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Dashboard Monitoring Realtime
+
 </div>
+
+</div>
+
+<div>
 
 <div class="badge">
 
@@ -61,37 +71,22 @@ ADMIN
 
 </div>
 
-</header>
-
-<div class="card">
-
-<div class="card-title">
-
-📊 Statistik Hari Ini
-
 </div>
 
 <div
-
-style="display:grid;
+style="
+margin-top:24px;
+display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:12px;">
+gap:14px;">
 
-<div class="promo-card">
+<div class="kpi-card">
 
-👥 Customer
+<small>
 
-<h2 id="total-customer">
+Driver Online
 
-0
-
-</h2>
-
-</div>
-
-<div class="promo-card">
-
-🚕 Driver Online
+</small>
 
 <h2 id="driver-online">
 
@@ -101,9 +96,13 @@ gap:12px;">
 
 </div>
 
-<div class="promo-card">
+<div class="kpi-card">
 
-📦 Order Aktif
+<small>
+
+Order Aktif
+
+</small>
 
 <h2 id="order-active">
 
@@ -113,9 +112,94 @@ gap:12px;">
 
 </div>
 
-<div class="promo-card">
+</div>
 
-✅ Order Selesai
+</header>
+
+<!-- ===========================
+STATISTIK PREMIUM
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+📊 Statistik Hari Ini
+
+</div>
+
+<div class="badge">
+
+LIVE
+
+</div>
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+👥 Customer
+
+</span>
+
+<h2 id="total-customer">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+🚕 Driver Online
+
+</span>
+
+<h2 id="driver-online">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+📦 Order Aktif
+
+</span>
+
+<h2 id="order-active">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+✅ Selesai
+
+</span>
 
 <h2 id="order-complete">
 
@@ -129,7 +213,18 @@ gap:12px;">
 
 </div>
 
+<!-- ===========================
+ORDER REALTIME
+=========================== -->
+
 <div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
 
 <div class="card-title">
 
@@ -137,30 +232,80 @@ gap:12px;">
 
 </div>
 
+<div class="badge">
+
+AUTO
+
+</div>
+
+</div>
+
+<div id="order-list">
+
 <div
+style="
+text-align:center;
+padding:40px;">
 
-id="order-list">
+<div
+style="
+font-size:50px;
+margin-bottom:15px;">
 
-Loading...
+🚕</div>
+
+<h3>
+
+Menunggu Order Baru
+
+</h3>
+
+<p
+style="
+margin-top:8px;
+color:#6B7280;">
+
+Order realtime akan muncul otomatis di sini.
+
+</p>
 
 </div>
 
 </div>
+
+</div>
+
+<!-- ===========================
+MENU ADMIN PREMIUM
+=========================== -->
 
 <div class="card">
 
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
 <div class="card-title">
 
-⚡ Menu Admin
+⚙️ Menu Administrator
+
+</div>
+
+<div class="badge">
+
+CONTROL
+
+</div>
 
 </div>
 
 <section class="menu-grid">
 
 <div
-
 class="menu-item"
-
 id="btn-driver">
 
 <div class="menu-icon">
@@ -178,9 +323,7 @@ Driver
 </div>
 
 <div
-
 class="menu-item"
-
 id="btn-customer">
 
 <div class="menu-icon">
@@ -198,9 +341,7 @@ Customer
 </div>
 
 <div
-
 class="menu-item"
-
 id="btn-order">
 
 <div class="menu-icon">
@@ -218,14 +359,12 @@ Order
 </div>
 
 <div
-
 class="menu-item"
-
 id="btn-report">
 
 <div class="menu-icon">
 
-📊
+📈
 
 </div>
 
@@ -241,12 +380,64 @@ Laporan
 
 </div>
 
+<!-- ===========================
+SYSTEM STATUS
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+🖥️ Status Sistem
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Server
+
+</span>
+
+<h2 style="font-size:18px;color:#16a34a;">
+
+ONLINE
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Realtime
+
+</span>
+
+<h2 style="font-size:18px;color:#16a34a;">
+
+AKTIF
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
 <nav class="bottom-nav">
 
 <div
-
 class="bottom-item active"
-
 id="btn-home">
 
 <span class="bottom-icon">
@@ -260,9 +451,7 @@ Home
 </div>
 
 <div
-
 class="bottom-item"
-
 id="btn-monitor">
 
 <span class="bottom-icon">
@@ -276,9 +465,7 @@ Monitor
 </div>
 
 <div
-
 class="bottom-item"
-
 id="btn-setting">
 
 <span class="bottom-icon">
@@ -292,9 +479,7 @@ Setting
 </div>
 
 <div
-
 class="bottom-item"
-
 id="btn-logout">
 
 <span class="bottom-icon">
@@ -312,12 +497,8 @@ Logout
 </div>
 
 <script
-
 type="module"
-
-src="./js/admin-dashboard.js">
-
-</script>
+src="./js/admin-dashboard.js"></script>
 
 <script src="./js/pwa.js"></script>
 
