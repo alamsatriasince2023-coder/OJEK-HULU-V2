@@ -10,6 +10,37 @@ let lastLatitude = null;
 
 let lastLongitude = null;
 
+function distanceMeters(
+
+    lat1,
+    lng1,
+    lat2,
+    lng2
+
+){
+
+    return Math.sqrt(
+
+        Math.pow(
+
+            lat1-lat2,
+
+            2
+
+        ) +
+
+        Math.pow(
+
+            lng1-lng2,
+
+            2
+
+        )
+
+    ) * 111320;
+
+}
+
 /* ===========================
    START GPS
 =========================== */
@@ -43,6 +74,20 @@ export function startGps(userId){
             const accuracy =
             position.coords.accuracy;
 
+           if(accuracy > 30){
+
+                console.log(
+            
+                    "GPS belum akurat:",
+            
+                    accuracy
+            
+                );
+            
+                return;
+            
+            }
+
             /* ===========================
                CEGAH UPDATE DUPLIKAT
             =========================== */
@@ -51,7 +96,17 @@ export function startGps(userId){
 
                 lastLatitude === latitude &&
 
-                lastLongitude === longitude
+                distanceMeters(
+
+                    latitude,
+            
+                    longitude,
+            
+                    lastLatitude,
+            
+                    lastLongitude
+            
+                ) < 5
 
             ){
 
@@ -79,6 +134,9 @@ export function startGps(userId){
                 latitude,
 
                 longitude,
+                is_online:true,
+
+                last_location:
 
                 last_location:
                 new Date().toISOString()
