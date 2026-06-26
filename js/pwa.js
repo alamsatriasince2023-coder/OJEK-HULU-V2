@@ -1,20 +1,46 @@
-if(
+/* ===========================
+   PWA REGISTER
+=========================== */
 
-    "serviceWorker" in navigator
-
-){
+if ("serviceWorker" in navigator) {
 
     window.addEventListener(
 
         "load",
 
-        ()=>{
+        async()=>{
 
-            navigator.serviceWorker.register(
+            try{
 
-                "/sw.js"
+                const registration =
 
-            );
+                await navigator.serviceWorker.register(
+
+                    "/sw.js"
+
+                );
+
+                console.log(
+
+                    "✅ Service Worker aktif"
+
+                );
+
+                registration.update();
+
+            }
+
+            catch(err){
+
+                console.error(
+
+                    "SW Error",
+
+                    err
+
+                );
+
+            }
 
         }
 
@@ -22,12 +48,24 @@ if(
 
 }
 
-navigator.serviceWorker.addEventListener(
+/* ===========================
+   AUTO RELOAD
+=========================== */
 
-'controllerchange',
+navigator.serviceWorker?.addEventListener(
 
-()=>{
+    "controllerchange",
 
-window.location.reload();
+    ()=>{
 
-});
+        console.log(
+
+            "🔄 Update aplikasi"
+
+        );
+
+        window.location.reload();
+
+    }
+
+);
