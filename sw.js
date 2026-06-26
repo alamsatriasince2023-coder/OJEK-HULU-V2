@@ -3,13 +3,27 @@ const CACHE_NAME = "ojek-hulu-v2";
 const FILES = [
 
     "/",
+
     "/index.html",
+
     "/login.html",
+
     "/register.html",
+
     "/customer.html",
+
+    "/customer-history.html",
+
     "/driver-dashboard.html",
+
+    "/driver-register.html",
+
     "/order-map.html",
+
     "/order-status-map.html",
+
+    "/profile.html",
+
     "/offline.html",
 
     "/css/style.css",
@@ -17,7 +31,34 @@ const FILES = [
     "/manifest.webmanifest",
 
     "/assets/icons/icon-192.png",
-    "/assets/images/icon-512.png"
+
+    "/assets/icons/icon-512.png",
+
+    "/assets/icons/maskable-512.png",
+
+    "/assets/images/logo.png",
+
+    "/assets/images/banner.png",
+
+    "/assets/images/splash.png",
+
+    "/js/api.js",
+
+    "/js/auth.js",
+
+    "/js/rbac.js",
+
+    "/js/customer.js",
+
+    "/js/order-map.js",
+
+    "/js/order-status-map.js",
+
+    "/js/tariff.js",
+
+    "/js/assign-driver.js",
+
+    "/js/pwa.js"
 
 ];
 
