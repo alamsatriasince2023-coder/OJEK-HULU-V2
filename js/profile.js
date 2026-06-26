@@ -111,6 +111,10 @@ document
 
     await logoutUser();
 
-    location.href = 'login.html';
+    localStorage.clear();
+
+    sessionStorage.clear();
+
+    location.replace('index.html');
 
 });
