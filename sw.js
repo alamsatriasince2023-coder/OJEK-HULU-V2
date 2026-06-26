@@ -106,7 +106,19 @@ self.addEventListener(
 
                     keys.map(key=>{
 
-                        if(key!==CACHE_NAME){
+                        if(
+
+                            key !== CACHE_NAME
+
+                        ){
+
+                            console.log(
+
+                                "Delete Cache:",
+
+                                key
+
+                            );
 
                             return caches.delete(key);
 
@@ -118,9 +130,13 @@ self.addEventListener(
 
             })
 
-        );
+            .then(()=>{
 
-        self.clients.claim();
+                return self.clients.claim();
+
+            })
+
+        );
 
     }
 
@@ -136,7 +152,22 @@ self.addEventListener(
 
     event=>{
 
-        if(event.request.method!=="GET"){
+        if(event.request.method !== "GET"){
+
+            return;
+
+        }
+
+        // Jangan cache request Supabase
+        if(
+
+            event.request.url.includes("supabase.co") ||
+
+            event.request.url.includes("/auth/") ||
+
+            event.request.url.includes("/rest/v1/")
+
+        ){
 
             return;
 
@@ -144,45 +175,55 @@ self.addEventListener(
 
         event.respondWith(
 
-            fetch(event.request)
+            caches.match(event.request)
 
-            .then(response=>{
-
-                const copy=response.clone();
-
-                caches.open(CACHE_NAME)
-
-                .then(cache=>{
-
-                    cache.put(
-
-                        event.request,
-
-                        copy
-
-                    );
-
-                });
-
-                return response;
-
-            })
-
-            .catch(async()=>{
-
-                const cached=
-
-                await caches.match(
-
-                    event.request
-
-                );
+            .then(cached=>{
 
                 if(cached){
 
                     return cached;
 
                 }
+
+                return fetch(event.request)
+
+                .then(response=>{
+
+                    if(
+
+                        response.status===200 &&
+
+                        response.type==="basic"
+
+                    ){
+
+                        const clone=
+
+                        response.clone();
+
+                        caches.open(CACHE_NAME)
+
+                        .then(cache=>{
+
+                            cache.put(
+
+                                event.request,
+
+                                clone
+
+                            );
+
+                        });
+
+                    }
+
+                    return response;
+
+                });
+
+            })
+
+            .catch(()=>{
 
                 if(
 
