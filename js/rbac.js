@@ -63,9 +63,6 @@ export async function requireRole(role) {
                 location.href = 'admin-dashboard.html';
                 break;
 
-            default:
-                location.href = 'login.html';
-
         }
 
         return null;
@@ -110,7 +107,7 @@ export async function redirectByRole() {
             break;
 
         case 'admin':
-            location.href = 'admin.html';
+            location.href = 'admin-dashboard.html';
             break;
 
         default:
