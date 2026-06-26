@@ -63,7 +63,7 @@ document
         
             phone,
         
-            role: 'customer'
+            role: data.role
         
         });
 
