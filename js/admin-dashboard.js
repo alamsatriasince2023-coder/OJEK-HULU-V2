@@ -276,7 +276,7 @@ document
 
         location.replace(
 
-            "login.html"
+            "index.html"
 
         );
 
