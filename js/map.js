@@ -482,3 +482,41 @@ function animateDriverMarker(target){
     );
 
 }
+
+/* ===========================
+   OPEN GOOGLE MAPS
+=========================== */
+
+export function openNavigation(
+
+    latitude,
+
+    longitude
+
+){
+
+    if(
+
+        latitude == null ||
+
+        longitude == null
+
+    ){
+
+        return;
+
+    }
+
+    const url =
+
+`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=driving`;
+
+    window.open(
+
+        url,
+
+        "_blank"
+
+    );
+
+}
