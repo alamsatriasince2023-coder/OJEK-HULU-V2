@@ -29,6 +29,7 @@ let map;
 
 let pickupMarker = null;
 let destinationMarker = null;
+let driverAnimation = null;
 let driverMarker = null;
 
 init();
@@ -221,14 +222,14 @@ async function loadDriver(driverId){
 
     }else{
 
-        driverMarker.setLatLng([
-
+        animateDriver(
+    
             data.latitude,
-
+    
             data.longitude
-
-        ]);
-
+    
+        );
+    
     }
 
 }
@@ -356,5 +357,97 @@ function subscribeRealtime(){
     )
 
     .subscribe();
+
+}
+
+function animateDriver(
+
+    lat,
+
+    lng
+
+){
+
+    if(!driverMarker){
+
+        return;
+
+    }
+
+    if(driverAnimation){
+
+        clearInterval(
+
+            driverAnimation
+
+        );
+
+    }
+
+    const start =
+
+    driverMarker.getLatLng();
+
+    const end =
+
+    L.latLng(lat,lng);
+
+    let step = 0;
+
+    const total = 30;
+
+    driverAnimation =
+
+    setInterval(()=>{
+
+        step++;
+
+        const progress =
+
+        step / total;
+
+        const newLat =
+
+        start.lat +
+
+        (
+
+            end.lat -
+
+            start.lat
+
+        ) * progress;
+
+        const newLng =
+
+        start.lng +
+
+        (
+
+            end.lng -
+
+            start.lng
+
+        ) * progress;
+
+        driverMarker.setLatLng([
+
+            newLat,
+
+            newLng
+
+        ]);
+
+        if(step>=total){
+
+            clearInterval(
+
+                driverAnimation
+
+            );
+
+        }
+
+    },50);
 
 }
