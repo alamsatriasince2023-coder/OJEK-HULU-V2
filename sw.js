@@ -1,64 +1,22 @@
-const CACHE_NAME = "ojek-hulu-v3";
+const CACHE_NAME = "ojek-hulu-v4";
 
-const FILES = [
+/* ===========================
+   FILE STATIS
+=========================== */
 
-    "/",
-
-    "/index.html",
-
-    "/login.html",
-
-    "/register.html",
-
-    "/customer.html",
-
-    "/customer-history.html",
-
-    "/driver-dashboard.html",
-
-    "/driver-register.html",
-
-    "/order-map.html",
-
-    "/order-status-map.html",
-
-    "/profile.html",
-
-    "/offline.html",
-
-    "/css/style.css",
+const STATIC_FILES = [
 
     "/manifest.webmanifest",
 
+    "/css/style.css",
+
     "/assets/icons/icon-192.png",
-
     "/assets/icons/icon-512.png",
-
     "/assets/icons/maskable-512.png",
 
     "/assets/images/logo.png",
-
     "/assets/images/banner.png",
-
-    "/assets/images/splash.png",
-
-    "/js/api.js",
-
-    "/js/auth.js",
-
-    "/js/rbac.js",
-
-    "/js/customer.js",
-
-    "/js/order-map.js",
-
-    "/js/order-status-map.js",
-
-    "/js/tariff.js",
-
-    "/js/assign-driver.js",
-
-    "/js/pwa.js"
+    "/assets/images/splash.png"
 
 ];
 
@@ -78,7 +36,7 @@ self.addEventListener(
 
             caches
             .open(CACHE_NAME)
-            .then(cache=>cache.addAll(FILES))
+            .then(cache=>cache.addAll(STATIC_FILES))
 
         );
 
@@ -106,19 +64,7 @@ self.addEventListener(
 
                     keys.map(key=>{
 
-                        if(
-
-                            key !== CACHE_NAME
-
-                        ){
-
-                            console.log(
-
-                                "Delete Cache:",
-
-                                key
-
-                            );
+                        if(key !== CACHE_NAME){
 
                             return caches.delete(key);
 
@@ -130,11 +76,7 @@ self.addEventListener(
 
             })
 
-            .then(()=>{
-
-                return self.clients.claim();
-
-            })
+            .then(()=>self.clients.claim())
 
         );
 
@@ -158,14 +100,12 @@ self.addEventListener(
 
         }
 
-        // Jangan cache request Supabase
+        const url = new URL(event.request.url);
+
+        // Jangan cache Supabase
         if(
 
-            event.request.url.includes("supabase.co") ||
-
-            event.request.url.includes("/auth/") ||
-
-            event.request.url.includes("/rest/v1/")
+            url.hostname.includes("supabase.co")
 
         ){
 
@@ -173,78 +113,87 @@ self.addEventListener(
 
         }
 
+        // HTML selalu ambil dari network
+        if(
+
+            event.request.mode === "navigate"
+
+        ){
+
+            event.respondWith(
+
+                fetch(event.request)
+
+                .catch(()=>{
+
+                    return caches.match("/offline.html");
+
+                })
+
+            );
+
+            return;
+
+        }
+
+        // Asset: cache first
         event.respondWith(
 
             caches.match(event.request)
 
-            .then(cached=>{
+            .then(cache=>{
 
-                if(cached){
+                if(cache){
 
-                    return cached;
+                    return cache;
 
                 }
 
                 return fetch(event.request)
 
                 .then(response=>{
-                
-                    // Jangan cache redirect
-                    if(response.redirected){
-                
+
+                    if(
+
+                        !response ||
+
+                        !response.ok ||
+
+                        response.redirected
+
+                    ){
+
                         return response;
-                
+
                     }
-                
-                    // Jangan cache response error
-                    if(!response.ok){
-                
-                        return response;
-                
-                    }
-                
-                    // Cache hanya file dari origin sendiri
-                    if(response.type === "basic"){
-                
+
+                    if(
+
+                        response.type === "basic"
+
+                    ){
+
                         const clone = response.clone();
-                
+
                         caches.open(CACHE_NAME)
-                
-                        .then(cache=>{
-                
-                            cache.put(
-                
+
+                        .then(c=>{
+
+                            c.put(
+
                                 event.request,
-                
+
                                 clone
-                
+
                             );
-                
+
                         });
-                
+
                     }
-                
+
                     return response;
-                
+
                 });
-
-            })
-
-            .catch(()=>{
-
-                if(
-
-                    event.request.mode==="navigate"
-
-                ){
-
-                    return caches.match(
-
-                        "/offline.html"
-
-                    );
-
-                }
 
             })
 
