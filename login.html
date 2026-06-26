@@ -152,7 +152,10 @@ class="text-center text-red-500 mt-5 hidden">
 
 <script type="module">
 
-import { loginUser } from "./js/auth.js";
+import {
+    loginUser,
+    getProfile
+} from "./js/auth.js";
 import { redirectByRole } from "./js/rbac.js";
 import { supabase } from "./js/api.js";
 
@@ -199,7 +202,35 @@ try{
 
     ){
 
-        await redirectByRole();
+        const profile = await getProfile();
+
+         console.log("PROFILE LOGIN =", profile);
+         
+         if (!profile) {
+             throw new Error("Profile tidak ditemukan");
+         }
+         
+         switch (profile.role) {
+         
+             case "admin":
+                 console.log("➡ Admin");
+                 location.replace("admin-dashboard.html");
+                 return;
+         
+             case "driver":
+                 console.log("➡ Driver");
+                 location.replace("driver-dashboard.html");
+                 return;
+         
+             case "customer":
+                 console.log("➡ Customer");
+                 location.replace("customer.html");
+                 return;
+         
+             default:
+                 throw new Error("Role tidak dikenali: " + profile.role);
+         
+         }
 
     }
 
@@ -279,7 +310,35 @@ form.addEventListener(
 
             }
 
-            await redirectByRole();
+            const profile = await getProfile();
+
+            console.log("PROFILE LOGIN =", profile);
+            
+            if (!profile) {
+                throw new Error("Profile tidak ditemukan");
+            }
+            
+            switch (profile.role) {
+            
+                case "admin":
+                    console.log("➡ Admin");
+                    location.replace("admin-dashboard.html");
+                    return;
+            
+                case "driver":
+                    console.log("➡ Driver");
+                    location.replace("driver-dashboard.html");
+                    return;
+            
+                case "customer":
+                    console.log("➡ Customer");
+                    location.replace("customer.html");
+                    return;
+            
+                default:
+                    throw new Error("Role tidak dikenali: " + profile.role);
+            
+            }
 
         }
 
