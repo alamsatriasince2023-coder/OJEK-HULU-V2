@@ -172,15 +172,65 @@ async function renderOrder(order){
 
     convertStatus(order.status);
 
+    if(order.status === "completed"){
+
+        alert(
+    
+            "🎉 Perjalanan selesai.\nTerima kasih telah menggunakan Ojek Hulu."
+    
+        );
+    
+        setTimeout(()=>{
+    
+            location.href =
+    
+            "customer-history.html";
+    
+        },1500);
+    
+        return;
+    
+    }
+
     document.getElementById(
 
         'driver-name'
-
+    
     ).textContent =
-
+    
     order.driver_name ||
-
-    'Mencari Driver...';
+    
+    "Mencari Driver...";
+    
+    const btnCancel =
+    
+    document.getElementById(
+    
+        "btn-cancel"
+    
+    );
+    
+    if(btnCancel){
+    
+        btnCancel.style.display =
+    
+        [
+    
+            "accepted",
+    
+            "pickup",
+    
+            "ontheway",
+    
+            "completed"
+    
+        ].includes(order.status)
+    
+        ? "none"
+    
+        : "block";
+    
+    }
 
     if(!pickupMarker){
 
