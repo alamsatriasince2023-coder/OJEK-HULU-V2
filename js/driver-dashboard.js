@@ -4,7 +4,8 @@ import {
     updateDriverLocation,
     drawRoute,
     clearCustomerMarker,
-    clearDriverMarker
+    clearDriverMarker,
+    openNavigation
 } from './map.js';
 import {
     startGps,
@@ -713,6 +714,17 @@ async function pickupOrder(e){
    
    await loadOrders();
    await loadStatistic();
+    if(currentOrder){
+    
+        openNavigation(
+    
+            currentOrder.pickup_latitude,
+    
+            currentOrder.pickup_longitude
+    
+        );
+    
+    }
 
 }
 
@@ -740,6 +752,17 @@ async function startTrip(e){
    
    await loadOrders();
    await loadStatistic();
+    if(currentOrder){
+
+        openNavigation(
+    
+            currentOrder.destination_latitude,
+    
+            currentOrder.destination_longitude
+    
+        );
+    
+    }
 
 }
 
