@@ -35,6 +35,7 @@ let driverAnimation = null;
 let driverRoute = null;
 let currentEta = 0;
 let followDriver = true;
+let lastBearing = 0;
 let currentDistance = 0;
 
 init();
@@ -71,6 +72,43 @@ async function init(){
         ()=>{
     
             followDriver = false;
+    
+        }
+    
+    );
+    document
+
+    .getElementById(
+    
+        "btn-follow"
+    
+    )
+    
+    .addEventListener(
+    
+        "click",
+    
+        ()=>{
+    
+            followDriver = true;
+    
+            if(driverMarker){
+    
+                map.panTo(
+    
+                    driverMarker.getLatLng(),
+    
+                    {
+    
+                        animate:true,
+    
+                        duration:0.5
+    
+                    }
+    
+                );
+    
+            }
     
         }
     
@@ -414,6 +452,20 @@ function animateDriver(
 
     );
 
+    lastBearing =
+
+    calculateBearing(
+
+        start.lat,
+
+        start.lng,
+
+        end.lat,
+
+        end.lng
+
+    );
+
     let step = 0;
 
     const total = 30;
@@ -468,7 +520,60 @@ function animateDriver(
 
         ]);
 
+        if(
+
+            driverMarker.setRotationAngle
+
+        ){
+
+            driverMarker.setRotationAngle(
+
+                lastBearing
+
+            );
+
+        }
+
         drawDriverRoute();
+        if(
+
+            pickupMarker
+        
+        ){
+        
+            const distance =
+        
+            getDistanceMeters(
+        
+                newLat,
+        
+                newLng,
+        
+                pickupMarker
+        
+                .getLatLng()
+        
+                .lat,
+        
+                pickupMarker
+        
+                .getLatLng()
+        
+                .lng
+        
+            );
+        
+            if(distance <= 100){
+        
+                console.log(
+        
+                    "Driver hampir tiba di titik jemput"
+        
+                );
+        
+            }
+        
+        }
 
         if(
 
@@ -627,5 +732,185 @@ function updateEta(){
     .textContent =
     Math.ceil(currentEta / 60)
     + " menit";
+
+}
+
+function calculateBearing(
+
+    lat1,
+
+    lng1,
+
+    lat2,
+
+    lng2
+
+){
+
+    const toRad =
+
+    Math.PI / 180;
+
+    const y =
+
+        Math.sin(
+
+            (lng2 - lng1)
+
+            *
+
+            toRad
+
+        )
+
+        *
+
+        Math.cos(
+
+            lat2 * toRad
+
+        );
+
+    const x =
+
+        Math.cos(
+
+            lat1 * toRad
+
+        )
+
+        *
+
+        Math.sin(
+
+            lat2 * toRad
+
+        )
+
+        -
+
+        Math.sin(
+
+            lat1 * toRad
+
+        )
+
+        *
+
+        Math.cos(
+
+            lat2 * toRad
+
+        )
+
+        *
+
+        Math.cos(
+
+            (
+
+                lng2 - lng1
+
+            )
+
+            *
+
+            toRad
+
+        );
+
+    return (
+
+        Math.atan2(
+
+            y,
+
+            x
+
+        )
+
+        *
+
+        180
+
+        /
+
+        Math.PI
+
+        +
+
+        360
+
+    ) % 360;
+
+}
+
+function getDistanceMeters(
+
+    lat1,
+
+    lng1,
+
+    lat2,
+
+    lng2
+
+){
+
+    const R = 6371000;
+
+    const dLat =
+
+    (lat2-lat1)
+
+    *
+
+    Math.PI/180;
+
+    const dLng =
+
+    (lng2-lng1)
+
+    *
+
+    Math.PI/180;
+
+    const a =
+
+        Math.sin(dLat/2)
+
+        *
+
+        Math.sin(dLat/2)
+
+        +
+
+        Math.cos(lat1*Math.PI/180)
+
+        *
+
+        Math.cos(lat2*Math.PI/180)
+
+        *
+
+        Math.sin(dLng/2)
+
+        *
+
+        Math.sin(dLng/2);
+
+    const c =
+
+    2 *
+
+    Math.atan2(
+
+        Math.sqrt(a),
+
+        Math.sqrt(1-a)
+
+    );
+
+    return R*c;
 
 }
