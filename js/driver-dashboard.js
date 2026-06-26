@@ -963,30 +963,92 @@ toggleOnline
 =========================== */
 
 document
-.getElementById('btn-history')
-.addEventListener('click',()=>{
+.getElementById("btn-home")
+?.addEventListener(
 
-    alert('Driver History segera dibuat');
+    "click",
 
-});
+    ()=>{
+
+        location.href =
+
+        "driver-dashboard.html";
+
+    }
+
+);
 
 document
-.getElementById('btn-profile')
-.addEventListener('click',()=>{
+.getElementById("btn-history")
+?.addEventListener(
 
-    alert('Driver Profile segera dibuat');
+    "click",
 
-});
+    ()=>{
+
+        location.href =
+
+        "driver-history.html";
+
+    }
+
+);
 
 document
-.getElementById('btn-logout')
-.addEventListener('click',async()=>{
+.getElementById("btn-profile")
+?.addEventListener(
 
-    await logoutUser();
+    "click",
 
-    location.href='login.html';
+    ()=>{
 
-});
+        location.href =
+
+        "profile.html";
+
+    }
+
+);
+
+document
+.getElementById("btn-logout")
+?.addEventListener(
+
+    "click",
+
+    async()=>{
+
+        if(
+
+            !confirm(
+
+                "Logout dari aplikasi?"
+
+            )
+
+        ){
+
+            return;
+
+        }
+
+        stopGps();
+
+        await logoutUser();
+
+        localStorage.clear();
+
+        sessionStorage.clear();
+
+        location.replace(
+
+            "login.html"
+
+        );
+
+    }
+
+);
 
 /* ===========================
    INIT
