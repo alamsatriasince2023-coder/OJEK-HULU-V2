@@ -406,12 +406,12 @@ async function onMapClick(e){
         );
 
         destinationAddressText =
-
         address;
-        
+    
         destinationAddress.textContent =
-        
         address;
+
+        searchInput.value = address;
 
     }
 
@@ -904,6 +904,9 @@ function selectDestination(item){
     searchInput.value =
     item.display_name;
 
+    destinationAddressText =
+    item.display_name;
+    
     destinationAddress.textContent =
     item.display_name;
 
