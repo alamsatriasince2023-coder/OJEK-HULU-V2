@@ -34,6 +34,7 @@ let driverMarker = null;
 let driverAnimation = null;
 let driverRoute = null;
 let currentEta = 0;
+let followDriver = true;
 let currentDistance = 0;
 
 init();
@@ -63,6 +64,17 @@ async function init(){
     await loadOrder();
 
     subscribeRealtime();
+        map.on(
+    
+        "dragstart",
+    
+        ()=>{
+    
+            followDriver = false;
+    
+        }
+    
+    );
 
 }
 
@@ -394,7 +406,13 @@ function animateDriver(
 
     const end =
 
-    L.latLng(lat,lng);
+    L.latLng(
+
+        lat,
+
+        lng
+
+    );
 
     let step = 0;
 
@@ -412,27 +430,35 @@ function animateDriver(
 
         const newLat =
 
-        start.lat +
+            start.lat +
 
-        (
+            (
 
-            end.lat -
+                end.lat -
 
-            start.lat
+                start.lat
 
-        ) * progress;
+            )
+
+            *
+
+            progress;
 
         const newLng =
 
-        start.lng +
+            start.lng +
 
-        (
+            (
 
-            end.lng -
+                end.lng -
 
-            start.lng
+                start.lng
 
-        ) * progress;
+            )
+
+            *
+
+            progress;
 
         driverMarker.setLatLng([
 
@@ -441,34 +467,52 @@ function animateDriver(
             newLng
 
         ]);
+
         drawDriverRoute();
-        map.panTo(
 
-            [
-        
-                newLat,
-        
-                newLng
-        
-            ],
-        
-            {
-        
-                animate:true,
-        
-                duration:0.25
-        
-            }
-        
-        );
+        if(
 
-        if(step>=total){
+            step === total &&
+
+            followDriver
+
+        ){
+
+            map.panTo(
+
+                [
+
+                    newLat,
+
+                    newLng
+
+                ],
+
+                {
+
+                    animate:true,
+
+                    duration:0.5
+
+                }
+
+            );
+
+        }
+
+        if(
+
+            step >= total
+
+        ){
 
             clearInterval(
 
                 driverAnimation
 
             );
+
+            driverAnimation = null;
 
         }
 
@@ -572,50 +616,16 @@ function drawDriverRoute(){
 
 function updateEta(){
 
-    const km =
-
-        (
-
-            currentDistance
-
-            /
-
-            1000
-
-        )
-
-        .toFixed(1);
-
-    const minute =
-
-        Math.ceil(
-
-            currentEta
-
-            /
-
-            60
-
-        );
-
-    const status =
-
-`🚕 Driver menuju lokasi
-
-📏 ${km} km
-
-⏱️ ${minute} menit`;
+    document
+    .getElementById("distance")
+    .textContent =
+    (currentDistance / 1000).toFixed(1)
+    + " km";
 
     document
-
-    .getElementById(
-
-        "driver-eta"
-
-    )
-
+    .getElementById("eta")
     .textContent =
-
-    status;
+    Math.ceil(currentEta / 60)
+    + " menit";
 
 }
