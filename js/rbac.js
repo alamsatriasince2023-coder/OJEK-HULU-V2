@@ -60,7 +60,7 @@ export async function requireRole(role) {
                 break;
 
             case 'admin':
-                location.href = 'admin.html';
+                location.href = 'admin-dashboard.html';
                 break;
 
             default:
