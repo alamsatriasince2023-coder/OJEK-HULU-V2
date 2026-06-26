@@ -1,4 +1,4 @@
-const CACHE_NAME = "ojek-hulu-v2";
+const CACHE_NAME = "ojek-hulu-v3";
 
 const FILES = [
 
@@ -188,37 +188,44 @@ self.addEventListener(
                 return fetch(event.request)
 
                 .then(response=>{
-
-                    if(
-
-                        response.status===200 &&
-
-                        response.type==="basic"
-
-                    ){
-
-                        const clone=
-
-                        response.clone();
-
-                        caches.open(CACHE_NAME)
-
-                        .then(cache=>{
-
-                            cache.put(
-
-                                event.request,
-
-                                clone
-
-                            );
-
-                        });
-
+                
+                    // Jangan cache redirect
+                    if(response.redirected){
+                
+                        return response;
+                
                     }
-
+                
+                    // Jangan cache response error
+                    if(!response.ok){
+                
+                        return response;
+                
+                    }
+                
+                    // Cache hanya file dari origin sendiri
+                    if(response.type === "basic"){
+                
+                        const clone = response.clone();
+                
+                        caches.open(CACHE_NAME)
+                
+                        .then(cache=>{
+                
+                            cache.put(
+                
+                                event.request,
+                
+                                clone
+                
+                            );
+                
+                        });
+                
+                    }
+                
                     return response;
-
+                
                 });
 
             })
