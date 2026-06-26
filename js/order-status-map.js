@@ -343,14 +343,14 @@ function subscribeRealtime(){
 
             ){
 
-                driverMarker.setLatLng([
+                animateDriver(
 
                     payload.new.latitude,
-
+            
                     payload.new.longitude
-
-                ]);
-
+            
+                );
+            
             }
 
         }
