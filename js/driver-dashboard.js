@@ -1042,8 +1042,6 @@ document
 
         location.replace('index.html');
 
-        );
-
     }
 
 );
