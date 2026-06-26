@@ -170,6 +170,10 @@ async function loadActiveOrder(){
     .textContent =
     data.driver_name || '-';
 
+    window.currentOrder = data;
+
+    loadDriverLocation(data.driver_id);
+
 }
 
 /* ===========================
@@ -222,3 +226,192 @@ document
 =========================== */
 
 await loadActiveOrder();
+
+/* ===========================
+   LIVE DRIVER LOCATION
+=========================== */
+
+let driverChannel;
+
+let driverMarker;
+
+async function loadDriverLocation(driverId){
+
+    if(!driverId) return;
+
+    const { data } =
+    await supabase
+    .from('drivers')
+    .select('latitude,longitude,is_online')
+    .eq('id',driverId)
+    .single();
+
+    if(!data) return;
+
+    if(
+        !data.latitude ||
+        !data.longitude
+    ) return;
+
+    const latlng = [
+
+        data.latitude,
+
+        data.longitude
+
+    ];
+
+    if(!driverMarker){
+
+        driverMarker =
+
+        L.marker(latlng)
+
+        .addTo(map)
+
+        .bindPopup("🚕 Driver");
+
+    }
+
+    else{
+
+        driverMarker.setLatLng(latlng);
+
+        if(window.routingControl){
+
+            window.routingControl.setWaypoints([
+        
+                L.latLng(
+        
+                    payload.new.latitude,
+        
+                    payload.new.longitude
+        
+                ),
+        
+                L.latLng(
+        
+                    window.pickupLat,
+        
+                    window.pickupLng
+        
+                )
+        
+            ]);
+        
+        }
+
+    }
+
+    map.flyTo(
+
+        latlng,
+    
+        map.getZoom(),
+    
+        {
+    
+            animate:true,
+    
+            duration:1
+    
+        }
+    
+    );
+
+}
+
+/* ===========================
+   REALTIME DRIVER GPS
+=========================== */
+
+driverChannel?.unsubscribe();
+
+driverChannel =
+supabase
+
+.channel('driver-location')
+
+.on(
+
+'postgres_changes',
+
+{
+
+event:'UPDATE',
+
+schema:'public',
+
+table:'drivers'
+
+},
+
+(payload)=>{
+
+    if(
+
+        payload.new.id===
+    
+        window.currentOrder?.driver_id
+    
+    ){
+    
+        const latlng=[
+    
+            payload.new.latitude,
+    
+            payload.new.longitude
+    
+        ];
+    
+        if(driverMarker){
+    
+            driverMarker.setLatLng(latlng);
+
+            if(window.routingControl){
+
+                window.routingControl.setWaypoints([
+            
+                    L.latLng(
+            
+                        payload.new.latitude,
+            
+                        payload.new.longitude
+            
+                    ),
+            
+                    L.latLng(
+            
+                        window.pickupLat,
+            
+                        window.pickupLng
+            
+                    )
+            
+                ]);
+            
+            }
+    
+        }
+    
+        map.flyTo(
+
+            latlng,
+        
+            map.getZoom(),
+        
+            {
+        
+                animate:true,
+        
+                duration:1
+        
+            }
+        
+        );
+    
+    }
+
+})
+
+.subscribe();
