@@ -35,49 +35,141 @@ content="Ojek Hulu">
 
 </head>
 
-<body class="bg-gray-100">
+<body
+class="bg-gradient-to-b from-green-500 via-green-600 to-green-700">
 
-<div class="max-w-md mx-auto min-h-screen bg-white shadow-lg">
+<div
+class="max-w-md mx-auto min-h-screen bg-white shadow-2xl overflow-hidden">
 
-<!-- HEADER -->
+<!-- ===========================
+HEADER PREMIUM
+=========================== -->
 
-<div class="bg-green-600 text-white p-8 text-center">
+<div
+class="relative text-white px-8 pt-12 pb-24 text-center">
 
-<h1 class="text-4xl font-bold">
+<div
+class="absolute inset-0 bg-gradient-to-br from-green-500 via-green-600 to-green-700">
+
+</div>
+
+<div
+class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full">
+
+</div>
+
+<div
+class="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full">
+
+</div>
+
+<div class="relative">
+
+<div
+class="w-28 h-28 mx-auto rounded-full bg-white shadow-xl flex items-center justify-center">
+
+<div style="font-size:60px;">
 
 🚕
 
-</h1>
+</div>
 
-<h2 class="text-2xl font-bold mt-2">
+</div>
+
+<h1
+class="text-4xl font-bold mt-6">
 
 OJEK HULU
 
-</h2>
+</h1>
 
-<p class="mt-2 text-green-100">
+<p
+class="mt-3 text-green-100">
 
 Transportasi Lokal Kapuas Hulu
 
 </p>
 
+<p
+class="mt-2 text-sm text-green-200">
+
+Cepat • Aman • Terpercaya
+
+</p>
+
 </div>
+
+</div>
+
+<!-- ===========================
+WELCOME CARD
+=========================== -->
+
+<div
+class="relative -mt-14 px-6">
+
+<div
+class="bg-white rounded-3xl shadow-xl p-6 text-center">
+
+<h2
+class="text-xl font-bold text-gray-800">
+
+Selamat Datang 👋
+
+</h2>
+
+<p
+class="text-gray-500 mt-2">
+
+Satu aplikasi untuk Customer, Driver dan Admin.
+
+</p>
+
+</div>
+
+</div>
+
+<!-- ===========================
+AKSES APLIKASI
+=========================== -->
+
+<div class="p-6 space-y-6">
 
 <!-- CUSTOMER -->
 
-<div class="p-6">
+<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6">
 
-<h2 class="text-lg font-bold mb-4">
+<div class="flex items-center mb-5">
 
-👤 CUSTOMER
+<div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center text-3xl">
+
+👤
+
+</div>
+
+<div class="ml-4">
+
+<h2 class="text-xl font-bold">
+
+Customer
 
 </h2>
+
+<p class="text-gray-500 text-sm">
+
+Pesan perjalanan dengan mudah
+
+</p>
+
+</div>
+
+</div>
 
 <button
 
 onclick="location.href='login.html'"
 
-class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mb-3">
+class="w-full bg-green-600 hover:bg-green-700 transition text-white rounded-2xl py-4 font-bold mb-3">
 
 Login Customer
 
@@ -87,7 +179,7 @@ Login Customer
 
 onclick="location.href='register.html'"
 
-class="w-full border border-green-600 text-green-600 py-3 rounded-xl font-bold">
+class="w-full border-2 border-green-600 text-green-600 rounded-2xl py-4 font-bold">
 
 Daftar Customer
 
@@ -95,23 +187,41 @@ Daftar Customer
 
 </div>
 
-<hr>
-
 <!-- DRIVER -->
 
-<div class="p-6">
+<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6">
 
-<h2 class="text-lg font-bold mb-4">
+<div class="flex items-center mb-5">
 
-🚕 DRIVER
+<div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-3xl">
+
+🚕
+
+</div>
+
+<div class="ml-4">
+
+<h2 class="text-xl font-bold">
+
+Driver
 
 </h2>
+
+<p class="text-gray-500 text-sm">
+
+Mulai menerima order pelanggan
+
+</p>
+
+</div>
+
+</div>
 
 <button
 
 onclick="location.href='login.html'"
 
-class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mb-3">
+class="w-full bg-blue-600 hover:bg-blue-700 transition text-white rounded-2xl py-4 font-bold mb-3">
 
 Login Driver
 
@@ -121,7 +231,7 @@ Login Driver
 
 onclick="location.href='driver-register.html'"
 
-class="w-full border border-blue-600 text-blue-600 py-3 rounded-xl font-bold">
+class="w-full border-2 border-blue-600 text-blue-600 rounded-2xl py-4 font-bold">
 
 Daftar Driver
 
@@ -129,44 +239,180 @@ Daftar Driver
 
 </div>
 
-<hr>
-
 <!-- ADMIN -->
 
-<div class="p-6">
+<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6">
 
-<h2 class="text-lg font-bold mb-4">
+<div class="flex items-center mb-5">
 
-🛠 ADMIN
+<div class="w-14 h-14 rounded-2xl bg-gray-200 flex items-center justify-center text-3xl">
+
+🛠
+
+</div>
+
+<div class="ml-4">
+
+<h2 class="text-xl font-bold">
+
+Administrator
 
 </h2>
+
+<p class="text-gray-500 text-sm">
+
+Kelola sistem Ojek Hulu
+
+</p>
+
+</div>
+
+</div>
 
 <button
 
 onclick="location.href='login.html'"
 
-class="w-full bg-gray-800 text-white py-3 rounded-xl font-bold">
+class="w-full bg-gray-800 hover:bg-black transition text-white rounded-2xl py-4 font-bold">
 
-Login Admin
+Login Administrator
 
 </button>
 
 </div>
 
+</div>
 
-<!-- FOOTER -->
+<!-- ===========================
+FITUR
+=========================== -->
 
-<div class="text-center text-gray-500 text-sm p-6">
+<div class="px-6 pb-4">
 
-Ojek Hulu V2
+<div class="bg-gradient-to-r from-green-600 to-green-500 rounded-3xl p-6 text-white shadow-xl">
+
+<h2 class="text-2xl font-bold">
+
+Kenapa Ojek Hulu?
+
+</h2>
+
+<div class="mt-5 space-y-4">
+
+<div class="flex items-center">
+
+<div class="text-3xl mr-4">⚡</div>
+
+<div>
+
+<div class="font-bold">
+
+Respon Cepat
+
+</div>
+
+<div class="text-green-100 text-sm">
+
+Driver menerima order secara realtime.
+
+</div>
+
+</div>
+
+</div>
+
+<div class="flex items-center">
+
+<div class="text-3xl mr-4">🛡️</div>
+
+<div>
+
+<div class="font-bold">
+
+Aman & Terpercaya
+
+</div>
+
+<div class="text-green-100 text-sm">
+
+Identitas driver terverifikasi.
+
+</div>
+
+</div>
+
+</div>
+
+<div class="flex items-center">
+
+<div class="text-3xl mr-4">📍</div>
+
+<div>
+
+<div class="font-bold">
+
+Khusus Kapuas Hulu
+
+</div>
+
+<div class="text-green-100 text-sm">
+
+Melayani masyarakat lokal dengan cepat.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+FOOTER
+=========================== -->
+
+<footer class="px-6 pb-10 pt-6 text-center">
+
+<h3 class="text-xl font-bold text-green-700">
+
+🚕
+
+OJEK HULU
+
+</h3>
+
+<p class="text-gray-500 mt-2">
+
+Transportasi Lokal Kapuas Hulu
+
+</p>
+
+<div class="mt-6 text-sm text-gray-400">
+
+Versi 2.0.0
+
+<br><br>
+
+© 2026 Ojek Hulu
 
 <br>
-Create by Alam Satria, S.Kep., Ners., M.A.P
 
+Developed by
+
+<b>Alam Satria, S.Kep., Ners., M.A.P</b>
 
 </div>
 
+</footer>
+
 </div>
+
+<script src="./js/pwa.js"></script>
 
 </body>
+
 </html>
