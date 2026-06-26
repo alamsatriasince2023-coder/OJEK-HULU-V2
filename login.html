@@ -12,7 +12,7 @@ content="width=device-width,initial-scale=1.0">
 <title>Login - Ojek Hulu</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="./js/pwa.js"></script>
+
 
 <link
 rel="manifest"
@@ -72,6 +72,12 @@ Transportasi Lokal Putussibau
 
 </p>
 
+<p class="text-xs text-gray-400 mt-2">
+
+Versi 2.0.0
+
+</p>
+
 </div>
 
 <input
@@ -83,6 +89,10 @@ type="email"
 placeholder="Email"
 
 autocomplete="email"
+
+autofocus
+
+aria-label="Email"
 
 required
 
@@ -97,6 +107,8 @@ type="password"
 placeholder="Password"
 
 autocomplete="current-password"
+
+aria-label="Password"
 
 required
 
@@ -170,23 +182,31 @@ AUTO LOGIN
 
 const {
 
-data
+    data,
 
-}
+    error
 
-=
+} =
 
 await supabase.auth.getSession();
 
 if(
 
-data.session
+    !error &&
+
+    data?.session
 
 ){
 
-await redirectByRole();
+    await redirectByRole();
 
 }
+
+btn.disabled = false;
+
+btn.innerHTML =
+
+"🚕 Login";
 
 /* ===========================
 LOGIN
@@ -207,6 +227,11 @@ document.getElementById(
 "btn-login"
 
 );
+btn.disabled = true;
+
+btn.innerHTML =
+
+"🔄 Memeriksa Session...";
 
 const message =
 
@@ -282,7 +307,7 @@ btn.disabled=true;
 
 btn.innerHTML=
 
-"⏳ Sedang Login...";
+"🚕 Masuk...";
 
 try{
 
@@ -318,29 +343,28 @@ await redirectByRole();
 
 catch(err){
 
-console.error(
+    console.error(err);
 
-err
+    message.innerHTML =
 
-);
+        err.message ||
 
-message.innerHTML=
+        "Login gagal.";
 
-err.message ||
+    message.classList.remove(
 
-"Gagal login.";
+        "hidden"
 
-message.classList.remove(
+    );
 
-"hidden"
+}
+finally{
 
-);
+    btn.disabled = false;
 
-btn.disabled=false;
+    btn.innerHTML =
 
-btn.innerHTML=
-
-"🚕 Login";
+    "🚕 Login";
 
 }
 
@@ -349,6 +373,36 @@ btn.innerHTML=
 );
 
 </script>
+
+document
+
+.getElementById(
+
+"password"
+
+)
+
+.addEventListener(
+
+"keydown",
+
+e=>{
+
+if(
+
+e.key==="Enter"
+
+){
+
+form.requestSubmit();
+
+}
+
+}
+
+);
+
+<script src="./js/pwa.js"></script>
 
 </body>
 
