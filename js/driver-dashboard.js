@@ -820,7 +820,7 @@ async function loadDriverStatus(){
     .from('drivers')
     .select('is_online,latitude,longitude')
     .eq('id',user.id)
-    .single();
+    .maybeSingle();
 
     if(error){
 
@@ -828,6 +828,9 @@ async function loadDriverStatus(){
 
         return;
 
+    }
+    if (!data) {
+        return;
     }
 
     isOnline = data.is_online;
