@@ -13,7 +13,6 @@ content="width=device-width,initial-scale=1.0">
 
 <script src="https://cdn.tailwindcss.com"></script>
 
-
 <link
 rel="manifest"
 href="./manifest.webmanifest">
@@ -156,12 +155,8 @@ import {
     loginUser,
     getProfile
 } from "./js/auth.js";
-import { redirectByRole } from "./js/rbac.js";
-import { supabase } from "./js/api.js";
 
-/* ===========================
-   ELEMENT
-=========================== */
+import { supabase } from "./js/api.js";
 
 const form =
 document.getElementById("login-form");
@@ -176,11 +171,66 @@ const passwordInput =
 document.getElementById("password");
 
 /* ===========================
+   REDIRECT BERDASARKAN ROLE
+=========================== */
+
+async function goByRole(){
+
+    const profile = await getProfile();
+
+    console.log("PROFILE LOGIN =", profile);
+
+    if(!profile){
+
+        throw new Error("Profile tidak ditemukan.");
+
+    }
+
+    switch(profile.role){
+
+        case "admin":
+
+            console.log("➡ Admin Dashboard");
+
+            location.replace("admin-dashboard.html");
+
+            break;
+
+        case "driver":
+
+            console.log("➡ Driver Dashboard");
+
+            location.replace("driver-dashboard.html");
+
+            break;
+
+        case "customer":
+
+            console.log("➡ Customer");
+
+            location.replace("customer.html");
+
+            break;
+
+        default:
+
+            throw new Error(
+                "Role tidak dikenali : " +
+                profile.role
+            );
+
+    }
+
+}
+
+/* ===========================
    CEK SESSION
 =========================== */
 
 btn.disabled = true;
-btn.innerHTML = "🔄 Memeriksa Session...";
+
+btn.innerHTML =
+"🔄 Memeriksa Session...";
 
 try{
 
@@ -202,39 +252,12 @@ try{
 
     ){
 
-        const profile = await getProfile();
-
-         console.log("PROFILE LOGIN =", profile);
-         
-         if (!profile) {
-             throw new Error("Profile tidak ditemukan");
-         }
-         
-         switch (profile.role) {
-         
-             case "admin":
-                 console.log("➡ Admin");
-                 location.replace("admin-dashboard.html");
-                 return;
-         
-             case "driver":
-                 console.log("➡ Driver");
-                 location.replace("driver-dashboard.html");
-                 return;
-         
-             case "customer":
-                 console.log("➡ Customer");
-                 location.replace("customer.html");
-                 return;
-         
-             default:
-                 throw new Error("Role tidak dikenali: " + profile.role);
-         
-         }
+        await goByRole();
 
     }
 
 }
+
 catch(err){
 
     console.error(err);
@@ -242,7 +265,9 @@ catch(err){
 }
 
 btn.disabled = false;
-btn.innerHTML = "🚕 Login";
+
+btn.innerHTML =
+"🚕 Login";
 
 /* ===========================
    LOGIN
@@ -250,121 +275,103 @@ btn.innerHTML = "🚕 Login";
 
 form.addEventListener(
 
-    "submit",
+"submit",
 
-    async(e)=>{
+async(e)=>{
 
-        e.preventDefault();
+    e.preventDefault();
 
-        message.classList.add("hidden");
+    message.classList.add("hidden");
 
-        const email =
-        document
-        .getElementById("email")
-        .value
-        .trim();
+    const email =
 
-        const password =
-        passwordInput.value;
+    document
 
-        if(
+    .getElementById("email")
 
-            !email ||
+    .value
 
-            !password
+    .trim();
 
-        ){
+    const password =
 
-            message.textContent =
-            "Email dan Password wajib diisi.";
+    passwordInput.value;
 
-            message.classList.remove("hidden");
+    if(
 
-            return;
+        !email ||
 
-        }
+        !password
 
-        btn.disabled = true;
+    ){
 
-        btn.innerHTML = "🚕 Masuk...";
+        message.textContent =
 
-        try{
+        "Email dan Password wajib diisi.";
 
-            const {
+        message.classList.remove("hidden");
 
-                error
-
-            } =
-
-            await loginUser(
-
-                email,
-
-                password
-
-            );
-
-            if(error){
-
-                throw error;
-
-            }
-
-            const profile = await getProfile();
-
-            console.log("PROFILE LOGIN =", profile);
-            
-            if (!profile) {
-                throw new Error("Profile tidak ditemukan");
-            }
-            
-            switch (profile.role) {
-            
-                case "admin":
-                    console.log("➡ Admin");
-                    location.replace("admin-dashboard.html");
-                    return;
-            
-                case "driver":
-                    console.log("➡ Driver");
-                    location.replace("driver-dashboard.html");
-                    return;
-            
-                case "customer":
-                    console.log("➡ Customer");
-                    location.replace("customer.html");
-                    return;
-            
-                default:
-                    throw new Error("Role tidak dikenali: " + profile.role);
-            
-            }
-
-        }
-
-        catch(err){
-
-            console.error(err);
-
-            message.textContent =
-            err.message ||
-            "Login gagal.";
-
-            message.classList.remove("hidden");
-
-        }
-
-        finally{
-
-            btn.disabled = false;
-
-            btn.innerHTML = "🚕 Login";
-
-        }
+        return;
 
     }
 
-);
+    btn.disabled = true;
+
+    btn.innerHTML =
+
+    "🚕 Masuk...";
+
+    try{
+
+        const {
+
+            error
+
+        } =
+
+        await loginUser(
+
+            email,
+
+            password
+
+        );
+
+        if(error){
+
+            throw error;
+
+        }
+
+        await goByRole();
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        message.textContent =
+
+        err.message ||
+
+        "Login gagal.";
+
+        message.classList.remove("hidden");
+
+    }
+
+    finally{
+
+        btn.disabled = false;
+
+        btn.innerHTML =
+
+        "🚕 Login";
+
+    }
+
+});
 
 /* ===========================
    ENTER LOGIN
@@ -378,7 +385,7 @@ passwordInput.addEventListener(
 
         if(
 
-            e.key==="Enter"
+            e.key === "Enter"
 
         ){
 
