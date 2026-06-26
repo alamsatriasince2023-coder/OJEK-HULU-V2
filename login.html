@@ -152,255 +152,186 @@ class="text-center text-red-500 mt-5 hidden">
 
 <script type="module">
 
-import {
-
-loginUser
-
-}
-
-from "./js/auth.js";
-
-import {
-
-redirectByRole
-
-}
-
-from "./js/rbac.js";
-
-import {
-
-supabase
-
-}
-
-from "./js/api.js";
+import { loginUser } from "./js/auth.js";
+import { redirectByRole } from "./js/rbac.js";
+import { supabase } from "./js/api.js";
 
 /* ===========================
-AUTO LOGIN
-=========================== */
-
-const {
-
-    data,
-
-    error
-
-} =
-
-await supabase.auth.getSession();
-
-if(
-
-    !error &&
-
-    data?.session
-
-){
-
-    await redirectByRole();
-
-}
-
-btn.disabled = false;
-
-btn.innerHTML =
-
-"🚕 Login";
-
-/* ===========================
-LOGIN
+   ELEMENT
 =========================== */
 
 const form =
-
-document.getElementById(
-
-"login-form"
-
-);
+document.getElementById("login-form");
 
 const btn =
-
-document.getElementById(
-
-"btn-login"
-
-);
-btn.disabled = true;
-
-btn.innerHTML =
-
-"🔄 Memeriksa Session...";
+document.getElementById("btn-login");
 
 const message =
+document.getElementById("login-message");
 
-document.getElementById(
+const passwordInput =
+document.getElementById("password");
 
-"login-message"
+/* ===========================
+   CEK SESSION
+=========================== */
 
-);
-
-form.addEventListener(
-
-"submit",
-
-async(e)=>{
-
-e.preventDefault();
-
-message.classList.add(
-
-"hidden"
-
-);
-
-const email =
-
-document
-
-.getElementById(
-
-"email"
-
-)
-
-.value
-
-.trim();
-
-const password =
-
-document
-
-.getElementById(
-
-"password"
-
-)
-
-.value;
-
-if(
-
-!email ||
-
-!password
-
-){
-
-message.innerHTML=
-
-"Email dan password wajib diisi.";
-
-message.classList.remove(
-
-"hidden"
-
-);
-
-return;
-
-}
-
-btn.disabled=true;
-
-btn.innerHTML=
-
-"🚕 Masuk...";
+btn.disabled = true;
+btn.innerHTML = "🔄 Memeriksa Session...";
 
 try{
 
-const {
+    const {
 
-error
+        data,
 
-}
+        error
 
-=
+    } =
 
-await loginUser(
+    await supabase.auth.getSession();
 
-email,
+    if(
 
-password
+        !error &&
 
-);
+        data?.session
 
-if(
+    ){
 
-error
+        await redirectByRole();
 
-){
-
-throw error;
+    }
 
 }
-
-await redirectByRole();
-
-}
-
 catch(err){
 
     console.error(err);
 
-    message.innerHTML =
-
-        err.message ||
-
-        "Login gagal.";
-
-    message.classList.remove(
-
-        "hidden"
-
-    );
-
-}
-finally{
-
-    btn.disabled = false;
-
-    btn.innerHTML =
-
-    "🚕 Login";
-
 }
 
-}
+btn.disabled = false;
+btn.innerHTML = "🚕 Login";
+
+/* ===========================
+   LOGIN
+=========================== */
+
+form.addEventListener(
+
+    "submit",
+
+    async(e)=>{
+
+        e.preventDefault();
+
+        message.classList.add("hidden");
+
+        const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+        const password =
+        passwordInput.value;
+
+        if(
+
+            !email ||
+
+            !password
+
+        ){
+
+            message.textContent =
+            "Email dan Password wajib diisi.";
+
+            message.classList.remove("hidden");
+
+            return;
+
+        }
+
+        btn.disabled = true;
+
+        btn.innerHTML = "🚕 Masuk...";
+
+        try{
+
+            const {
+
+                error
+
+            } =
+
+            await loginUser(
+
+                email,
+
+                password
+
+            );
+
+            if(error){
+
+                throw error;
+
+            }
+
+            await redirectByRole();
+
+        }
+
+        catch(err){
+
+            console.error(err);
+
+            message.textContent =
+            err.message ||
+            "Login gagal.";
+
+            message.classList.remove("hidden");
+
+        }
+
+        finally{
+
+            btn.disabled = false;
+
+            btn.innerHTML = "🚕 Login";
+
+        }
+
+    }
+
+);
+
+/* ===========================
+   ENTER LOGIN
+=========================== */
+
+passwordInput.addEventListener(
+
+    "keydown",
+
+    e=>{
+
+        if(
+
+            e.key==="Enter"
+
+        ){
+
+            form.requestSubmit();
+
+        }
+
+    }
 
 );
 
 </script>
-
-document
-
-.getElementById(
-
-"password"
-
-)
-
-.addEventListener(
-
-"keydown",
-
-e=>{
-
-if(
-
-e.key==="Enter"
-
-){
-
-form.requestSubmit();
-
-}
-
-}
-
-);
 
 <script src="./js/pwa.js"></script>
 
