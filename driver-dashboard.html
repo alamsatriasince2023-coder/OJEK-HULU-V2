@@ -263,6 +263,102 @@ Logout
 
 </div>
 
+<!-- ===========================
+POPUP ORDER BARU
+=========================== -->
+
+<div
+id="order-modal"
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+z-index:9999;
+align-items:center;
+justify-content:center;
+">
+
+<div
+style="
+width:90%;
+max-width:420px;
+background:#fff;
+border-radius:18px;
+padding:24px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+">
+
+<h2 style="margin-top:0;">
+🚕 Order Baru
+</h2>
+
+<div style="margin:15px 0;">
+
+<b>Customer</b>
+
+<div id="modal-customer">-</div>
+
+</div>
+
+<div style="margin:15px 0;">
+
+<b>Jemput</b>
+
+<div id="modal-pickup">-</div>
+
+</div>
+
+<div style="margin:15px 0;">
+
+<b>Tujuan</b>
+
+<div id="modal-destination">-</div>
+
+</div>
+
+<div style="margin:15px 0;">
+
+<b>Tarif</b>
+
+<div id="modal-price">Rp 0</div>
+
+</div>
+
+<div
+style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:25px;
+">
+
+<button
+
+id="btn-reject"
+
+class="btn btn-red">
+
+❌ Tolak
+
+</button>
+
+<button
+
+id="btn-accept"
+
+class="btn btn-green">
+
+✅ Terima
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+  
 <script src="./js/pwa.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
