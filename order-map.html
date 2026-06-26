@@ -304,37 +304,66 @@ background:#f5f5f5;
 
 }
 
+#search-box{
+
+position:fixed;
+top:95px;
+left:35px;
+right:20px;
+
+display:flex;
+align-items:center;
+gap:12px;
+
+z-index:9999;
+
+}
+
+#btn-back{
+
+width:52px;
+height:52px;
+
+border:none;
+border-radius:50%;
+
+background:#16a34a;
+color:#fff;
+
+font-size:24px;
+
+cursor:pointer;
+
+flex-shrink:0;
+
+}
+
+#search-box input{
+
+flex:1;
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<button
-
-onclick="history.back()"
-
-style="
-position:fixed;
-top:20px;
-left:20px;
-z-index:9999;
-width:52px;
-height:52px;
-border:none;
-border-radius:50%;
-background:#16a34a;
-color:white;
-font-size:24px;">
-
-←
-
-</button>
-    
 
 <div id="map"></div>
 
 <div id="search-box">
+
+<button
+
+id="btn-back"
+
+onclick="history.back()">
+
+←
+
+</button>
 
 <input
 
