@@ -127,30 +127,37 @@ export function startGps(userId){
             );
 
             const { error } =
-            await supabase
-            .from('drivers')
-            .update({
 
-                latitude,
-
-                longitude,
-                is_online:true,
-
-                last_location:
-
-                last_location:
-                new Date().toISOString()
-
-            })
-            .eq('id',userId);
-
+                await supabase
+            
+                .from('drivers')
+            
+                .update({
+            
+                    latitude,
+            
+                    longitude,
+            
+                    is_online: true,
+            
+                    last_location:
+            
+                    new Date().toISOString()
+            
+                })
+            
+                .eq('id', userId);
+            
             if(error){
-
+            
                 console.error(
+            
                     'GPS Update Error',
+            
                     error
+            
                 );
-
+            
             }
 
         },
