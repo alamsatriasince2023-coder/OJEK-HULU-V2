@@ -49,6 +49,43 @@ document.getElementById('today-income');
 let isOnline = false;
 let currentOrder = null;
 
+let popupOrder = null;
+
+const orderModal =
+document.getElementById(
+    "order-modal"
+);
+
+const modalCustomer =
+document.getElementById(
+    "modal-customer"
+);
+
+const modalPickup =
+document.getElementById(
+    "modal-pickup"
+);
+
+const modalDestination =
+document.getElementById(
+    "modal-destination"
+);
+
+const modalPrice =
+document.getElementById(
+    "modal-price"
+);
+
+const btnAccept =
+document.getElementById(
+    "btn-accept"
+);
+
+const btnReject =
+document.getElementById(
+    "btn-reject"
+);
+
 let currentDriver = null;
 
 /* ===========================
@@ -111,6 +148,182 @@ function getActionButton(order){
     }
 
 }
+
+function showOrderPopup(order){
+
+    popupOrder = order;
+
+    modalCustomer.textContent =
+    order.nama;
+
+    modalPickup.textContent =
+    order.jemput;
+
+    modalDestination.textContent =
+    order.tujuan;
+
+    modalPrice.textContent =
+    "Rp " +
+
+    Number(order.price || 0)
+
+    .toLocaleString("id-ID");
+
+    orderModal.style.display =
+    "flex";
+
+}
+
+function hideOrderPopup(){
+
+    popupOrder = null;
+
+    orderModal.style.display =
+    "none";
+
+}
+
+btnAccept.addEventListener(
+
+    "click",
+
+    async()=>{
+
+        if(!popupOrder){
+
+            return;
+
+        }
+
+        btnAccept.disabled = true;
+
+        btnReject.disabled = true;
+
+        const { error } =
+
+        await supabase
+
+        .from("orders")
+
+        .update({
+
+            status:"accepted",
+
+            driver_id:user.id,
+
+            accepted_at:
+
+            new Date().toISOString()
+
+        })
+
+        .eq(
+
+            "id",
+
+            popupOrder.id
+
+        )
+
+        .eq(
+
+            "status",
+
+            "offered"
+
+        );
+
+        if(error){
+
+            alert(
+
+                error.message
+
+            );
+
+        }else{
+
+            hideOrderPopup();
+
+        }
+
+        btnAccept.disabled = false;
+
+        btnReject.disabled = false;
+
+    }
+
+);
+
+btnReject.addEventListener(
+
+    "click",
+
+    async()=>{
+
+        if(!popupOrder){
+
+            return;
+
+        }
+
+        btnAccept.disabled = true;
+
+        btnReject.disabled = true;
+
+        const { error } =
+
+        await supabase
+
+        .from("orders")
+
+        .update({
+
+            driver_id:null,
+
+            status:"pending",
+
+            assigned_at:null,
+
+            accepted_at:null
+
+        })
+
+        .eq(
+
+            "id",
+
+            popupOrder.id
+
+        )
+
+        .eq(
+
+            "status",
+
+            "offered"
+
+        );
+
+        if(error){
+
+            alert(
+
+                error.message
+
+            );
+
+        }
+
+        hideOrderPopup();
+
+        btnAccept.disabled = false;
+
+        btnReject.disabled = false;
+
+    }
+
+);
 
 function startOfferCountdown(order){
 
@@ -762,15 +975,84 @@ await loadOrders();
 await loadStatistic();
 
 supabase
-.channel('driver-orders')
+
+.channel(
+
+    'driver-orders'
+
+)
+
 .on(
+
     'postgres_changes',
+
     {
+
         event:'*',
+
         schema:'public',
+
         table:'orders'
+
     },
-    async ()=>{
+
+    async(payload)=>{
+
+        if(
+
+            isOnline &&
+
+            payload.eventType === 'INSERT'
+
+        ){
+
+            const order =
+
+            payload.new;
+
+            if(
+
+                order.driver_id === user.id &&
+
+                order.status === 'offered'
+
+            ){
+
+                showOrderPopup(
+
+                    order
+
+                );
+
+            }
+
+        }
+
+        if(
+
+            payload.eventType === 'UPDATE'
+
+        ){
+
+            const order =
+
+            payload.new;
+
+            if(
+
+                popupOrder &&
+
+                popupOrder.id === order.id &&
+
+                order.status !== 'offered'
+
+            ){
+
+                hideOrderPopup();
+
+            }
+
+        }
 
         await loadDriverStatus();
 
@@ -779,5 +1061,7 @@ supabase
         await loadStatistic();
 
     }
+
 )
+
 .subscribe();
