@@ -29,8 +29,9 @@ let map;
 
 let pickupMarker = null;
 let destinationMarker = null;
-let driverAnimation = null;
+
 let driverMarker = null;
+let driverAnimation = null;
 
 init();
 
