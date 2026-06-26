@@ -445,7 +445,7 @@ async function loadOrders(){
        </div>
        `;
 
-       startOfferCountdown(order);
+
    
        return;
    
