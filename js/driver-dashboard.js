@@ -872,7 +872,7 @@ async function toggleOnline(){
     .from('drivers')
     .update({
 
-        is_online:isOnline
+        is_online:isOnline,
         status:
 
         isOnline
