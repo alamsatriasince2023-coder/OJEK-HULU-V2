@@ -74,13 +74,13 @@ export function startGps(userId){
             const accuracy =
             position.coords.accuracy;
 
-           if(accuracy > 30){
+           if(position.coords.accuracy > 50){
 
                 console.log(
             
                     "GPS belum akurat:",
             
-                    accuracy
+                    position.coords.accuracy
             
                 );
             
