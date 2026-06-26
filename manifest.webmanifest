@@ -6,9 +6,9 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#00AA13",
+  "background_color": "#ffffff",
   "theme_color": "#00AA13",
-  "lang": "id",
+
   "icons": [
     {
       "src": "/assets/icons/icon-192.png",
@@ -24,7 +24,7 @@
       "src": "/assets/icons/maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     }
   ]
 }
