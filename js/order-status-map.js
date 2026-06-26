@@ -32,6 +32,9 @@ let destinationMarker = null;
 
 let driverMarker = null;
 let driverAnimation = null;
+let driverRoute = null;
+let currentEta = 0;
+let currentDistance = 0;
 
 init();
 
@@ -438,6 +441,26 @@ function animateDriver(
             newLng
 
         ]);
+        drawDriverRoute();
+        map.panTo(
+
+            [
+        
+                newLat,
+        
+                newLng
+        
+            ],
+        
+            {
+        
+                animate:true,
+        
+                duration:0.25
+        
+            }
+        
+        );
 
         if(step>=total){
 
@@ -450,5 +473,149 @@ function animateDriver(
         }
 
     },50);
+
+}
+
+function drawDriverRoute(){
+
+    if(
+
+        !driverMarker ||
+
+        !pickupMarker
+
+    ){
+
+        return;
+
+    }
+
+    if(driverRoute){
+
+        map.removeControl(
+
+            driverRoute
+
+        );
+
+    }
+
+    driverRoute =
+
+    L.Routing.control({
+
+        waypoints:[
+
+            driverMarker.getLatLng(),
+
+            pickupMarker.getLatLng()
+
+        ],
+
+        draggableWaypoints:false,
+
+        addWaypoints:false,
+
+        fitSelectedRoutes:false,
+
+        show:false,
+
+        createMarker:()=>null,
+
+        lineOptions:{
+
+            styles:[
+
+                {
+
+                    color:"#00AA13",
+
+                    weight:6,
+
+                    opacity:0.9
+
+                }
+
+            ]
+
+        }
+
+    })
+
+    .addTo(map);
+
+        driverRoute.on(
+    
+        "routesfound",
+    
+        e=>{
+    
+            const route =
+    
+            e.routes[0];
+    
+            currentDistance =
+    
+            route.summary.totalDistance;
+    
+            currentEta =
+    
+            route.summary.totalTime;
+    
+            updateEta();
+    
+        }
+    
+    );
+
+}
+
+function updateEta(){
+
+    const km =
+
+        (
+
+            currentDistance
+
+            /
+
+            1000
+
+        )
+
+        .toFixed(1);
+
+    const minute =
+
+        Math.ceil(
+
+            currentEta
+
+            /
+
+            60
+
+        );
+
+    const status =
+
+`🚕 Driver menuju lokasi
+
+📏 ${km} km
+
+⏱️ ${minute} menit`;
+
+    document
+
+    .getElementById(
+
+        "driver-eta"
+
+    )
+
+    .textContent =
+
+    status;
 
 }
