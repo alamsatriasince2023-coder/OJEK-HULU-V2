@@ -139,13 +139,9 @@ async function loadCurrentLocation(){
 
         async function(pos){
 
-            pickupLat =
+            pickupLat = pos.coords.latitude;
 
-            pos.coords.latitude;
-
-            pickupLng =
-
-            pos.coords.longitude;
+            pickupLng = pos.coords.longitude;
 
             map.setView(
 
@@ -195,29 +191,57 @@ async function loadCurrentLocation(){
 
                 );
 
+                console.log(
+
+                    "Display Name:",
+
+                    address
+
+                );
+
                 pickupAddressText =
 
                 address;
-                
+
                 pickupAddress.textContent =
-                
+
                 address;
+
+                setTimeout(()=>{
+
+                    console.log(
+
+                        "HTML setelah 1 detik:",
+
+                        pickupAddress.textContent
+
+                    );
+
+                },1000);
 
             }
 
-            catch{
+            catch(err){
+
+                console.error(
+
+                    "Reverse Geocode Error:",
+
+                    err
+
+                );
 
                 pickupAddress.textContent =
 
-                pickupLat.toFixed(6)
+                    pickupLat.toFixed(6)
 
-                +
+                    +
 
-                ", "
+                    ", "
 
-                +
+                    +
 
-                pickupLng.toFixed(6);
+                    pickupLng.toFixed(6);
 
             }
 
@@ -233,7 +257,13 @@ async function loadCurrentLocation(){
 
         },
 
-        function(){
+        function(err){
+
+            console.error(
+
+                err
+
+            );
 
             alert(
 
