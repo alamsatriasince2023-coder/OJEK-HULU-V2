@@ -1040,9 +1040,7 @@ document
 
         sessionStorage.clear();
 
-        location.replace(
-
-            "login.html"
+        location.replace('index.html');
 
         );
 
