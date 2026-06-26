@@ -873,6 +873,13 @@ async function toggleOnline(){
     .update({
 
         is_online:isOnline
+        status:
+
+        isOnline
+    
+        ? "idle"
+    
+        : "offline"
 
     })
     .eq('id',user.id);
