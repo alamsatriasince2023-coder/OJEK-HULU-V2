@@ -922,41 +922,31 @@ async function reverseGeocode(
 
 ){
 
-    try{
+    const url =
 
-        const response =
+`https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/reverse?lat=${lat}&lng=${lng}`;
 
-        await fetch(
+    console.log("Reverse URL:", url);
 
-`https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/reverse?lat=${lat}&lng=${lng}`
+    const response =
 
-        );
+    await fetch(url);
 
-        if(!response.ok){
+    console.log("Status:", response.status);
 
-            throw new Error();
+    const data =
 
-        }
+    await response.json();
 
-        const data =
+    console.log("Reverse Result:", data);
 
-        await response.json();
+    return (
 
-        return (
+        data.display_name ||
 
-            data.display_name ||
+        `${lat},${lng}`
 
-            `${lat},${lng}`
-
-        );
-
-    }
-
-    catch{
-
-        return `${lat},${lng}`;
-
-    }
+    );
 
 }
 
