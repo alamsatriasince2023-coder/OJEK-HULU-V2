@@ -86,6 +86,8 @@ document.getElementById(
 'search-result'
 );
 
+let pickupAddressText = "";
+let destinationAddressText = "";
 let currentFare = 0;
 let currentDistance = 0;
 let currentDuration = 0;
@@ -135,12 +137,14 @@ async function loadCurrentLocation(){
 
     navigator.geolocation.getCurrentPosition(
 
-        function(pos){
+        async function(pos){
 
             pickupLat =
+
             pos.coords.latitude;
 
             pickupLng =
+
             pos.coords.longitude;
 
             map.setView(
@@ -148,6 +152,7 @@ async function loadCurrentLocation(){
                 [
 
                     pickupLat,
+
                     pickupLng
 
                 ],
@@ -157,11 +162,13 @@ async function loadCurrentLocation(){
             );
 
             pickupMarker =
+
             L.marker(
 
                 [
 
                     pickupLat,
+
                     pickupLng
 
                 ],
@@ -169,28 +176,59 @@ async function loadCurrentLocation(){
                 {
 
                     draggable:true,
+
                     icon:pickupIcon
 
                 }
 
             ).addTo(map);
 
-            pickupAddress.innerHTML =
+            try{
 
-            pickupLat.toFixed(6)
+                const address =
 
-            +
+                await reverseGeocode(
 
-            ", "
+                    pickupLat,
 
-            +
+                    pickupLng
 
-            pickupLng.toFixed(6);
+                );
+
+                pickupAddressText =
+
+                address;
+                
+                pickupAddress.textContent =
+                
+                address;
+
+            }
+
+            catch{
+
+                pickupAddress.textContent =
+
+                pickupLat.toFixed(6)
+
+                +
+
+                ", "
+
+                +
+
+                pickupLng.toFixed(6);
+
+            }
 
             pickupMarker.on(
-                'dragend',
+
+                "dragend",
+
                 updatePickup
+
             );
+
             loadNearbyDrivers();
 
         },
@@ -207,7 +245,11 @@ async function loadCurrentLocation(){
 
         {
 
-            enableHighAccuracy:true
+            enableHighAccuracy:true,
+
+            timeout:15000,
+
+            maximumAge:0
 
         }
 
@@ -215,53 +257,92 @@ async function loadCurrentLocation(){
 
 }
 
-function updatePickup(e){
+async function updatePickup(e){
 
     const pos =
 
     e.target.getLatLng();
 
-    pickupLat = pos.lat;
-    pickupLng = pos.lng;
+    pickupLat =
 
-    pickupAddress.innerHTML =
+    pos.lat;
 
-    pickupLat.toFixed(6)
+    pickupLng =
 
-    +
+    pos.lng;
 
-    ", "
+    try{
 
-    +
+        const address =
 
-    pickupLng.toFixed(6);
+        await reverseGeocode(
+
+            pickupLat,
+
+            pickupLng
+
+        );
+
+        pickupAddressText =
+
+        address;
+        
+        pickupAddress.textContent =
+        
+        address;
+
+    }
+
+    catch{
+
+        pickupAddress.textContent =
+
+        pickupLat.toFixed(6)
+
+        +
+
+        ", "
+
+        +
+
+        pickupLng.toFixed(6);
+
+    }
 
     drawRoute();
+
     loadNearbyDrivers();
 
 }
 
-function onMapClick(e){
+async function onMapClick(e){
 
     destinationLat =
+
     e.latlng.lat;
 
     destinationLng =
+
     e.latlng.lng;
 
     if(!destinationMarker){
 
         destinationMarker =
+
         L.marker(
 
             [
 
                 destinationLat,
+
                 destinationLng
 
             ],
+
             {
+
                 icon:destinationIcon
+
             }
 
         ).addTo(map);
@@ -273,6 +354,7 @@ function onMapClick(e){
             [
 
                 destinationLat,
+
                 destinationLng
 
             ]
@@ -281,17 +363,43 @@ function onMapClick(e){
 
     }
 
-    destinationAddress.innerHTML =
+    try{
 
-    destinationLat.toFixed(6)
+        const address =
 
-    +
+        await reverseGeocode(
 
-    ", "
+            destinationLat,
 
-    +
+            destinationLng
 
-    destinationLng.toFixed(6);
+        );
+
+        destinationAddressText =
+
+        address;
+        
+        destinationAddress.textContent =
+        
+        address;
+
+    }
+
+    catch{
+
+        destinationAddress.textContent =
+
+        destinationLat.toFixed(6)
+
+        +
+
+        ", "
+
+        +
+
+        destinationLng.toFixed(6);
+
+    }
 
     drawRoute();
 
@@ -467,9 +575,15 @@ async function submitOrder(){
             auth.user.email,
 
             jemput:
-            `${pickupLat},${pickupLng}`,
 
+            pickupAddressText ||
+            
+            `${pickupLat},${pickupLng}`,
+            
             tujuan:
+            
+            destinationAddressText ||
+            
             `${destinationLat},${destinationLng}`,
 
             pickup_latitude:
@@ -797,6 +911,52 @@ function selectDestination(item){
     ]);
 
     drawRoute();
+
+}
+
+async function reverseGeocode(
+
+    lat,
+
+    lng
+
+){
+
+    try{
+
+        const response =
+
+        await fetch(
+
+`https://ojek-hulu-geocode.alamsatria-since2023.workers.dev/reverse?lat=${lat}&lng=${lng}`
+
+        );
+
+        if(!response.ok){
+
+            throw new Error();
+
+        }
+
+        const data =
+
+        await response.json();
+
+        return (
+
+            data.display_name ||
+
+            `${lat},${lng}`
+
+        );
+
+    }
+
+    catch{
+
+        return `${lat},${lng}`;
+
+    }
 
 }
 
