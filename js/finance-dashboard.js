@@ -655,6 +655,28 @@ document
 
 document
 
+.getElementById(
+
+    "btn-withdraw"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "withdraw-management.html";
+
+    }
+
+);
+
+document
+
 .getElementById("btn-business")
 
 .addEventListener(
