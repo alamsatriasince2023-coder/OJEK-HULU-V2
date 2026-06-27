@@ -347,15 +347,30 @@ document
 
 );
 
+/* ===========================
+CUSTOMER MANAGEMENT
+=========================== */
+
 document
-.getElementById("btn-customer")
+
+.getElementById(
+
+    "btn-customer"
+
+)
+
 ?.addEventListener(
-"click",
-()=>{
 
-    alert("👥 Manajemen Customer - Segera Hadir");
+    "click",
 
-}
+    ()=>{
+
+        location.href =
+
+        "customer-management.html";
+
+    }
+
 );
 
 document
