@@ -408,3 +408,29 @@ document
 
 }
 );
+
+/* ===========================
+WITHDRAW MANAGEMENT
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-withdraw-management"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "withdraw-management.html";
+
+    }
+
+);
