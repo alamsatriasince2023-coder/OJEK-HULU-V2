@@ -295,16 +295,7 @@ location.reload();
 }
 );
 
-document
-.getElementById("btn-monitor")
-.addEventListener(
-"click",
-()=>{
 
-alert("Monitoring segera hadir.");
-
-}
-);
 
 document
 .getElementById("btn-setting")
@@ -312,7 +303,7 @@ document
 "click",
 ()=>{
 
-alert("Pengaturan segera hadir.");
+location.href="system-settings.html";
 
 }
 );
@@ -397,26 +388,23 @@ document
 );
 
 document
-.getElementById("btn-finance")
+
+.getElementById(
+
+"btn-finance"
+
+)
+
 ?.addEventListener(
+
 "click",
+
 ()=>{
 
-    alert("📊 Finance Dashboard - Segera Hadir");
+location.href="finance-dashboard.html";
 
 }
-);
 
-
-document
-.getElementById("btn-report")
-?.addEventListener(
-"click",
-()=>{
-
-    alert("📈 Financial Report - Segera Hadir");
-
-}
 );
 
 /* ===========================
