@@ -610,3 +610,29 @@ document
     }
 
 );
+
+/* ===========================
+ADMIN USER MANAGEMENT
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-admin-user"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "admin-user-management.html";
+
+    }
+
+);
