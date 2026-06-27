@@ -18,9 +18,70 @@ document.getElementById(
 
 auth.profile.full_name;
 
+/* ===========================
+ACCORDION
+=========================== */
+
+initAccordion();
+
+function initAccordion(){
+
+    setupAccordion(
+        "customer-toggle",
+        "customer-panel",
+        "customer-arrow"
+    );
+
+    setupAccordion(
+        "driver-toggle",
+        "driver-panel",
+        "driver-arrow"
+    );
+
+}
+
+function setupAccordion(
+    toggleId,
+    panelId,
+    arrowId
+){
+
+    const toggle =
+    document.getElementById(toggleId);
+
+    const panel =
+    document.getElementById(panelId);
+
+    const arrow =
+    document.getElementById(arrowId);
+
+    if(!toggle) return;
+
+    toggle.onclick=()=>{
+
+        const open =
+        panel.style.display==="block";
+
+        panel.style.display =
+        open
+        ? "none"
+        : "block";
+
+        arrow.textContent =
+        open
+        ? "▼"
+        : "▲";
+
+    };
+
+}
+
+
 init();
 
 async function init(){
+
+    initAccordion();
 
     await loadBusinessHealth();
 
