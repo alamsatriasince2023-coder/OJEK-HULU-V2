@@ -2,7 +2,7 @@
   "name": "Ojek Hulu",
   "short_name": "Ojek Hulu",
   "description": "Transportasi Lokal Putussibau",
-  "start_url": "/login.html",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
