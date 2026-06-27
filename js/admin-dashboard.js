@@ -480,3 +480,29 @@ document
     }
 
 );
+
+/* ===========================
+ANALYTICS DASHBOARD
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-analytics"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "analytics-dashboard.html";
+
+    }
+
+);
