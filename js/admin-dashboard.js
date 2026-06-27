@@ -22,6 +22,8 @@ init();
 
 async function init(){
 
+    await loadBusinessHealth();
+    
     await loadStatistic();
 
     await loadCustomerTable();
@@ -35,8 +37,218 @@ async function init(){
 }
 
 /* ===========================
-   STATISTIK
+BUSINESS HEALTH
 =========================== */
+
+async function loadBusinessHealth(){
+
+    const today =
+
+    new Date()
+
+    .toISOString()
+
+    .substring(0,10);
+
+    const [
+
+        customer,
+
+        driver,
+
+        order,
+
+        revenue,
+
+        rating
+
+    ] = await Promise.all([
+
+        supabase
+
+        .from("profiles")
+
+        .select("*",{
+
+            head:true,
+
+            count:"exact"
+
+        })
+
+        .eq("role","customer"),
+
+        supabase
+
+        .from("drivers")
+
+        .select("*",{
+
+            head:true,
+
+            count:"exact"
+
+        }),
+
+        supabase
+
+        .from("orders")
+
+        .select("*",{
+
+            head:true,
+
+            count:"exact"
+
+        })
+
+        .gte("created_at",today),
+
+        supabase
+
+        .from("orders")
+
+        .select("price")
+
+        .eq("status","completed")
+
+        .gte("completed_at",today),
+
+        supabase
+
+        .from("driver_ratings")
+
+        .select("rating")
+
+    ]);
+
+    const totalRevenue =
+
+    (revenue.data || [])
+
+    .reduce(
+
+        (sum,row)=>
+
+        sum + Number(row.price || 0),
+
+        0
+
+    );
+
+    const ratings =
+
+    rating.data || [];
+
+    const avgRating =
+
+    ratings.length
+
+    ?
+
+    (
+
+        ratings.reduce(
+
+            (sum,row)=>
+
+            sum + Number(row.rating || 0),
+
+            0
+
+        )
+
+        /
+
+        ratings.length
+
+    ).toFixed(2)
+
+    :
+
+    "5.00";
+
+    const growth =
+
+    customer.count > 0
+
+    ?
+
+    (
+
+        (
+
+            order.count ||
+
+            0
+
+        )
+
+        /
+
+        customer.count
+
+        *
+
+        100
+
+    ).toFixed(1)
+
+    :
+
+    "0.0";
+
+    document.getElementById(
+
+        "bh-customer"
+
+    ).textContent =
+
+    customer.count || 0;
+
+    document.getElementById(
+
+        "bh-driver"
+
+    ).textContent =
+
+    driver.count || 0;
+
+    document.getElementById(
+
+        "bh-order"
+
+    ).textContent =
+
+    order.count || 0;
+
+    document.getElementById(
+
+        "bh-revenue"
+
+    ).textContent =
+
+    "Rp " +
+
+    totalRevenue.toLocaleString("id-ID");
+
+    document.getElementById(
+
+        "bh-rating"
+
+    ).textContent =
+
+    avgRating;
+
+    document.getElementById(
+
+        "bh-growth"
+
+    ).textContent =
+
+    growth + "%";
+
+}
 
 /* ===========================
 STATISTIK
@@ -458,12 +670,10 @@ function subscribeRealtime(){
 
         async()=>{
 
+            await loadBusinessHealth();
             await loadStatistic();
-
             await loadCustomerTable();
-
             await loadDriverTable();
-
             await loadOrders();
 
         }
