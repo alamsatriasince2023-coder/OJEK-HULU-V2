@@ -14,6 +14,7 @@ import {
 import { supabase } from './api.js';
 import { logoutUser } from './auth.js';
 import { requireRole } from './rbac.js';
+import * as wallet from "./wallet-engine.js";
 
 /* ===========================
    AUTH
@@ -770,17 +771,19 @@ async function completeOrder(e){
 
     const id = e.target.dataset.id;
 
-    const { error } =
-    await supabase
-    .from('orders')
+    const { error } = await supabase
+
+    .from("orders")
+
     .update({
 
-        status:'completed',
+        status: "completed",
 
-        completed_at:new Date().toISOString()
+        completed_at: new Date().toISOString()
 
     })
-    .eq('id',id);
+
+    .eq("id", id);
 
     if(error){
 
@@ -790,22 +793,49 @@ async function completeOrder(e){
 
     }
 
+    try{
+
+        await wallet.credit({
+
+            driver_id: user.id,
+
+            amount: Number(currentOrder.price || 0),
+
+            type: "RIDE",
+
+            description: "Pendapatan Ride",
+
+            reference_id: id
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+        alert("Wallet gagal diperbarui.");
+
+    }
+
     currentOrder = null;
 
-    Object.values(timers)
-    .forEach(clearInterval);
-    
+    Object.values(timers).forEach(clearInterval);
+
     for(const key in timers){
-    
+
         delete timers[key];
-    
+
     }
-    
+
     clearCustomerMarker();
+
     clearDriverMarker();
 
     await loadOrders();
+
     await loadStatistic();
+
+    await loadWallet();
 
 }
 
@@ -1119,20 +1149,44 @@ async function notifyOrder(order){
 
 async function loadWallet(){
 
-    const { data } =
+    try{
 
-    await supabase
+        const { data, error } = await supabase
 
-    .from("driver_wallets")
+        .from("driver_wallets")
 
-    .select("balance")
+        .select("balance")
 
-    .eq("driver_id", user.id)
+        .eq("driver_id", user.id)
 
-    .maybeSingle();
+        .maybeSingle();
 
-    document.getElementById("wallet-balance").textContent =
-        "Rp " + Number(data?.balance || 0).toLocaleString("id-ID");
+        if(error){
+
+            throw error;
+
+        }
+
+        document.getElementById("wallet-balance").textContent =
+
+            "Rp " +
+
+            Number(data?.balance || 0)
+
+            .toLocaleString("id-ID");
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        document.getElementById("wallet-balance").textContent =
+
+        "Rp 0";
+
+    }
+
 }
 
 /* ===========================
