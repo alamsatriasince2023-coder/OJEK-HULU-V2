@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Wallet Driver - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+💰 Ojek Hulu Admin
+
+</div>
+
+<div
+class="username">
+
+Wallet Driver
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Monitoring Saldo Driver
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+FINANCE
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+SEARCH
+=========================== -->
+
+<div class="card">
+
+<input
+id="search-driver"
+class="input"
+type="text"
+placeholder="🔍 Cari nama driver...">
+
+</div>
+
+<!-- ===========================
+SUMMARY
+=========================== -->
+
+<div
+style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+margin-bottom:16px;">
+
+<div class="kpi-card">
+
+<small>
+
+👥 Driver
+
+</small>
+
+<h2 id="total-driver">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+💰 Total Saldo
+
+</small>
+
+<h2 id="total-wallet">
+
+Rp 0
+
+</h2>
+
+</div>
+
+</div>
+
+<!-- ===========================
+LIST DRIVER
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+💰 Wallet Driver
+
+</div>
+
+<div class="badge">
+
+LIVE
+
+</div>
+
+</div>
+
+<div id="wallet-list">
+
+<div
+style="
+padding:40px;
+text-align:center;">
+
+💰
+
+<br><br>
+
+Memuat data wallet...
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+DETAIL
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📋 Riwayat Wallet
+
+</div>
+
+<div id="wallet-history">
+
+<div
+style="
+padding:25px;
+text-align:center;
+color:#6B7280;">
+
+Pilih driver untuk melihat transaksi.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM
+=========================== -->
+
+<button
+id="btn-back"
+class="btn btn-blue">
+
+⬅️ Kembali Dashboard
+
+</button>
+
+</div>
+
+<script
+type="module"
+src="./js/wallet.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
