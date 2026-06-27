@@ -373,16 +373,6 @@ document
 
 );
 
-document
-.getElementById("btn-order")
-?.addEventListener(
-"click",
-()=>{
-
-    alert("📦 Manajemen Order - Segera Hadir");
-
-}
-);
 
 document
 
