@@ -29,7 +29,7 @@ let map;
 
 let pickupMarker = null;
 let destinationMarker = null;
-
+let currentDriverId = null;
 let driverMarker = null;
 let driverAnimation = null;
 let driverRoute = null;
@@ -293,6 +293,8 @@ async function renderOrder(order){
 }
 
 async function loadDriver(driverId){
+    
+    currentDriverId = driverId;
 
     const { data } =
 
@@ -376,11 +378,15 @@ function convertStatus(status){
 
 function subscribeRealtime(){
 
+    /* ===========================
+       ORDER REALTIME
+    =========================== */
+
     supabase
 
     .channel(
 
-        'order-'+orderId
+        'order-' + orderId
 
     )
 
@@ -414,6 +420,10 @@ function subscribeRealtime(){
 
     .subscribe();
 
+    /* ===========================
+       DRIVER GPS REALTIME
+    =========================== */
+
     supabase
 
     .channel(
@@ -438,23 +448,53 @@ function subscribeRealtime(){
 
         payload=>{
 
+            /* Driver lain diabaikan */
+
             if(
 
-                driverMarker &&
-
-                payload.new.latitude != null
+                payload.new.id !== currentDriverId
 
             ){
 
-                animateDriver(
+                return;
 
-                    payload.new.latitude,
-            
-                    payload.new.longitude
-            
-                );
-            
             }
+
+            /* GPS belum tersedia */
+
+            if(
+
+                payload.new.latitude == null ||
+
+                payload.new.longitude == null
+
+            ){
+
+                return;
+
+            }
+
+            /* Marker belum dibuat */
+
+            if(
+
+                !driverMarker
+
+            ){
+
+                return;
+
+            }
+
+            /* Animasi Driver */
+
+            animateDriver(
+
+                payload.new.latitude,
+
+                payload.new.longitude
+
+            );
 
         }
 
