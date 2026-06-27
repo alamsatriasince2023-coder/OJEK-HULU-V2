@@ -1117,6 +1117,24 @@ async function notifyOrder(order){
 
 }
 
+async function loadWallet(){
+
+    const { data } =
+
+    await supabase
+
+    .from("driver_wallets")
+
+    .select("balance")
+
+    .eq("driver_id", user.id)
+
+    .maybeSingle();
+
+    document.getElementById("wallet-balance").textContent =
+        "Rp " + Number(data?.balance || 0).toLocaleString("id-ID");
+}
+
 /* ===========================
    INIT
 =========================== */
@@ -1132,6 +1150,8 @@ if(isOnline){
 await loadOrders();
 
 await loadStatistic();
+
+await loadWallet();
 
 supabase
 
