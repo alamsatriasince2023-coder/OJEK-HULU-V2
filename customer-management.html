@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Customer Management - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+👥 Customer Management
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Monitoring Customer Realtime
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+ADMIN
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Total Customer
+
+</small>
+
+<h2 id="customer-total">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Customer Aktif
+
+</small>
+
+<h2 id="customer-active">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Saldo Wallet
+
+</small>
+
+<h2 id="wallet-total">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Order Hari Ini
+
+</small>
+
+<h2 id="today-order">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+👥 Daftar Customer
+
+</div>
+
+<div class="badge">
+
+Realtime
+
+</div>
+
+</div>
+
+<div id="customer-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada customer.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+DETAIL CUSTOMER
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+👤 Detail Customer
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Nama
+
+</span>
+
+<h2
+id="detail-name"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Status
+
+</span>
+
+<h2
+id="detail-status"
+style="font-size:16px;">
+
+ACTIVE
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Wallet
+
+</span>
+
+<h2
+id="detail-wallet"
+style="font-size:16px;">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Total Order
+
+</span>
+
+<h2
+id="detail-order"
+style="font-size:16px;">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Total Belanja
+
+</span>
+
+<h2
+id="detail-spending"
+style="font-size:16px;">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Terakhir Login
+
+</span>
+
+<h2
+id="detail-login"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+</div>
+
+<div
+style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px;">
+
+<button
+id="btn-suspend"
+class="btn btn-red">
+
+🚫 Suspend
+
+</button>
+
+<button
+id="btn-history"
+class="btn btn-blue">
+
+📋 Riwayat Order
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-wallet">
+
+<span class="bottom-icon">
+
+💰
+
+</span>
+
+Wallet
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-driver">
+
+<span class="bottom-icon">
+
+🚕
+
+</span>
+
+Driver
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/customer-management.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
