@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Audit Log - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+📝 Audit Log
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Riwayat Aktivitas Administrator
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+ADMIN
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Total Log
+
+</small>
+
+<h2 id="total-log">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Hari Ini
+
+</small>
+
+<h2 id="today-log">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Admin Aktif
+
+</small>
+
+<h2 id="admin-active">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Critical Event
+
+</small>
+
+<h2 id="critical-log">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+AUDIT LOG LIST
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+📋 Aktivitas Terbaru
+
+</div>
+
+<div class="badge">
+
+Realtime
+
+</div>
+
+</div>
+
+<div id="audit-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada audit log.
+
+</div>
+
+</div>
+
+<!-- ===========================
+DETAIL LOG
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📄 Detail Aktivitas
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Admin
+
+</span>
+
+<h2
+id="detail-admin"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Aksi
+
+</span>
+
+<h2
+id="detail-action"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Modul
+
+</span>
+
+<h2
+id="detail-module"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Waktu
+
+</span>
+
+<h2
+id="detail-time"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-analytics">
+
+<span class="bottom-icon">
+
+📊
+
+</span>
+
+Analytics
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-setting">
+
+<span class="bottom-icon">
+
+⚙️
+
+</span>
+
+Settings
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/audit-log.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
+
+</div>
