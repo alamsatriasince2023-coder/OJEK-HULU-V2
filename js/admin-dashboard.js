@@ -522,23 +522,63 @@ CUSTOMER TABLE
 
 async function loadCustomerTable(){
 
-    const { data } = await supabase
+    const [
 
-    .from("profiles")
+        { count },
 
-    .select("id,full_name,email,is_active")
+        { data }
 
-    .eq("role","customer")
+    ] = await Promise.all([
 
-    .order("created_at",{ascending:false})
+        supabase
 
-    .limit(10);
+        .from("profiles")
+
+        .select("*",{
+
+            head:true,
+
+            count:"exact"
+
+        })
+
+        .eq("role","customer"),
+
+        supabase
+
+        .from("profiles")
+
+        .select(
+
+            "id,full_name,phone,email,is_active,created_at"
+
+        )
+
+        .eq("role","customer")
+
+        .order(
+
+            "created_at",
+
+            {
+
+                ascending:false
+
+            }
+
+        )
+
+        .limit(10)
+
+    ]);
 
     document.getElementById(
 
         "customer-count"
 
-    ).textContent = data?.length || 0;
+    ).textContent =
+
+    count || 0;
 
     document.getElementById(
 
@@ -549,29 +589,69 @@ async function loadCustomerTable(){
     `
     <table class="table">
 
+    <thead>
+
     <tr>
 
     <th>Nama</th>
 
-    <th>Email</th>
+    <th>HP</th>
 
     <th>Status</th>
 
+    <th>Join</th>
+
     </tr>
 
-    ${(data||[]).map(c=>`
+    </thead>
+
+    <tbody>
+
+    ${(data || []).map(c=>`
 
     <tr>
 
-    <td>${c.full_name||"-"}</td>
+    <td>
 
-    <td>${c.email||"-"}</td>
+    ${c.full_name || "-"}
 
-    <td>${c.is_active?"🟢":"🔴"}</td>
+    </td>
+
+    <td>
+
+    ${c.phone || "-"}
+
+    </td>
+
+    <td>
+
+    ${c.is_active
+
+        ? "🟢 Aktif"
+
+        : "🔴 Suspend"}
+
+    </td>
+
+    <td>
+
+    ${new Date(
+
+        c.created_at
+
+    ).toLocaleDateString(
+
+        "id-ID"
+
+    )}
+
+    </td>
 
     </tr>
 
     `).join("")}
+
+    </tbody>
 
     </table>
 
@@ -585,21 +665,77 @@ DRIVER TABLE
 
 async function loadDriverTable(){
 
-    const { data } = await supabase
+    const [
 
-    .from("drivers")
+        { count },
 
-    .select("id,name,phone,is_online")
+        { data: drivers },
 
-    .order("created_at",{ascending:false})
+        { data: profiles }
 
-    .limit(10);
+    ] = await Promise.all([
+
+        supabase
+
+        .from("drivers")
+
+        .select("*",{
+
+            head:true,
+
+            count:"exact"
+
+        }),
+
+        supabase
+
+        .from("drivers")
+
+        .select("id,is_online,rating,total_trip,created_at")
+
+        .order(
+
+            "created_at",
+
+            {
+
+                ascending:false
+
+            }
+
+        )
+
+        .limit(10),
+
+        supabase
+
+        .from("profiles")
+
+        .select("id,full_name,phone")
+
+        .eq("role","driver")
+
+    ]);
 
     document.getElementById(
 
         "driver-count"
 
-    ).textContent = data?.length || 0;
+    ).textContent =
+
+    count || 0;
+
+    const profileMap = new Map(
+
+        (profiles || []).map(p => [
+
+            p.id,
+
+            p
+
+        ])
+
+    );
 
     document.getElementById(
 
@@ -610,6 +746,8 @@ async function loadDriverTable(){
     `
     <table class="table">
 
+    <thead>
+
     <tr>
 
     <th>Nama</th>
@@ -618,21 +756,69 @@ async function loadDriverTable(){
 
     <th>Status</th>
 
-    </tr>
+    <th>⭐</th>
 
-    ${(data||[]).map(d=>`
-
-    <tr>
-
-    <td>${d.name||"-"}</td>
-
-    <td>${d.phone||"-"}</td>
-
-    <td>${d.is_online?"🟢":"⚫"}</td>
+    <th>Join</th>
 
     </tr>
 
-    `).join("")}
+    </thead>
+
+    <tbody>
+
+    ${(drivers || []).map(d=>{
+
+        const p = profileMap.get(d.id) || {};
+
+        return `
+
+        <tr>
+
+        <td>
+
+        ${p.full_name || "-"}
+
+        </td>
+
+        <td>
+
+        ${p.phone || "-"}
+
+        </td>
+
+        <td>
+
+        ${d.is_online
+
+            ? "🟢 Online"
+
+            : "⚫ Offline"}
+
+        </td>
+
+        <td>
+
+        ${(Number(d.rating || 0)).toFixed(1)}
+
+        </td>
+
+        <td>
+
+        ${new Date(
+
+            d.created_at
+
+        ).toLocaleDateString("id-ID")}
+
+        </td>
+
+        </tr>
+
+        `;
+
+    }).join("")}
+
+    </tbody>
 
     </table>
 
