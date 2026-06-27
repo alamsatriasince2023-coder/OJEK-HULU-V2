@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>System Settings - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+⚙️ System Settings
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Konfigurasi Sistem Ojek Hulu
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+ADMIN
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Ride Setting
+
+</small>
+
+<h2>
+
+🚕
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Wallet
+
+</small>
+
+<h2>
+
+💰
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Fee
+
+</small>
+
+<h2>
+
+💸
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+System
+
+</small>
+
+<h2>
+
+⚙️
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="card">
+
+<div class="card-title">
+
+🚕 Ride Configuration
+
+</div>
+
+<input
+id="base-fare"
+class="input"
+placeholder="Base Fare">
+
+<input
+id="price-per-km"
+class="input"
+placeholder="Harga per KM">
+
+<input
+id="minimum-fare"
+class="input"
+placeholder="Minimum Tarif">
+
+<input
+id="driver-radius"
+class="input"
+placeholder="Radius Driver">
+
+<input
+id="offer-timeout"
+class="input"
+placeholder="Offer Timeout (detik)">
+
+</div>
+
+<!-- ===========================
+WALLET CONFIGURATION
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+💰 Wallet Configuration
+
+</div>
+
+<input
+id="minimum-topup"
+class="input"
+placeholder="Minimum Topup">
+
+<input
+id="maximum-topup"
+class="input"
+placeholder="Maximum Topup">
+
+<input
+id="minimum-withdraw"
+class="input"
+placeholder="Minimum Withdraw">
+
+<input
+id="maximum-withdraw"
+class="input"
+placeholder="Maximum Withdraw">
+
+</div>
+
+<!-- ===========================
+FEE CONFIGURATION
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+💸 Fee Configuration
+
+</div>
+
+<input
+id="platform-fee"
+class="input"
+placeholder="Platform Fee (%)">
+
+<input
+id="withdraw-fee"
+class="input"
+placeholder="Withdraw Fee">
+
+<input
+id="topup-fee"
+class="input"
+placeholder="Topup Fee">
+
+</div>
+
+<!-- ===========================
+SYSTEM CONFIGURATION
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+⚙️ System Configuration
+
+</div>
+
+<input
+id="gps-interval"
+class="input"
+placeholder="GPS Interval (detik)">
+
+<input
+id="auto-assign"
+class="input"
+placeholder="Auto Assign (true/false)">
+
+<input
+id="maintenance-mode"
+class="input"
+placeholder="Maintenance (true/false)">
+
+<input
+id="realtime-enable"
+class="input"
+placeholder="Realtime (true/false)">
+
+<button
+id="btn-save"
+class="btn btn-green"
+style="margin-top:20px;">
+
+💾 Simpan Konfigurasi
+
+</button>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-finance">
+
+<span class="bottom-icon">
+
+📊
+
+</span>
+
+Finance
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-driver">
+
+<span class="bottom-icon">
+
+🚕
+
+</span>
+
+Driver
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/system-settings.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
