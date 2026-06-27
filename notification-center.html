@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Notification Center - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+🔔 Notification Center
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Broadcast Notification
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+ADMIN
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Total Broadcast
+
+</small>
+
+<h2 id="total-broadcast">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Hari Ini
+
+</small>
+
+<h2 id="today-broadcast">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Driver
+
+</small>
+
+<h2 id="driver-target">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Customer
+
+</small>
+
+<h2 id="customer-target">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="card">
+
+<div class="card-title">
+
+📢 Broadcast Baru
+
+</div>
+
+<select
+id="target"
+class="input">
+
+<option value="all">
+
+Semua User
+
+</option>
+
+<option value="driver">
+
+Driver
+
+</option>
+
+<option value="customer">
+
+Customer
+
+</option>
+
+</select>
+
+<input
+id="title"
+class="input"
+placeholder="Judul Notifikasi">
+
+<textarea
+id="message"
+class="input"
+style="height:120px;"
+placeholder="Isi Notifikasi"></textarea>
+
+<button
+id="btn-send"
+class="btn btn-green">
+
+📤 Kirim Broadcast
+
+</button>
+
+</div>
+
+<!-- ===========================
+RIWAYAT BROADCAST
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+📨 Riwayat Broadcast
+
+</div>
+
+<div class="badge">
+
+Realtime
+
+</div>
+
+</div>
+
+<div id="broadcast-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada broadcast.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+DETAIL
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📄 Detail Broadcast
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Target
+
+</span>
+
+<h2
+id="detail-target"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Judul
+
+</span>
+
+<h2
+id="detail-title"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Status
+
+</span>
+
+<h2
+id="detail-status"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Waktu
+
+</span>
+
+<h2
+id="detail-time"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-audit">
+
+<span class="bottom-icon">
+
+📝
+
+</span>
+
+Audit
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-setting">
+
+<span class="bottom-icon">
+
+⚙️
+
+</span>
+
+Settings
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/notification-center.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
