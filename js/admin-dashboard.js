@@ -34,6 +34,10 @@ async function init(){
    STATISTIK
 =========================== */
 
+/* ===========================
+STATISTIK
+=========================== */
+
 async function loadStatistic(){
 
     const [
@@ -44,23 +48,54 @@ async function loadStatistic(){
 
         active,
 
-        completed
+        completed,
+
+        revenue,
+
+        wallet
 
     ] = await Promise.all([
 
         supabase
+
         .from("profiles")
-        .select("*",{count:"exact",head:true})
+
+        .select("*",{
+
+            count:"exact",
+
+            head:true
+
+        })
+
         .eq("role","customer"),
 
         supabase
+
         .from("drivers")
-        .select("*",{count:"exact",head:true})
+
+        .select("*",{
+
+            count:"exact",
+
+            head:true
+
+        })
+
         .eq("is_online",true),
 
         supabase
+
         .from("orders")
-        .select("*",{count:"exact",head:true})
+
+        .select("*",{
+
+            count:"exact",
+
+            head:true
+
+        })
+
         .in("status",[
 
             "offered",
@@ -74,11 +109,62 @@ async function loadStatistic(){
         ]),
 
         supabase
+
         .from("orders")
-        .select("*",{count:"exact",head:true})
-        .eq("status","completed")
+
+        .select("*",{
+
+            count:"exact",
+
+            head:true
+
+        })
+
+        .eq("status","completed"),
+
+        supabase
+
+        .from("orders")
+
+        .select("price")
+
+        .eq("status","completed"),
+
+        supabase
+
+        .from("driver_wallets")
+
+        .select("balance")
 
     ]);
+
+    const totalRevenue =
+
+    (revenue.data || [])
+
+    .reduce(
+
+        (sum,row)=>
+
+        sum + Number(row.price || 0),
+
+        0
+
+    );
+
+    const totalWallet =
+
+    (wallet.data || [])
+
+    .reduce(
+
+        (sum,row)=>
+
+        sum + Number(row.balance || 0),
+
+        0
+
+    );
 
     document.getElementById(
 
@@ -111,6 +197,26 @@ async function loadStatistic(){
     ).textContent =
 
     completed.count || 0;
+
+    document.getElementById(
+
+        "today-revenue"
+
+    ).textContent =
+
+    "Rp " +
+
+    totalRevenue.toLocaleString("id-ID");
+
+    document.getElementById(
+
+        "wallet-total"
+
+    ).textContent =
+
+    "Rp " +
+
+    totalWallet.toLocaleString("id-ID");
 
 }
 
@@ -174,7 +280,7 @@ async function loadOrders(){
 
 <div class="promo-card">
 
-<b>${order.nama ?? "-"}</b>
+<b>${order.customer_name ?? "-"}</b>
 
 <br>
 
