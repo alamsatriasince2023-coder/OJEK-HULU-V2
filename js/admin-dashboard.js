@@ -23,12 +23,16 @@ init();
 async function init(){
 
     await loadBusinessHealth();
-    
+
     await loadStatistic();
 
     await loadCustomerTable();
 
+    initCustomerSearch();
+
     await loadDriverTable();
+
+    initDriverSearch();
 
     await loadOrders();
 
@@ -526,7 +530,6 @@ CUSTOMER TABLE
 
 async function loadCustomerTable(){
 
-    console.log("========== CUSTOMER DEBUG ==========");
 
     const {
 
@@ -562,11 +565,7 @@ async function loadCustomerTable(){
 
     .limit(10);
 
-    console.log("Customer Count :",count);
-
-    console.log("Customer Data :",data);
-
-    console.log("Customer Error :",error);
+   
 
     if(error){
 
@@ -589,6 +588,8 @@ async function loadCustomerTable(){
             "customer-table"
 
         ).innerHTML=
+
+       
 
         `<div class="alert alert-danger">
 
@@ -707,6 +708,46 @@ async function loadCustomerTable(){
     </table>
 
     `;
+
+}
+
+/* ===========================
+SEARCH CUSTOMER
+=========================== */
+
+function initCustomerSearch(){
+
+    const input = document.getElementById(
+        "customer-search"
+    );
+
+    if(!input) return;
+
+    input.oninput = function(){
+
+        const keyword =
+        this.value
+        .trim()
+        .toLowerCase();
+
+        document
+        .querySelectorAll(
+            "#customer-table tbody tr"
+        )
+        .forEach(tr=>{
+
+            tr.style.display =
+            tr.innerText
+            .toLowerCase()
+            .includes(keyword)
+
+            ? ""
+
+            : "none";
+
+        });
+
+    };
 
 }
 
@@ -874,6 +915,46 @@ async function loadDriverTable(){
     </table>
 
     `;
+
+}
+
+/* ===========================
+SEARCH DRIVER
+=========================== */
+
+function initDriverSearch(){
+
+    const input = document.getElementById(
+        "driver-search"
+    );
+
+    if(!input) return;
+
+    input.oninput = function(){
+
+        const keyword =
+        this.value
+        .trim()
+        .toLowerCase();
+
+        document
+        .querySelectorAll(
+            "#driver-table tbody tr"
+        )
+        .forEach(tr=>{
+
+            tr.style.display =
+            tr.innerText
+            .toLowerCase()
+            .includes(keyword)
+
+            ? ""
+
+            : "none";
+
+        });
+
+    };
 
 }
 
