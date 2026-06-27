@@ -524,9 +524,9 @@ async function loadCustomerTable(){
 
     const [
 
-        { count },
+        { count, error: countError },
 
-        { data }
+        { data, error }
 
     ] = await Promise.all([
 
@@ -548,11 +548,7 @@ async function loadCustomerTable(){
 
         .from("profiles")
 
-        .select(
-
-            "id,full_name,phone,email,is_active,created_at"
-
-        )
+        .select("*")
 
         .eq("role","customer")
 
@@ -571,6 +567,40 @@ async function loadCustomerTable(){
         .limit(10)
 
     ]);
+
+    if(countError){
+
+        console.error(
+
+            "Customer Count Error:",
+
+            countError
+
+        );
+
+    }
+
+    if(error){
+
+        console.error(
+
+            "Customer Table Error:",
+
+            error
+
+        );
+
+        return;
+
+    }
+
+    console.log(
+
+        "Customer Data:",
+
+        data
+
+    );
 
     document.getElementById(
 
@@ -625,25 +655,29 @@ async function loadCustomerTable(){
 
     <td>
 
-    ${c.is_active
+    ${c.is_active === false
 
-        ? "🟢 Aktif"
+        ? "🔴 Suspend"
 
-        : "🔴 Suspend"}
+        : "🟢 Aktif"}
 
     </td>
 
     <td>
 
-    ${new Date(
+    ${c.created_at
 
-        c.created_at
+        ? new Date(
 
-    ).toLocaleDateString(
+            c.created_at
 
-        "id-ID"
+        ).toLocaleDateString(
 
-    )}
+            "id-ID"
+
+        )
+
+        : "-"}
 
     </td>
 
