@@ -227,17 +227,57 @@ export async function getCurrentUser(){
 
 export async function getProfile(){
 
-    const user =
-    await getCurrentUser();
+    const user = await getCurrentUser();
 
-    if(!user) return null;
+    if(!user){
 
-    const { data } =
-    await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id',user.id)
-    .single();
+        console.error("User belum login.");
+
+        return null;
+
+    }
+
+    const {
+
+        data,
+
+        error
+
+    } = await supabase
+
+    .from("profiles")
+
+    .select("*")
+
+    .eq("id",user.id)
+
+    .maybeSingle();
+
+    if(error){
+
+        console.error(
+
+            "PROFILE ERROR:",
+
+            error
+
+        );
+
+        return null;
+
+    }
+
+    console.log(
+
+        "AUTH USER :",user.id
+
+    );
+
+    console.log(
+
+        "PROFILE :",data
+
+    );
 
     return data;
 
