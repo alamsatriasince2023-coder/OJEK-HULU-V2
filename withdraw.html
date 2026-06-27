@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Withdraw Saldo - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+💸 Ojek Hulu Driver
+
+</div>
+
+<div
+class="username">
+
+Withdraw Saldo
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Tarik saldo ke rekening bank
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+WALLET
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+SALDO
+=========================== -->
+
+<div class="kpi-card">
+
+<small>
+
+Saldo Tersedia
+
+</small>
+
+<h1
+id="wallet-balance">
+
+Rp 0
+
+</h1>
+
+</div>
+
+<!-- ===========================
+FORM
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+💸 Ajukan Withdraw
+
+</div>
+
+<label>
+
+Nominal Withdraw
+
+</label>
+
+<input
+id="withdraw-amount"
+class="input"
+type="number"
+placeholder="100000">
+
+<label>
+
+Bank
+
+</label>
+
+<select
+id="bank-name"
+class="input">
+
+<option value="BCA">BCA</option>
+
+<option value="BRI">BRI</option>
+
+<option value="BNI">BNI</option>
+
+<option value="MANDIRI">MANDIRI</option>
+
+<option value="BSI">BSI</option>
+
+<option value="CIMB">CIMB NIAGA</option>
+
+</select>
+
+<label>
+
+Nomor Rekening
+
+</label>
+
+<input
+id="bank-account"
+class="input"
+type="text"
+placeholder="Nomor Rekening">
+
+<label>
+
+Nama Pemilik Rekening
+
+</label>
+
+<input
+id="account-name"
+class="input"
+type="text"
+placeholder="Nama Pemilik">
+
+<hr style="margin:20px 0;">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;">
+
+<span>
+
+Biaya Admin
+
+</span>
+
+<b
+id="withdraw-fee">
+
+Rp 0
+
+</b>
+
+</div>
+
+<div
+style="
+display:flex;
+justify-content:space-between;">
+
+<span>
+
+Estimasi Diterima
+
+</span>
+
+<b
+id="receive-amount">
+
+Rp 0
+
+</b>
+
+</div>
+
+<button
+id="btn-submit"
+class="btn btn-green"
+style="margin-top:20px;">
+
+💸 Ajukan Withdraw
+
+</button>
+
+</div>
+
+<!-- ===========================
+RIWAYAT
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📋 Riwayat Withdraw
+
+</div>
+
+<div id="withdraw-history">
+
+<div
+style="
+padding:25px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada riwayat withdraw.
+
+</div>
+
+</div>
+
+</div>
+
+<button
+id="btn-back"
+class="btn btn-blue">
+
+⬅️ Kembali
+
+</button>
+
+</div>
+
+<script
+type="module"
+src="./js/withdraw.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
