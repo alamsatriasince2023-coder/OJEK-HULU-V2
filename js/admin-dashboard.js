@@ -24,6 +24,10 @@ async function init(){
 
     await loadStatistic();
 
+    await loadCustomerTable();
+
+    await loadDriverTable();
+
     await loadOrders();
 
     subscribeRealtime();
@@ -301,6 +305,130 @@ async function loadOrders(){
 }
 
 /* ===========================
+CUSTOMER TABLE
+=========================== */
+
+async function loadCustomerTable(){
+
+    const { data } = await supabase
+
+    .from("profiles")
+
+    .select("id,full_name,email,is_active")
+
+    .eq("role","customer")
+
+    .order("created_at",{ascending:false})
+
+    .limit(10);
+
+    document.getElementById(
+
+        "customer-count"
+
+    ).textContent = data?.length || 0;
+
+    document.getElementById(
+
+        "customer-table"
+
+    ).innerHTML =
+
+    `
+    <table class="table">
+
+    <tr>
+
+    <th>Nama</th>
+
+    <th>Email</th>
+
+    <th>Status</th>
+
+    </tr>
+
+    ${(data||[]).map(c=>`
+
+    <tr>
+
+    <td>${c.full_name||"-"}</td>
+
+    <td>${c.email||"-"}</td>
+
+    <td>${c.is_active?"🟢":"🔴"}</td>
+
+    </tr>
+
+    `).join("")}
+
+    </table>
+
+    `;
+
+}
+
+/* ===========================
+DRIVER TABLE
+=========================== */
+
+async function loadDriverTable(){
+
+    const { data } = await supabase
+
+    .from("drivers")
+
+    .select("id,name,phone,is_online")
+
+    .order("created_at",{ascending:false})
+
+    .limit(10);
+
+    document.getElementById(
+
+        "driver-count"
+
+    ).textContent = data?.length || 0;
+
+    document.getElementById(
+
+        "driver-table"
+
+    ).innerHTML =
+
+    `
+    <table class="table">
+
+    <tr>
+
+    <th>Nama</th>
+
+    <th>HP</th>
+
+    <th>Status</th>
+
+    </tr>
+
+    ${(data||[]).map(d=>`
+
+    <tr>
+
+    <td>${d.name||"-"}</td>
+
+    <td>${d.phone||"-"}</td>
+
+    <td>${d.is_online?"🟢":"⚫"}</td>
+
+    </tr>
+
+    `).join("")}
+
+    </table>
+
+    `;
+
+}
+
+/* ===========================
    REALTIME
 =========================== */
 
@@ -331,6 +459,10 @@ function subscribeRealtime(){
         async()=>{
 
             await loadStatistic();
+
+            await loadCustomerTable();
+
+            await loadDriverTable();
 
             await loadOrders();
 
