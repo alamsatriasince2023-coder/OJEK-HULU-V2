@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<title>Withdraw Management - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+💸 Withdraw Management
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Monitoring Withdraw Driver
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+ADMIN
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+KPI
+=========================== -->
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Pending
+
+</small>
+
+<h2 id="pending-count">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Processing
+
+</small>
+
+<h2 id="processing-count">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Success
+
+</small>
+
+<h2 id="success-count">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Rejected
+
+</small>
+
+<h2 id="reject-count">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+WITHDRAW LIST
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+💸 Daftar Withdraw
+
+</div>
+
+<div class="badge">
+
+Realtime
+
+</div>
+
+</div>
+
+<div id="withdraw-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada data withdraw.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+DETAIL WITHDRAW
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📄 Detail Withdraw
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>Driver</span>
+
+<h2
+id="detail-driver"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>Nominal</span>
+
+<h2
+id="detail-amount"
+style="font-size:16px;">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>Bank</span>
+
+<h2
+id="detail-bank"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>Status</span>
+
+<h2
+id="detail-status"
+style="font-size:16px;">
+
+-
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-finance">
+
+<span class="bottom-icon">
+
+📊
+
+</span>
+
+Finance
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-wallet">
+
+<span class="bottom-icon">
+
+💰
+
+</span>
+
+Wallet
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/withdraw-management.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
