@@ -370,14 +370,25 @@ document
 );
 
 document
-.getElementById("btn-withdraw")
+
+.getElementById(
+
+    "btn-withdraw"
+
+)
+
 ?.addEventListener(
-"click",
-()=>{
 
-    alert("💸 Withdraw Driver - Segera Hadir");
+    "click",
 
-}
+    ()=>{
+
+        location.href =
+
+        "withdraw.html";
+
+    }
+
 );
 
 document
@@ -528,6 +539,32 @@ document
         location.href =
 
         "audit-log.html";
+
+    }
+
+);
+
+/* ===========================
+NOTIFICATION CENTER
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-notification"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "notification-center.html";
 
     }
 
