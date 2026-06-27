@@ -506,3 +506,29 @@ document
     }
 
 );
+
+/* ===========================
+AUDIT LOG
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-audit"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "audit-log.html";
+
+    }
+
+);
