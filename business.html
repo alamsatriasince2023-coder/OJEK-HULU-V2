@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Business Configuration - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+⚙️ Ojek Hulu Admin
+
+</div>
+
+<div class="username">
+
+Business Configuration
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Pengaturan Sistem Bisnis
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+ADMIN
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+BUSINESS CONFIG
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+⚙️ Konfigurasi Bisnis
+
+</div>
+
+<label>
+
+Ride Fee (%)
+
+</label>
+
+<input
+id="ride_fee_percent"
+class="input"
+type="number">
+
+<label>
+
+Food Fee (%)
+
+</label>
+
+<input
+id="food_fee_percent"
+class="input"
+type="number">
+
+<label>
+
+Mart Fee (%)
+
+</label>
+
+<input
+id="mart_fee_percent"
+class="input"
+type="number">
+
+<label>
+
+Minimum Withdraw
+
+</label>
+
+<input
+id="minimum_withdraw"
+class="input"
+type="number">
+
+<label>
+
+Maximum Withdraw
+
+</label>
+
+<input
+id="maximum_withdraw"
+class="input"
+type="number">
+
+<label>
+
+Withdraw Fee
+
+</label>
+
+<input
+id="withdraw_fee"
+class="input"
+type="number">
+
+<div
+style="
+margin-top:20px;">
+
+<label
+style="
+display:flex;
+align-items:center;
+gap:10px;">
+
+<input
+id="auto_topup"
+type="checkbox">
+
+Auto Topup
+
+</label>
+
+</div>
+
+<div
+style="
+margin-top:15px;">
+
+<label
+style="
+display:flex;
+align-items:center;
+gap:10px;">
+
+<input
+id="auto_withdraw"
+type="checkbox">
+
+Auto Withdraw
+
+</label>
+
+</div>
+
+<button
+id="btn-save"
+class="btn btn-green"
+style="
+margin-top:25px;">
+
+💾 Simpan Konfigurasi
+
+</button>
+
+</div>
+
+<!-- ===========================
+BACK
+=========================== -->
+
+<button
+id="btn-back"
+class="btn btn-blue">
+
+⬅️ Kembali Dashboard
+
+</button>
+
+</div>
+
+<script
+type="module"
+src="./js/business.js"></script>
+
+<script src="./js/pwa.js"></script>
+
+</body>
+
+</html>
