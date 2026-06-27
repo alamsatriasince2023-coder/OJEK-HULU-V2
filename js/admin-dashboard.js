@@ -391,16 +391,6 @@ document
 }
 );
 
-document
-.getElementById("btn-business")
-?.addEventListener(
-"click",
-()=>{
-
-    location.href = "business.html";
-
-}
-);
 
 document
 .getElementById("btn-report")
@@ -460,6 +450,32 @@ document
         location.href =
 
         "wallet-management.html";
+
+    }
+
+);
+
+/* ===========================
+SYSTEM SETTINGS
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-system-settings"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "system-settings.html";
 
     }
 
