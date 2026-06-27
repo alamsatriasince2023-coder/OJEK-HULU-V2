@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Rating Driver - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#00AA13">
+
+<meta
+name="mobile-web-app-capable"
+content="yes">
+
+<meta
+name="apple-mobile-web-app-capable"
+content="yes">
+
+<meta
+name="apple-mobile-web-app-status-bar-style"
+content="black-translucent">
+
+<style>
+
+body{
+
+background:#f5f7fb;
+
+}
+
+.rating-box{
+
+max-width:420px;
+
+margin:40px auto;
+
+background:#fff;
+
+padding:30px;
+
+border-radius:25px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.1);
+
+text-align:center;
+
+}
+
+.avatar{
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+background:#16a34a;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:45px;
+
+color:#fff;
+
+margin:auto;
+
+margin-bottom:20px;
+
+}
+
+.star{
+
+font-size:42px;
+
+cursor:pointer;
+
+color:#ddd;
+
+transition:.2s;
+
+}
+
+.star.active{
+
+color:#fbbf24;
+
+}
+
+textarea{
+
+width:100%;
+
+height:120px;
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:15px;
+
+resize:none;
+
+margin-top:20px;
+
+font-size:15px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="rating-box">
+
+<div class="avatar">
+
+🚕
+
+</div>
+
+<h2>
+
+Bagaimana Perjalanan Anda?
+
+</h2>
+
+<p style="color:#666;margin-top:10px;">
+
+Beri penilaian untuk driver Anda
+
+</p>
+
+<div
+id="star-container"
+style="margin:30px 0;">
+
+<span class="star" data-value="1">★</span>
+
+<span class="star" data-value="2">★</span>
+
+<span class="star" data-value="3">★</span>
+
+<span class="star" data-value="4">★</span>
+
+<span class="star" data-value="5">★</span>
+
+</div>
+
+<textarea
+
+id="review"
+
+placeholder="Tulis komentar Anda (opsional)...">
+
+</textarea>
+
+<button
+
+id="btn-submit"
+
+class="btn btn-green"
+
+style="margin-top:25px;">
+
+⭐ Kirim Penilaian
+
+</button>
+
+</div>
+
+<script>
+
+let rating = 0;
+
+const stars = document.querySelectorAll(".star");
+
+stars.forEach(star=>{
+
+    star.addEventListener("click",()=>{
+
+        rating = Number(
+
+            star.dataset.value
+
+        );
+
+        stars.forEach(s=>{
+
+            if(
+
+                Number(s.dataset.value)
+
+                <= rating
+
+            ){
+
+                s.classList.add("active");
+
+            }else{
+
+                s.classList.remove("active");
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+<script
+type="module"
+src="./js/rating.js">
+</script>
+
+</body>
+
+</html>
