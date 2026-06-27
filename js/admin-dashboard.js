@@ -755,73 +755,82 @@ function initCustomerSearch(){
 DRIVER TABLE
 =========================== */
 
+/* ===========================
+DRIVER TABLE
+=========================== */
+
 async function loadDriverTable(){
 
     const [
 
-        { count },
+        { count, error: countError },
 
-        { data: drivers },
+        { data: drivers, error: driverError },
 
-        { data: profiles }
+        { data: profiles, error: profileError }
 
     ] = await Promise.all([
 
         supabase
-
         .from("drivers")
-
         .select("*",{
-
             head:true,
-
             count:"exact"
-
         }),
 
         supabase
-
         .from("drivers")
-
-        .select("id,is_online,rating,total_trip,created_at")
-
+        .select("*")
         .order(
-
             "created_at",
-
             {
-
                 ascending:false
-
             }
-
         )
-
         .limit(10),
 
         supabase
-
         .from("profiles")
-
         .select("id,full_name,phone")
-
         .eq("role","driver")
 
     ]);
 
+    if(countError){
+
+        console.error(countError);
+
+    }
+
+    if(driverError){
+
+        console.error(driverError);
+
+        return;
+
+    }
+
+    if(profileError){
+
+        console.error(profileError);
+
+        return;
+
+    }
+
+    console.log("Drivers :",drivers);
+    console.log("Profiles :",profiles);
+
     document.getElementById(
-
         "driver-count"
-
     ).textContent =
-
     count || 0;
 
     const profileMap = new Map(
 
         (profiles || []).map(p => [
 
-            p.id,
+            String(p.id).trim(),
 
             p
 
@@ -829,10 +838,48 @@ async function loadDriverTable(){
 
     );
 
+    (drivers || []).forEach(d=>{
+
+        console.log(
+
+            "Driver",
+
+            d.id,
+
+            profileMap.get(
+
+                String(d.id).trim()
+
+            )
+
+        );
+
+    });
+
+    if(!drivers || drivers.length===0){
+
+        document.getElementById(
+            "driver-table"
+        ).innerHTML =
+
+        `
+        <div
+        style="
+        padding:25px;
+        text-align:center;
+        color:#888;">
+
+        Belum ada Driver
+
+        </div>
+        `;
+
+        return;
+
+    }
+
     document.getElementById(
-
         "driver-table"
-
     ).innerHTML =
 
     `
@@ -850,7 +897,7 @@ async function loadDriverTable(){
 
     <th>⭐</th>
 
-    <th>Join</th>
+    <th>Trip</th>
 
     </tr>
 
@@ -860,7 +907,11 @@ async function loadDriverTable(){
 
     ${(drivers || []).map(d=>{
 
-        const p = profileMap.get(d.id) || {};
+        const p = profileMap.get(
+
+            String(d.id).trim()
+
+        ) || {};
 
         return `
 
@@ -890,17 +941,17 @@ async function loadDriverTable(){
 
         <td>
 
-        ${(Number(d.rating || 0)).toFixed(1)}
+        ${(Number(
+
+            d.rating || 0
+
+        )).toFixed(1)}
 
         </td>
 
         <td>
 
-        ${new Date(
-
-            d.created_at
-
-        ).toLocaleDateString("id-ID")}
+        ${d.total_trip || 0}
 
         </td>
 
