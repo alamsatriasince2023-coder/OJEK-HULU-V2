@@ -569,3 +569,29 @@ document
     }
 
 );
+
+/* ===========================
+FRAUD MONITOR
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-fraud"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "fraud-monitor.html";
+
+    }
+
+);
