@@ -1050,6 +1050,74 @@ document
 );
 
 /* ===========================
+   PUSH NOTIFICATION
+=========================== */
+
+async function notifyOrder(order){
+
+    /* Vibrate Android */
+
+    if(navigator.vibrate){
+
+        navigator.vibrate([300,150,300]);
+
+    }
+
+    /* Browser Notification */
+
+    if(
+
+        "Notification" in window &&
+
+        Notification.permission === "granted"
+
+    ){
+
+        new Notification(
+
+            "🚕 Order Baru",
+
+            {
+
+                body:
+
+                `${order.nama}\n${order.jemput}`,
+
+                icon:
+
+                "/assets/icons/icon-192.png"
+
+            }
+
+        );
+
+    }
+
+    /* Suara */
+
+    try{
+
+        const audio =
+
+        new Audio(
+
+            "./assets/sounds/order.mp3"
+
+        );
+
+        audio.play();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+/* ===========================
    INIT
 =========================== */
 
@@ -1109,11 +1177,9 @@ supabase
 
             ){
 
-                showOrderPopup(
+                notifyOrder(order);
 
-                    order
-
-                );
+                showOrderPopup(order);
 
             }
 
@@ -1143,6 +1209,22 @@ supabase
 
             }
 
+        }
+
+        /* ===========================
+           REQUEST NOTIFICATION
+        =========================== */
+        
+        if(
+        
+            "Notification" in window &&
+        
+            Notification.permission !== "granted"
+        
+        ){
+        
+            Notification.requestPermission();
+        
         }
 
         await loadDriverStatus();
