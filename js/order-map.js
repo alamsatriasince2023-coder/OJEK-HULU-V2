@@ -834,6 +834,125 @@ function renderNearbyDrivers(){
 
 }
 
+function updateDriverMarker(driver){
+
+    if (!driver.is_online) {
+
+        const marker = driverMarkers.get(driver.id);
+    
+        if (marker) {
+    
+            map.removeLayer(marker);
+    
+            driverMarkers.delete(driver.id);
+    
+        }
+    
+        return;
+    
+    }
+    
+    if(
+        !driver ||
+        driver.latitude==null ||
+        driver.longitude==null
+    ){
+        return;
+    }
+
+    const latlng=[
+        Number(driver.latitude),
+        Number(driver.longitude)
+    ];
+
+    const marker=
+    driverMarkers.get(driver.id);
+
+    if(marker){
+
+        animateMarker(driver.id, marker, latlng);
+
+        return;
+
+    }
+
+    const newMarker=
+
+    L.marker(latlng,{
+
+        icon:driverIcon
+
+    })
+
+    .addTo(map)
+
+    .bindPopup("🚕 Driver Online");
+
+    driverMarkers.set(
+
+        driver.id,
+
+        newMarker
+
+    );
+
+}
+
+function animateMarker(driverId, marker, targetLatLng){
+
+    const current = marker.getLatLng();
+
+    const startLat = current.lat;
+    const startLng = current.lng;
+
+    const endLat = targetLatLng[0];
+    const endLng = targetLatLng[1];
+
+    let progress = 0;
+
+    const oldAnimation = driverAnimations.get(driverId);
+
+    if(oldAnimation){
+
+        cancelAnimationFrame(oldAnimation);
+
+    }
+
+    function animate(){
+
+        progress += 0.08;
+
+        if(progress >= 1){
+
+            marker.setLatLng(targetLatLng);
+
+            driverAnimations.delete(driverId);
+
+            return;
+
+        }
+
+        const lat =
+            startLat +
+            (endLat - startLat) * progress;
+
+        const lng =
+            startLng +
+            (endLng - startLng) * progress;
+
+        marker.setLatLng([lat,lng]);
+
+        const id =
+        requestAnimationFrame(animate);
+
+        driverAnimations.set(driverId,id);
+
+    }
+
+    animate();
+
+}
+
 searchInput.addEventListener(
 
 'input',
@@ -1005,10 +1124,10 @@ supabase
 
     },
 
-    ()=>{
+    (payload)=>{
 
-        loadNearbyDrivers();
-
+        updateDriverMarker(payload.new);
+    
     }
 
 )
