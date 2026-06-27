@@ -321,15 +321,30 @@ alert("Pengaturan segera hadir.");
    FINANCIAL MENU
 =========================== */
 
+/* ===========================
+DRIVER MANAGEMENT
+=========================== */
+
 document
-.getElementById("btn-driver")
+
+.getElementById(
+
+    "btn-driver"
+
+)
+
 ?.addEventListener(
-"click",
-()=>{
 
-    alert("🚕 Manajemen Driver - Segera Hadir");
+    "click",
 
-}
+    ()=>{
+
+        location.href =
+
+        "driver-management.html";
+
+    }
+
 );
 
 document
