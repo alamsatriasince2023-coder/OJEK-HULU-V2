@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<title>Finance Dashboard - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+💰 Finance Dashboard
+
+</div>
+
+<div
+id="finance-admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Monitoring Keuangan Realtime
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+FINANCE
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+KPI
+=========================== -->
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+💵 Revenue Hari Ini
+
+</small>
+
+<h2 id="today-revenue">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+📈 Revenue Bulan Ini
+
+</small>
+
+<h2 id="month-revenue">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+💸 Withdraw Hari Ini
+
+</small>
+
+<h2 id="today-withdraw">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+🏦 Platform Income
+
+</small>
+
+<h2 id="platform-income">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+👛 Total Saldo Driver
+
+</small>
+
+<h2 id="driver-wallet">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+👥 Total Saldo Customer
+
+</small>
+
+<h2 id="customer-wallet">
+
+Rp 0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+GRAFIK
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+📈 Revenue Chart
+
+</div>
+
+<div class="badge">
+
+LIVE
+
+</div>
+
+</div>
+
+<div
+id="finance-chart"
+style="
+height:240px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:1px dashed #d1d5db;
+border-radius:16px;
+background:#f9fafb;">
+
+Grafik Revenue (Coming Soon)
+
+</div>
+
+</div>
+
+<!-- ===========================
+FINANCIAL SUMMARY
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📊 Ringkasan Keuangan
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Total Topup
+
+</span>
+
+<h2 id="total-topup">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Total Withdraw
+
+</span>
+
+<h2 id="total-withdraw">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Total Order
+
+</span>
+
+<h2 id="total-order">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Komisi Platform
+
+</span>
+
+<h2 id="platform-fee">
+
+Rp 0
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+TRANSAKSI TERBARU
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+💳 Transaksi Terbaru
+
+</div>
+
+<div class="badge">
+
+Realtime
+
+</div>
+
+</div>
+
+<div id="transaction-list">
+
+<div
+style="
+padding:30px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada transaksi.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+WITHDRAW TERBARU
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+💸 Withdraw Terbaru
+
+</div>
+
+<div class="badge">
+
+LIVE
+
+</div>
+
+</div>
+
+<div id="withdraw-list">
+
+<div
+style="
+padding:30px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada withdraw.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+PLATFORM INCOME
+=========================== -->
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;">
+
+<div class="card-title">
+
+🏦 Platform Income
+
+</div>
+
+<div class="badge">
+
+AUTO
+
+</div>
+
+</div>
+
+<div id="income-list">
+
+<div
+style="
+padding:30px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada data.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM MENU
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-wallet">
+
+<span class="bottom-icon">
+
+💰
+
+</span>
+
+Wallet
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-business">
+
+<span class="bottom-icon">
+
+⚙️
+
+</span>
+
+Business
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/finance-dashboard.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
