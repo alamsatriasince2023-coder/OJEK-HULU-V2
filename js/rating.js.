@@ -1,0 +1,178 @@
+import { supabase } from "./api.js";
+import { requireRole } from "./rbac.js";
+
+const auth = await requireRole("customer");
+
+if(!auth){
+
+    throw new Error("Akses ditolak");
+
+}
+
+const order = JSON.parse(
+
+    sessionStorage.getItem(
+
+        "rating_order"
+
+    )
+
+);
+
+if(!order){
+
+    alert(
+
+        "Data order tidak ditemukan."
+
+    );
+
+    location.replace(
+
+        "customer-history.html"
+
+    );
+
+}
+
+let rating = 0;
+
+const stars = document.querySelectorAll(".star");
+
+const review =
+
+document.getElementById(
+
+    "review"
+
+);
+
+const btnSubmit =
+
+document.getElementById(
+
+    "btn-submit"
+
+);
+
+stars.forEach(star=>{
+
+    star.addEventListener(
+
+        "click",
+
+        ()=>{
+
+            rating = Number(
+
+                star.dataset.value
+
+            );
+
+            stars.forEach(s=>{
+
+                if(
+
+                    Number(
+
+                        s.dataset.value
+
+                    ) <= rating
+
+                ){
+
+                    s.classList.add(
+
+                        "active"
+
+                    );
+
+                }
+
+                else{
+
+                    s.classList.remove(
+
+                        "active"
+
+                    );
+
+                }
+
+            });
+
+        }
+
+    );
+
+});
+
+btnSubmit.addEventListener(
+
+    "click",
+
+    async()=>{
+
+        if(rating === 0){
+
+            alert(
+
+                "Silakan pilih rating terlebih dahulu."
+
+            );
+
+            return;
+
+        }
+
+        btnSubmit.disabled = true;
+
+        btnSubmit.innerHTML = "Menyimpan...";
+
+        const { error } = await supabase
+
+        .from("driver_reviews")
+
+        .insert({
+
+            order_id: order.id,
+
+            driver_id: order.driver_id,
+
+            customer_id: auth.user.id,
+
+            rating: rating,
+
+            review: review.value.trim()
+
+        });
+
+        if(error){
+
+            alert(error.message);
+
+            btnSubmit.disabled = false;
+
+            btnSubmit.innerHTML = "⭐ Kirim Penilaian";
+
+            return;
+
+        }
+
+        sessionStorage.removeItem("rating_order");
+
+        alert(
+
+            "🎉 Terima kasih atas penilaian Anda."
+
+        );
+
+        location.replace(
+
+            "customer-history.html"
+
+        );
+
+    }
+
+);
