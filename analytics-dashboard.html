@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Analytics Dashboard - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="manifest"
+href="/manifest.webmanifest">
+
+<meta
+name="theme-color"
+content="#16a34a">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+📊 Analytics Dashboard
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Business Intelligence Ojek Hulu
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+LIVE
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Revenue
+
+</small>
+
+<h2 id="kpi-revenue">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Orders
+
+</small>
+
+<h2 id="kpi-orders">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Customers
+
+</small>
+
+<h2 id="kpi-customers">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Drivers
+
+</small>
+
+<h2 id="kpi-drivers">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===========================
+CHART
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📈 Revenue Trend
+
+</div>
+
+<div
+id="chart-area"
+style="
+height:250px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:1px dashed #d1d5db;
+border-radius:16px;">
+
+Chart Coming Soon
+
+</div>
+
+</div>
+
+<!-- ===========================
+TOP DRIVER
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+🏆 Top Driver
+
+</div>
+
+<div id="top-driver-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada data.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+TOP CUSTOMER
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+👥 Top Customer
+
+</div>
+
+<div id="top-customer-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada data.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+RINGKASAN BISNIS
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📋 Ringkasan Bisnis
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Order Selesai
+
+</span>
+
+<h2 id="completed-orders">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Order Batal
+
+</span>
+
+<h2 id="cancel-orders">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Withdraw
+
+</span>
+
+<h2 id="total-withdraw">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Platform Income
+
+</span>
+
+<h2 id="platform-income">
+
+Rp 0
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-finance">
+
+<span class="bottom-icon">
+
+💰
+
+</span>
+
+Finance
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-driver">
+
+<span class="bottom-icon">
+
+🚕
+
+</span>
+
+Driver
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/analytics-dashboard.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
