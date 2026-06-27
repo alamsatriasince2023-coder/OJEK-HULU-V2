@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Order Management - Ojek Hulu</title>
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+
+<div class="header-top">
+
+<div>
+
+<div class="location">
+
+📦 Order Management
+
+</div>
+
+<div
+id="admin-name"
+class="username">
+
+Loading...
+
+</div>
+
+<div
+style="
+margin-top:8px;
+font-size:13px;
+opacity:.9;">
+
+Monitoring Seluruh Order
+
+</div>
+
+</div>
+
+<div>
+
+<div class="badge">
+
+LIVE
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;">
+
+<div class="kpi-card">
+
+<small>
+
+Total Order
+
+</small>
+
+<h2 id="total-order">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Sedang Berjalan
+
+</small>
+
+<h2 id="running-order">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Selesai
+
+</small>
+
+<h2 id="completed-order">
+
+0
+
+</h2>
+
+</div>
+
+<div class="kpi-card">
+
+<small>
+
+Dibatalkan
+
+</small>
+
+<h2 id="cancel-order">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="card">
+
+<div class="card-title">
+
+🔍 Cari Order
+
+</div>
+
+<input
+id="search-order"
+class="input"
+placeholder="ID Order / Nama Customer / Driver">
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+📦 Daftar Order
+
+</div>
+
+<div id="order-list">
+
+<div
+style="
+padding:40px;
+text-align:center;
+color:#6B7280;">
+
+Belum ada order.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===========================
+DETAIL ORDER
+=========================== -->
+
+<div class="card">
+
+<div class="card-title">
+
+📋 Detail Order
+
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<span>
+
+Order ID
+
+</span>
+
+<h2
+id="detail-id"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Status
+
+</span>
+
+<h2
+id="detail-status"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Customer
+
+</span>
+
+<h2
+id="detail-customer"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Driver
+
+</span>
+
+<h2
+id="detail-driver"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Pickup
+
+</span>
+
+<h2
+id="detail-pickup"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Tujuan
+
+</span>
+
+<h2
+id="detail-destination"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Tarif
+
+</span>
+
+<h2
+id="detail-price"
+style="font-size:15px;">
+
+Rp 0
+
+</h2>
+
+</div>
+
+<div class="stat-box">
+
+<span>
+
+Pembayaran
+
+</span>
+
+<h2
+id="detail-payment"
+style="font-size:15px;">
+
+-
+
+</h2>
+
+</div>
+
+</div>
+
+<div
+style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:20px;">
+
+<button
+id="btn-track"
+class="btn btn-blue">
+
+📍 Live Tracking
+
+</button>
+
+<button
+id="btn-history"
+class="btn btn-blue">
+
+📜 Timeline
+
+</button>
+
+<button
+id="btn-cancel"
+class="btn btn-red">
+
+❌ Cancel Order
+
+</button>
+
+<button
+id="btn-refund"
+class="btn btn-green">
+
+💰 Refund
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ===========================
+BOTTOM NAV
+=========================== -->
+
+<nav class="bottom-nav">
+
+<div
+class="bottom-item active"
+id="btn-home">
+
+<span class="bottom-icon">
+
+🏠
+
+</span>
+
+Home
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-driver">
+
+<span class="bottom-icon">
+
+🚕
+
+</span>
+
+Driver
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-customer">
+
+<span class="bottom-icon">
+
+👥
+
+</span>
+
+Customer
+
+</div>
+
+<div
+class="bottom-item"
+id="btn-back">
+
+<span class="bottom-icon">
+
+⬅️
+
+</span>
+
+Admin
+
+</div>
+
+</nav>
+
+</div>
+
+<script
+type="module"
+src="./js/order-management.js"></script>
+
+<script
+src="./js/pwa.js"></script>
+
+</body>
+
+</html>
