@@ -520,103 +520,126 @@ async function loadOrders(){
 CUSTOMER TABLE
 =========================== */
 
+/* ===========================
+CUSTOMER TABLE
+=========================== */
+
 async function loadCustomerTable(){
 
-    const [
+    console.log("========== CUSTOMER DEBUG ==========");
 
-        { count, error: countError },
+    const {
 
-        { data, error }
+        data,
 
-    ] = await Promise.all([
+        error,
 
-        supabase
+        count
 
-        .from("profiles")
+    } = await supabase
 
-        .select("*",{
+    .from("profiles")
 
-            head:true,
+    .select("*",{
 
-            count:"exact"
+        count:"exact"
 
-        })
+    })
 
-        .eq("role","customer"),
+    .eq("role","customer")
 
-        supabase
+    .order(
 
-        .from("profiles")
+        "created_at",
 
-        .select("*")
+        {
 
-        .eq("role","customer")
+            ascending:false
 
-        .order(
+        }
 
-            "created_at",
+    )
 
-            {
+    .limit(10);
 
-                ascending:false
+    console.log("Customer Count :",count);
 
-            }
+    console.log("Customer Data :",data);
 
-        )
-
-        .limit(10)
-
-    ]);
-
-    if(countError){
-
-        console.error(
-
-            "Customer Count Error:",
-
-            countError
-
-        );
-
-    }
+    console.log("Customer Error :",error);
 
     if(error){
 
         console.error(
 
-            "Customer Table Error:",
+            "CUSTOMER QUERY ERROR:",
 
             error
 
         );
 
+        document.getElementById(
+
+            "customer-count"
+
+        ).textContent="0";
+
+        document.getElementById(
+
+            "customer-table"
+
+        ).innerHTML=
+
+        `<div class="alert alert-danger">
+
+        ${error.message}
+
+        </div>`;
+
         return;
 
     }
-
-    console.log(
-
-        "Customer Data:",
-
-        data
-
-    );
 
     document.getElementById(
 
         "customer-count"
 
-    ).textContent =
+    ).textContent=
 
     count || 0;
+
+    if(!data || data.length===0){
+
+        document.getElementById(
+
+            "customer-table"
+
+        ).innerHTML=
+
+        `
+
+        <div class="text-center"
+
+        style="padding:20px;color:#888;">
+
+        Belum ada customer ditemukan
+
+        </div>
+
+        `;
+
+        return;
+
+    }
 
     document.getElementById(
 
         "customer-table"
 
-    ).innerHTML =
+    ).innerHTML=
 
     `
+
     <table class="table">
 
     <thead>
@@ -637,25 +660,25 @@ async function loadCustomerTable(){
 
     <tbody>
 
-    ${(data || []).map(c=>`
+    ${data.map(c=>`
 
     <tr>
 
     <td>
 
-    ${c.full_name || "-"}
+    ${c.full_name ?? "-"}
 
     </td>
 
     <td>
 
-    ${c.phone || "-"}
+    ${c.phone ?? "-"}
 
     </td>
 
     <td>
 
-    ${c.is_active === false
+    ${c.is_active===false
 
         ? "🔴 Suspend"
 
@@ -667,15 +690,9 @@ async function loadCustomerTable(){
 
     ${c.created_at
 
-        ? new Date(
+        ? new Date(c.created_at)
 
-            c.created_at
-
-        ).toLocaleDateString(
-
-            "id-ID"
-
-        )
+        .toLocaleDateString("id-ID")
 
         : "-"}
 
