@@ -282,25 +282,33 @@ CUSTOMER ACCOUNT
 <div class="card">
 
 <div
+class="card-title"
+id="customer-toggle"
 style="
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:18px;">
+cursor:pointer;">
 
-<div class="card-title">
+<div>
 
 👥 Customer Terdaftar
 
-</div>
-
-<div class="badge">
-
-<span id="customer-count">0</span>
+(<span id="customer-count">0</span>)
 
 </div>
 
+<div id="customer-arrow">
+
+▼
+
 </div>
+
+</div>
+
+<div
+id="customer-panel"
+style="display:none;margin-top:18px;">
 
 <input
 id="customer-search"
@@ -313,6 +321,8 @@ style="margin-top:15px;"></div>
 
 </div>
 
+</div>
+
 <!-- ===========================
 DRIVER ACCOUNT
 =========================== -->
@@ -320,25 +330,33 @@ DRIVER ACCOUNT
 <div class="card">
 
 <div
+class="card-title"
+id="driver-toggle"
 style="
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:18px;">
+cursor:pointer;">
 
-<div class="card-title">
+<div>
 
 🚕 Driver Terdaftar
 
-</div>
-
-<div class="badge">
-
-<span id="driver-count">0</span>
+(<span id="driver-count">0</span>)
 
 </div>
 
+<div id="driver-arrow">
+
+▼
+
 </div>
+
+</div>
+
+<div
+id="driver-panel"
+style="display:none;margin-top:18px;">
 
 <input
 id="driver-search"
@@ -348,6 +366,8 @@ placeholder="Cari driver...">
 <div
 id="driver-table"
 style="margin-top:15px;"></div>
+
+</div>
 
 </div>
 
