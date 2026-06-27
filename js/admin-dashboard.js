@@ -636,3 +636,25 @@ document
     }
 
 );
+
+/* ===========================
+ORDER MANAGEMENT
+=========================== */
+
+document
+
+.getElementById("btn-order")
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "order-management.html";
+
+    }
+
+);
