@@ -15,6 +15,7 @@ import { supabase } from './api.js';
 import { logoutUser } from './auth.js';
 import { requireRole } from './rbac.js';
 import * as wallet from "./wallet-engine.js";
+import * as commission from "./commission-engine.js";
 
 /* ===========================
    AUTH
@@ -795,18 +796,14 @@ async function completeOrder(e){
 
     try{
 
-        await wallet.credit({
+        await commission.processRide({
 
+            order_id: id,
+        
             driver_id: user.id,
-
-            amount: Number(currentOrder.price || 0),
-
-            type: "RIDE",
-
-            description: "Pendapatan Ride",
-
-            reference_id: id
-
+        
+            total_amount: Number(currentOrder.price || 0)
+        
         });
 
     }catch(err){
