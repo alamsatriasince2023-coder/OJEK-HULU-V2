@@ -355,17 +355,6 @@ document
 );
 
 document
-.getElementById("btn-wallet")
-?.addEventListener(
-"click",
-()=>{
-
-    alert("💰 Wallet Driver - Segera Hadir");
-
-}
-);
-
-document
 .getElementById("btn-withdraw")
 ?.addEventListener(
 "click",
@@ -430,6 +419,32 @@ document
         location.href =
 
         "withdraw-management.html";
+
+    }
+
+);
+
+/* ===========================
+WALLET MANAGEMENT
+=========================== */
+
+document
+
+.getElementById(
+
+    "btn-wallet"
+
+)
+
+?.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        location.href =
+
+        "wallet-management.html";
 
     }
 
