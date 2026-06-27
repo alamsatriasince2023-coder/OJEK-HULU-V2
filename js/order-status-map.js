@@ -174,19 +174,17 @@ async function renderOrder(order){
 
     if(order.status === "completed"){
 
-        alert(
+        sessionStorage.setItem(
     
-            "🎉 Perjalanan selesai.\nTerima kasih telah menggunakan Ojek Hulu."
+            "rating_order",
+    
+            JSON.stringify(order)
     
         );
     
-        setTimeout(()=>{
+        location.href =
     
-            location.href =
-    
-            "customer-history.html";
-    
-        },1500);
+        "rating.html";
     
         return;
     
