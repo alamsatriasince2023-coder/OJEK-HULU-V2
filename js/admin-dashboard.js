@@ -316,3 +316,95 @@ alert("Pengaturan segera hadir.");
 
 }
 );
+
+/* ===========================
+   FINANCIAL MENU
+=========================== */
+
+document
+.getElementById("btn-driver")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("🚕 Manajemen Driver - Segera Hadir");
+
+}
+);
+
+document
+.getElementById("btn-customer")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("👥 Manajemen Customer - Segera Hadir");
+
+}
+);
+
+document
+.getElementById("btn-order")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("📦 Manajemen Order - Segera Hadir");
+
+}
+);
+
+document
+.getElementById("btn-wallet")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("💰 Wallet Driver - Segera Hadir");
+
+}
+);
+
+document
+.getElementById("btn-withdraw")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("💸 Withdraw Driver - Segera Hadir");
+
+}
+);
+
+document
+.getElementById("btn-finance")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("📊 Finance Dashboard - Segera Hadir");
+
+}
+);
+
+document
+.getElementById("btn-business")
+?.addEventListener(
+"click",
+()=>{
+
+    location.href = "business.html";
+
+}
+);
+
+document
+.getElementById("btn-report")
+?.addEventListener(
+"click",
+()=>{
+
+    alert("📈 Financial Report - Segera Hadir");
+
+}
+);
